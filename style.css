@@ -1,0 +1,42 @@
+body {
+	margin: 0 0 0 0;
+}
+.card {
+	position: absolute;
+	border-radius: 5px;
+	width: 142px;
+	height: 200px;
+}
+
+#card-container {
+	width: 100%;
+	height: 100%;
+}
+
+#hand {
+	position: absolute;
+	bottom: 0px;
+	width: 100%;
+	height: 20%;
+	background-color: #ccc;
+}
+
+.card-pile {
+	width: 100px;
+	height: 100px;
+	color: #eee;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	-webkit-user-select: none;
+	-moz-user-select: none;
+	user-select: none;
+}
+
+.deck {
+	background-color: blue;
+}
+
+.discard {
+	background-color: red;
+}
