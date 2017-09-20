@@ -86,17 +86,18 @@ interact('.card-pile')
       // draw a new card
       let newCard = document.createElement('div');
       newCard.className = "card";
+      // insert the card to the page
+      document.querySelector("#card-container").appendChild(newCard);
+
       let style = window.getComputedStyle(newCard);
       let cardNum = pile.pop();
       newCard.setAttribute('data-num', cardNum);
-      newCard.style.backgroundPosition = `
-      ${(cardNum % deckWidth) * parseInt(style.getPropertyValue("width"))}px
-      ${Math.floor(cardNum/deckHeight) * parseInt(style.getPropertyValue("height"))}px`;
+      newCard.style.backgroundPositionX =
+        (cardNum % deckWidth) * parseInt(style.getPropertyValue("width")) + "px";
+      newCard.style.backgroundPositionY =
+        Math.floor(cardNum/deckHeight) * parseInt(style.getPropertyValue("height")) + "px";
 	  newCard.style.backgroundImage = "url('deck.png')";
       newCard.style.backgroundSize = `${deckWidth * 100}% ${deckHeight * 100}%`;
-
-      // insert the card to the page
-      document.querySelector("#card-container").appendChild(newCard);
 
       // update deck text
       event.target.innerHTML = `${pileName.toUpperCase()}<br>${pile.length}/${cardCount}`;
