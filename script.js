@@ -2,7 +2,6 @@ let deckName, deckJSON, cardCount, deckWidth, deckHeight,
     piles = {'deck': [], discard: []};
 
 window.addEventListener('load', () => {
-  deckName = document.querySelector('#card-container').getAttribute("data-deckName");
   let xhr = new XMLHttpRequest();
   xhr.addEventListener("load", () => {
     deckJSON = JSON.parse(xhr.responseText);
@@ -13,7 +12,8 @@ window.addEventListener('load', () => {
     deckHeight = deckJSON.ObjectStates[0].CustomDeck["1"].NumHeight;
     console.log(deckName);
   });
-  xhr.open("GET", "/" + deckName + ".json");
+  deckName = document.querySelector('#card-container').getAttribute("data-deckName");
+  xhr.open("GET", "/deck/" + deckName + "/deck.json");
   xhr.send();
 });
 
@@ -85,7 +85,7 @@ interact('.card-pile')
       newCard.style.backgroundPosition = `
       ${(cardNum % deckWidth) * parseInt(style.getPropertyValue("width"))}px
       ${Math.floor(cardNum/deckHeight) * parseInt(style.getPropertyValue("height"))}px`;
-      newCard.style.backgroundImage = `url('${deckName}.png')`;
+	  newCard.style.backgroundImage = "url('deck.png')";
       newCard.style.backgroundSize = `${deckWidth * 100}% ${deckHeight * 100}%`;
 
       // insert the card to the page

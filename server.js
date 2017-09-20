@@ -3,70 +3,95 @@
 "use strict";
 
 const http  = require('http'),
-      qs    = require('querystring'),
       fs    = require('fs'),
       url   = require('url'),
-      https = require('https'),
       port  = 8080;
-
-const deckName = "the_Unholy_Priest_update_2";
 
 const server = http.createServer((req, res) => {
   const uri = url.parse(req.url);
 
-  if (req.method === 'POST') {
-    handlePost(res, req, uri);
-  }
-  else {
-    switch( uri.pathname ) {
-    case '/':
-    case '/index.html':
-      sendIndex(res, "");
-      break;
-    case '/style.css':
-      sendFile(res, 'style.css', 'text/css');
-      break;
-    case '/script.js':
-      sendFile(res, 'script.js', 'application/javascript');
-      break;
-    case '/interact.js':
-      sendFile(res, 'interact.js', 'application/javascript');
-      break;
-    case '/' + deckName + '.png':
-      sendFile(res, deckName + '.png', 'image/png');
-      break;
-    case '/' + deckName + '.json':
-      sendFile(res, deckName + '.json', 'application/json');
-      break;
-    default:
-      res.writeHead(404, {'Content-type': "text/html; charset=utf-8"});
-      const html = `
-      <head>
-        <title>404 Not Found</title>
-        <link rel="stylesheet" href="style.css">
-      </head>
-      <body>
-        <h1>Error 404: Path ${uri.pathname} not found</h1>
-        You seem to have gone to the wrong place, would you like to go
-        back to the <a href="/">main page</a>?
-      </body>`;
-      res.end(html, 'utf-8');
+  let pathParts = uri.pathname.split("/");
+  switch (pathParts[1]) {
+  case '':
+  case 'index.html':
+    sendIndex(res);
+    break;
+  case 'style.css':
+    sendFile(res, 'style.css', 'text/css');
+    break;
+  case 'script.js':
+    sendFile(res, 'script.js', 'application/javascript');
+    break;
+  case 'interact.js':
+    sendFile(res, 'interact.js', 'application/javascript');
+    break;
+  case 'deck':
+    if (pathParts.length === 3) {
+      let deckName = pathParts[2];
+      sendDeckIndex(res, deckName);
     }
+    else if (pathParts.length === 4) {
+      let deckName = pathParts[2];
+      switch (pathParts[3]) {
+      case 'play':
+        sendPlayfield(res, deckName);
+        break;
+      case 'deck.png':
+        sendFile(res, deckName + '.png', 'image/png');
+        break;
+      case 'deck.json':
+        sendFile(res, deckName + '.json', 'application/json');
+        break;
+      default:
+        send404(res, uri);
+      }
+    }
+    break;
+  default:
+    send404(res, uri);
   }
-
 });
 
 server.listen(process.env.PORT || port);
 console.log('listening on 8080');
 
 function sendIndex(res) {
-  let cards = [];
+    const html = `
+    <html>
+      <head>
+        <link rel="stylesheet" type="text/css" href="/style.css">
+      </head>
+      <body>
+        <ul>
+          <li><a href="deck/the_Unholy_Priest_update_2">the_Unholy_Priest_update_2</a></li>
+        </ul>
+      </body>
+    </html>`;
+  res.writeHead(200, {'contentType': 'text/html; charset=utf-8'});
+  res.end(html, 'utf-8');
+}
+
+function sendDeckIndex(res, deckName) {
+    const html = `
+    <html>
+      <head>
+        <link rel="stylesheet" type="text/css" href="/style.css">
+      </head>
+      <body>
+        <a href="${deckName}/play">Play!</a>
+      </body>
+    </html>`;
+  res.writeHead(200, {'contentType': 'text/html; charset=utf-8'});
+  res.end(html, 'utf-8');
+}
+
+function sendPlayfield(res, deckName) {
   const html = `
     <html>
       <head>
-        <script src="interact.js"></script>
-        <script src="script.js"></script>
-        <link rel="stylesheet" type="text/css" href="style.css">
+        <script src="/interact.js"></script>
+        <script src="/script.js"></script>
+        <link rel="stylesheet" type="text/css" href="/style.css">
       </head>
       <body>
         <div id="card-container" data-deckName="${deckName}">
@@ -77,6 +102,22 @@ function sendIndex(res) {
       </body>
     </html>`;
   res.writeHead(200, {'contentType': 'text/html; charset=utf-8'});
+  res.end(html, 'utf-8');
+}
+
+
+function send404(res, uri) {
+  res.writeHead(404, {'Content-type': "text/html; charset=utf-8"});
+  const html = `
+    <head>
+      <title>404 Not Found</title>
+      <link rel="stylesheet" href="/style.css">
+    </head>
+    <body>
+      <h1>Error 404: Path ${uri.pathname} not found</h1>
+      You seem to have gone to the wrong place, would you like to go
+      back to the <a href="/">main page</a>?
+    </body>`;
   res.end(html, 'utf-8');
 }
 
