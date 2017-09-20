@@ -58,18 +58,19 @@ interact('.card-pile')
   .dropzone({
     accept: '.card',
     ondrop: event => {
-      let pile = piles[event.target.getAttribute('data-pile')];
-      pile.push(event.relatedTarget.getAttribute('data-num'));
+      let pileName = event.target.getAttribute('data-pile');
+      piles[pileName].push(event.relatedTarget.getAttribute('data-num'));
       event.relatedTarget.parentElement.removeChild(event.relatedTarget);
 
       // update deck text
-      event.target.innerHTML = `DECK<br>${pile.length}/${cardCount}`;
+      event.target.innerHTML = `${pileName.toUpperCase()}<br>${piles[pileName].length}/${cardCount}`;
     }
   })
   .draggable({manualStart: true})
   .on('move', event => {
     let interaction = event.interaction;
-    let pile = piles[event.target.getAttribute('data-pile')];
+    let pileName = event.target.getAttribute('data-pile');
+    let pile = piles[pileName];
 
     // if the pointer was moved while being held down
     // and an interaction hasn't started yet
@@ -92,7 +93,7 @@ interact('.card-pile')
       document.querySelector("#card-container").appendChild(newCard);
 
       // update deck text
-      event.target.innerHTML = `DECK<br>${pile.length}/${cardCount}`;
+      event.target.innerHTML = `${pileName.toUpperCase()}<br>${pile.length}/${cardCount}`;
 
       // start a drag interaction targeting the clone
       interaction.start({name: 'drag'}, cardInteract, newCard);
