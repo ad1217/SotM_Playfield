@@ -15,12 +15,6 @@ window.addEventListener('load', () => {
   deckName = document.querySelector('#card-container').getAttribute("data-deckName");
   xhr.open("GET", "/deck/" + deckName + "/deck.json");
   xhr.send();
-
-  document.querySelectorAll('.card-pile').forEach(e => {
-    e.addEventListener('click', event => {
-      shuffle(piles[event.target.getAttribute('data-pile')]);
-    });
-  });
 });
 
 let cardInteract = interact('.card', {ignoreFrom: '.in-list'})
@@ -127,7 +121,8 @@ interact('.card-pile')
       cardList.appendChild(newCard);
     });
     showModal(cardList);
-  });
+  })
+  .on('tap', event => shuffle(piles[event.target.getAttribute('data-pile')]));
 
 function makeCard(cardNum) {
   // draw a new card
