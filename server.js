@@ -67,7 +67,7 @@ function sendIndex(res) {
         </ul>
       </body>
     </html>`;
-  res.writeHead(200, {'contentType': 'text/html; charset=utf-8'});
+  res.writeHead(200, {'Content-type': 'text/html; charset=utf-8'});
   res.end(html, 'utf-8');
 }
 
@@ -81,7 +81,7 @@ function sendDeckIndex(res, deckName) {
         <a href="${deckName}/play">Play!</a>
       </body>
     </html>`;
-  res.writeHead(200, {'contentType': 'text/html; charset=utf-8'});
+  res.writeHead(200, {'Content-type': 'text/html; charset=utf-8'});
   res.end(html, 'utf-8');
 }
 
@@ -101,7 +101,7 @@ function sendPlayfield(res, deckName) {
         </div>
       </body>
     </html>`;
-  res.writeHead(200, {'contentType': 'text/html; charset=utf-8'});
+  res.writeHead(200, {'Content-type': 'text/html; charset=utf-8'});
   res.end(html, 'utf-8');
 }
 
