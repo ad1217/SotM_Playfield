@@ -89,7 +89,24 @@ interact('.card-pile')
   })
   .on('hold', event => {
     let pile = piles[event.target.getAttribute('data-pile')];
+    let searchBox = document.createElement('input');
+    let container = document.createElement('div');
     let cardList = document.createElement('div');
+    searchBox.setAttribute('type', 'search');
+    searchBox.setAttribute('placeholder', 'Filter');
+    searchBox.addEventListener('input', event => {
+      for (var ii = 0; ii < cardList.children.length; ii++) {
+        let input = event.target.value;
+        let cardNum = parseInt(cardList.children[ii].getAttribute('data-num'));
+        let cardData = deckJSON.ObjectStates[0].ContainedObjects.find(c => c.CardID === (cardNum + 100));
+        cardList.children[ii].style.display =
+          (cardData.Nickname.toLowerCase().includes(input.toLowerCase()) ||
+           cardData.Description.toLowerCase().includes(input.toLowerCase())) ?
+          "": "none";
+      }
+    });
+    container.appendChild(searchBox);
+
     pile.forEach(cardNum => {
       let newCard = makeCard(cardNum);
       newCard.classList.add('in-list');
@@ -113,7 +130,8 @@ interact('.card-pile')
       }, {once: true});
       cardList.appendChild(newCard);
     });
-    showModal(cardList);
+    container.appendChild(cardList);
+    showModal(container);
   })
   .on('tap', event => shuffle(piles[event.target.getAttribute('data-pile')]));
 
