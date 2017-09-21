@@ -23,7 +23,7 @@ window.addEventListener('load', () => {
   });
 });
 
-let cardInteract = interact('.card')
+let cardInteract = interact('.card', {ignoreFrom: '.in-list'})
   .draggable({
     restrict: {
       restriction: "parent",
@@ -80,24 +80,17 @@ interact('.card-pile')
 
     // if the pointer was moved while being held down
     // and an interaction hasn't started yet
+    // and there are cards in the pile
     if (interaction.pointerIsDown &&
         !interaction.interacting() &&
         pile.length > 0) {
       // draw a new card
-      let newCard = document.createElement('div');
-      newCard.className = "card";
+      let newCard = makeCard(pile.pop());
+      newCard.style.position = "fixed";
+      newCard.style.top = event.pageY;
+      newCard.style.left = event.pageX;
       // insert the card to the page
       document.querySelector("#card-container").appendChild(newCard);
-
-      let style = window.getComputedStyle(newCard);
-      let cardNum = pile.pop();
-      newCard.setAttribute('data-num', cardNum);
-      newCard.style.backgroundPositionX =
-        (cardNum % deckWidth) * parseInt(style.getPropertyValue("width")) + "px";
-      newCard.style.backgroundPositionY =
-        Math.floor(cardNum/deckHeight) * parseInt(style.getPropertyValue("height")) + "px";
-	  newCard.style.backgroundImage = "url('deck.png')";
-      newCard.style.backgroundSize = `${deckWidth * 100}% ${deckHeight * 100}%`;
 
       // update deck text
       event.target.innerHTML = `${pileName.toUpperCase()}<br>${pile.length}/${cardCount}`;
@@ -105,7 +98,74 @@ interact('.card-pile')
       // start a drag interaction targeting the clone
       interaction.start({name: 'drag'}, cardInteract, newCard);
     }
+  })
+  .on('hold', event => {
+    let pile = piles[event.target.getAttribute('data-pile')];
+    let cardList = document.createElement('div');
+    pile.forEach(cardNum => {
+      let newCard = makeCard(cardNum);
+      newCard.classList.add('in-list');
+      newCard.addEventListener('click', event => {
+        // re-parent
+        event.target.parentElement.removeChild(event.target);
+        document.querySelector("#card-container").appendChild(event.target);
+
+        // remove list class
+        event.target.classList.remove('in-list');
+
+        // fix position
+        newCard.style.position = "fixed";
+
+        // remove from source pile
+        let cardNum = parseInt(event.target.getAttribute('data-num'));
+        let index = pile.indexOf(cardNum);
+        if (index > -1) {
+          pile.splice(index, 1);
+        }
+      }, {once: true});
+      cardList.appendChild(newCard);
+    });
+    showModal(cardList);
   });
+
+function makeCard(cardNum) {
+  // draw a new card
+  let card = document.createElement('div');
+  card.className = "card";
+
+  // temporary add so getComputedStyle works on Chrome
+  document.body.appendChild(card);
+  let style = window.getComputedStyle(card);
+  card.setAttribute('data-num', cardNum);
+  card.style.backgroundPositionX =
+    -(cardNum % deckWidth) * parseInt(style.getPropertyValue("width")) + "px";
+  card.style.backgroundPositionY =
+    -Math.floor(cardNum/deckHeight) * parseInt(style.getPropertyValue("height")) + "px";
+  card.style.backgroundImage = "url('deck.png')";
+  card.style.backgroundSize = `${deckWidth * 100}% ${deckHeight * 100}%`;
+  document.body.removeChild(card);
+
+  return card;
+}
+
+function showModal(content) {
+  let shade = document.createElement('div');
+  shade.id = "shade";
+  shade.className = "modal";
+  shade.addEventListener('click', hideModal);
+  document.body.appendChild(shade);
+
+  let modal = document.createElement('div');
+  modal.id = "modal-content";
+  modal.className = "modal";
+  modal.appendChild(content);
+  document.body.appendChild(modal);
+}
+
+function hideModal() {
+  document.querySelectorAll('.modal').forEach(
+    e => e.parentElement.removeChild(e));
+}
 
 // Fisher-Yates shuffle from https://bost.ocks.org/mike/shuffle/
 function shuffle(array) {
