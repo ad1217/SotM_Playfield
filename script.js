@@ -5,7 +5,7 @@ window.addEventListener('load', () => {
   let xhr = new XMLHttpRequest();
   xhr.addEventListener("load", () => {
     deckJSON = JSON.parse(xhr.responseText);
-    piles['deck'] = deckJSON.ObjectStates[0].DeckIDs.map(c => c - 100);
+    piles.deck = deckJSON.ObjectStates[0].DeckIDs.map(c => c - 100);
     cardCount = piles['deck'].length;
     shuffle(piles['deck']);
     deckWidth = deckJSON.ObjectStates[0].CustomDeck["1"].NumWidth;
@@ -35,6 +35,7 @@ let cardInteract = interact('.card', {ignoreFrom: '.in-list'})
       targets: [() => {
         // TODO: maybe change to dropzone?
         let pos = document.body.getBoundingClientRect(),
+            hand = document.getElementById('hand'),
             style = window.getComputedStyle(hand),
             handHeight = parseInt(style.getPropertyValue("height"));
         return {y: pos.bottom,
@@ -186,8 +187,6 @@ function shuffle(array) {
 }
 
 function dragMoveListener (event) {
-  let interaction = event.interaction;
-
   let target = event.target,
       // keep the dragged position in the data-x/data-y attributes
       x = (parseFloat(target.getAttribute('data-x')) || 0) + event.dx,
