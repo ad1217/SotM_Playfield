@@ -5,7 +5,7 @@ members: Adam Goldsmith
 
 My proposed project is a card game deck generator/virtual tabletop, designed for use as apart of physical game.
 
-## Summary
+## Outline
   * Deck Generator
       * creates decks from JSON descriptions
       * at least support for Sentinels of the Multiverse decks, maybe others
@@ -37,4 +37,13 @@ I have previously been working on a deck generator, primarily for a game called 
 Currently, the decks are tested using a 3D game/engine called Tabletop Simulator. While this is convenient in some ways (it can be played over the Internet, for example), it is somewhat more annoying to play than with physical cards. Therefore, this part of the project attempts to blend them together by creating a 2D virtual "playfield" in which the cards can be manipulated similarly to in real life. A possible (time-dependent) addition to this would be the ability for multiple client to connect to the same session, with one showing the hand and one showing the table, or even several people for a full virtual game.
 
 ### Deck Editor (both?)
-Another thing that would be nice is the creation of an online deck editor, which would allow more detailed tweaking as well as more easy entry of cards. Currently, card descriptions are in a JSON format, which is somewhat difficult for average people to use. This would present a friendly GUI, with relatively easy to use controls.
+Another thing that would be nice is the creation of an online deck editor, which would allow more detailed tweaking as well as more easy entry of cards. Currently, card descriptions are in a JSON format, which is somewhat difficult for average people to use. This would present a friendly GUI, with relatively easy to use controls. May also include some sort of user management so people cannot overwrite others' decks.
+
+## Timeline
+  * 2017-09-22: initial version of playfield done, initial testing at Friday Gaming
+  * 2017-09-29: generator ported, testing phase 2
+  * 2017-10-06: editor written if time permits, otherwise finishing other parts, testing phase 3
+  * 2017-10-12: presentation
+
+## Evaluation
+Due to the rather specific nature of the project, it will primarily be tested at the SFS's Friday Gaming, with whoever I can convince to play. As such, it will also likely be tested in parts, with the playfield and generator/editor being separate parts. Hopefully there will, in fact, be at least 5 people total (I know of at least two or three that I can very likely convince).
