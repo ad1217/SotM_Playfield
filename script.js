@@ -15,6 +15,8 @@ window.addEventListener('load', () => {
   deckName = document.querySelector('#card-container').getAttribute("data-deckName");
   xhr.open("GET", "/deck/" + deckName + "/deck.json");
   xhr.send();
+
+  window.addEventListener("contextmenu", event =>  event.preventDefault());
 });
 
 let cardInteract = interact('.card', {ignoreFrom: '.in-list'})
