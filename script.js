@@ -42,19 +42,10 @@ let cardInteract = interact('.card', {ignoreFrom: '.in-list'})
 
     onmove: dragMoveListener
   })
-  .on('hold', event => {
-    let target = event.target,
-        transform = target.style.transform;
-    // Scale up for visibility
-    if (transform.includes("scale(2)")) {
-      // translate the element
-      target.style.webkitTransform =
-        target.style.transform = transform.replace(" scale(2)", "");
-    }
-    else {
-      target.style.webkitTransform =
-        target.style.transform = transform + ' scale(2)';
-    }
+  .on('doubletap', event => {
+    let scale = parseFloat(event.target.getAttribute('data-scale')) === 2 ? 1 : 2;
+    event.target.setAttribute('data-scale', scale);
+	dragMoveListener({target: event.target, dx: 0, dy: 0});
   });
 
 interact('.card-pile')
@@ -188,11 +179,12 @@ function dragMoveListener (event) {
       // keep the dragged position in the data-x/data-y attributes
       x = (parseFloat(target.getAttribute('data-x')) || 0) + event.dx,
       y = (parseFloat(target.getAttribute('data-y')) || 0) + event.dy;
+      scale = (parseFloat(target.getAttribute('data-scale')) || 1);
 
-  // translate the element
+  // translate and scale the element
   target.style.webkitTransform =
     target.style.transform =
-    'translate(' + x + 'px, ' + y + 'px)';
+    'translate(' + x + 'px, ' + y + 'px) scale(' + scale + ')';
 
   // raise to top
   target.parentElement.removeChild(target);
