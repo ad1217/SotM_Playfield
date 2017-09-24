@@ -85,7 +85,6 @@
 <clipPath id="clip156">
 <path d="m183.05 15.988h-29.047l-17.832 3.832 16.25 5.9414-14.375 8.5586 13.312-0.25-9.5 13.375 15.312-8.25-8.25 15.941 13.875-13.004 5.0625 13.754 7.125-19.375 6.9375 4.3086-3.0898-9.9141 4.2188-0.25z"/>
 </clipPath>
-<linearGradient id="linear8" x1="-4.9753e-6" x2="1" gradientTransform="matrix(0 39.897 -39.897 0 159.61 15.988)" gradientUnits="userSpaceOnUse">
 <stop stop-color="#f9ed31" offset="0"/>
 <stop stop-color="#f9ed31" offset=".0625"/>
 <stop stop-color="#f9ed31" offset=".09375"/>
@@ -268,6 +267,7 @@
 <stop stop-color="#ed1c23" offset=".8125"/>
 <stop stop-color="#ed1b23" offset=".875"/>
 <stop stop-color="#ed1b23" offset="1"/>
+<linearGradient id="linear8" y1="0%" y2="100%" x2="0%">
 </linearGradient>
 <mask id="mask44">
 <g filter="url(#alpha)">
@@ -359,6 +359,6 @@
 </g>
 <text id="hp" x="165.95107" y="37.060463" fill="#000000" font-family="'CrashLanding BB'" font-size="35px" text-align="center" text-anchor="middle" xml:space="preserve">3</text>
 </g>
-<text id="name" x="25.724066" y="30.655819" fill="#000000" font-family="'CrashLanding BB'" font-size="23px" width="100px" xml:space="preserve">Header</text>
+<text id="name" x="25.724066" y="30.655819" fill="url(#linear8)" font-family="'CrashLanding BB'" font-size="23px" width="100px" stroke="#000000" stroke-width=".7" xml:space="preserve">Header</text>
 </g>
 </svg>
