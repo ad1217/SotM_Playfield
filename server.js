@@ -19,11 +19,17 @@ const server = http.createServer((req, res) => {
   case 'style.css':
     sendFile(res, 'style.css', 'text/css');
     break;
-  case 'script.js':
-    sendFile(res, 'script.js', 'application/javascript');
-    break;
-  case 'interact.js':
-    sendFile(res, 'interact.js', 'application/javascript');
+  case 'js':
+    switch (pathParts[2] || "") {
+    case 'playfield.js':
+      sendFile(res, 'js/playfield.js', 'application/javascript');
+      break;
+    case 'interact.js':
+      sendFile(res, 'interact.js', 'application/javascript');
+      break;
+    default:
+      send404(res, uri);
+    }
     break;
   case 'deck':
     if (pathParts.length === 3) {
@@ -89,8 +95,8 @@ function sendPlayfield(res, deckName) {
   const html = `
     <html>
       <head>
-        <script src="/interact.js"></script>
-        <script src="/script.js"></script>
+        <script src="/js/interact.js"></script>
+        <script src="/js/playfield.js"></script>
         <link rel="stylesheet" type="text/css" href="/style.css">
       </head>
       <body>
