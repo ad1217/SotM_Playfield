@@ -24,8 +24,33 @@ const server = http.createServer((req, res) => {
     case 'playfield.js':
       sendFile(res, 'js/playfield.js', 'application/javascript');
       break;
+    case 'editor.js':
+      sendFile(res, 'js/editor.js', 'application/javascript');
+      break;
     case 'interact.js':
       sendFile(res, 'interact.js', 'application/javascript');
+      break;
+    default:
+      send404(res, uri);
+    }
+    break;
+  case 'template':
+    pathParts.splice(0, 2); // remove first two elements
+    let item = pathParts.join("/");
+    console.log("template/" + item);
+    switch (item) {
+    case "card.json":
+    case "deck.json":
+      sendFile(res, "template/" + item, 'application/json');
+      break;
+    case "environment/card.svg":
+    case "hero/card.svg":
+    case "hero/charBack.svg":
+    case "hero/charFront.svg":
+    case "villain/card.svg":
+    case "villain/character.svg":
+    case "villain/instructions.svg":
+      sendFile(res, "template/" + item, 'image/svg+xml');
       break;
     default:
       send404(res, uri);
@@ -41,6 +66,9 @@ const server = http.createServer((req, res) => {
       switch (pathParts[3]) {
       case 'play':
         sendPlayfield(res, deckName);
+        break;
+      case 'editor':
+        sendEditor(res, deckName);
         break;
       case 'deck.png':
         sendFile(res, deckName + '.png', 'image/png');
@@ -84,9 +112,28 @@ function sendDeckIndex(res, deckName) {
         <link rel="stylesheet" type="text/css" href="/style.css">
       </head>
       <body>
-        <a href="${deckName}/play">Play!</a>
+        <ul>
+          <li><a href="${deckName}/play">Play!</a></li>
+          <li><a href="${deckName}/editor">Editor</a></li>
+        </ul>
       </body>
     </html>`;
+  res.writeHead(200, {'Content-type': 'text/html; charset=utf-8'});
+  res.end(html, 'utf-8');
+}
+
+function sendEditor(res, deckName) {
+  const html = `
+    <html>
+      <head>
+        <script src="/js/editor.js"></script>
+        <link rel="stylesheet" type="text/css" href="/style.css">
+      </head>
+      <body>
+        <input id="jsonUpload" type="file"><br>
+      </body>
+    </html>
+  `;
   res.writeHead(200, {'Content-type': 'text/html; charset=utf-8'});
   res.end(html, 'utf-8');
 }
