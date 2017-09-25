@@ -133,7 +133,14 @@ interact('.card-pile')
     container.appendChild(cardList);
     showModal(container);
   })
-  .on('tap', event => shuffle(piles[event.target.getAttribute('data-pile')]));
+  .on('tap', event => {
+    shuffle(piles[event.target.getAttribute('data-pile')]);
+    event.target.classList.add("shake");
+    // reset animation so it can be played again
+    event.target.onanimationend = e => {
+      event.target.classList.remove("shake");
+    };
+  });
 
 function makeCard(cardNum) {
   // draw a new card
