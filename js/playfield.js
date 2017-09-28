@@ -40,7 +40,12 @@ let cardInteract = interact('.card', {ignoreFrom: '.in-list'})
       relativePoints: [{x: 0.5 , y: 1}]
     },
 
-    onmove: dragMoveListener
+    onmove: event => {
+      dragMoveListener(event);
+      // raise to top
+      event.target.parentElement.removeChild(event.target);
+      document.querySelector("#card-container").appendChild(event.target);
+    }
   })
   .on('doubletap', event => {
     let scale = parseFloat(event.target.getAttribute('data-scale')) === 2 ? 1 : 2;
@@ -48,12 +53,69 @@ let cardInteract = interact('.card', {ignoreFrom: '.in-list'})
 	dragMoveListener({target: event.target, dx: 0, dy: 0});
   });
 
+interact('.card.in-list')
+  .draggable({
+    restrict: {
+      restriction: "parent",
+      endOnly: false,
+      elementRect: { top: 0, left: 0, bottom: 1, right: 1 }
+    },
+    autoScroll: false,
+
+    onmove: dragMoveListener,
+    onend: event => {
+      // reset transform and data attributes
+      event.target.style.webkitTransform = event.target.style.transform = '';
+
+      event.target.removeAttribute('data-x');
+      event.target.removeAttribute('data-y');
+    }
+  })
+  .dropzone({
+    accept: '.card',
+    ondragenter: event => {
+      // TODO: drop after if cursor > 50% in card
+      let target = event.target;
+
+      // move the object in the DOM
+      target.parentElement.insertBefore(event.relatedTarget, target);
+
+      // rebuild source pile
+      piles[target.getAttribute('data-pile')] =
+        Array.from(target.parentElement.children).map(
+          c => c.getAttribute('data-num'));
+    }
+  })
+  .on('tap', event => {
+    let target = event.target;
+    console.log(`Drawing ${target.getAttribute('data-num')} from ${target.getAttribute('data-pile')}`);
+
+    let listDiv = target.parentElement;
+    // re-parent
+    target.parentElement.removeChild(target);
+    document.querySelector("#card-container").appendChild(target);
+
+    // rebuild source pile
+    piles[target.getAttribute('data-pile')] =
+      Array.from(listDiv.children).map(c => c.getAttribute('data-num'));
+
+    // remove list class
+    target.classList.remove('in-list');
+
+    // fix position
+    target.style.position = "fixed";
+
+  });
+
 interact('.card-pile')
   .dropzone({
     accept: '.card',
     ondrop: event => {
+      // TODO: fix duped zeros
       let pileName = event.target.getAttribute('data-pile');
-      piles[pileName].push(event.relatedTarget.getAttribute('data-num'));
+      let cardNum = event.relatedTarget.getAttribute('data-num');
+      console.log(`Adding ${cardNum} to ${pileName}`);
+      piles[pileName].push(cardNum);
       event.relatedTarget.parentElement.removeChild(event.relatedTarget);
 
       // update deck text
@@ -110,24 +172,7 @@ interact('.card-pile')
     pile.forEach(cardNum => {
       let newCard = makeCard(cardNum);
       newCard.classList.add('in-list');
-      newCard.addEventListener('click', event => {
-        // re-parent
-        event.target.parentElement.removeChild(event.target);
-        document.querySelector("#card-container").appendChild(event.target);
-
-        // remove list class
-        event.target.classList.remove('in-list');
-
-        // fix position
-        newCard.style.position = "fixed";
-
-        // remove from source pile
-        let cardNum = parseInt(event.target.getAttribute('data-num'));
-        let index = pile.indexOf(cardNum);
-        if (index > -1) {
-          pile.splice(index, 1);
-        }
-      }, {once: true});
+      newCard.setAttribute('data-pile', event.target.getAttribute('data-pile'));
       cardList.appendChild(newCard);
     });
     container.appendChild(cardList);
@@ -210,10 +255,6 @@ function dragMoveListener (event) {
   target.style.webkitTransform =
     target.style.transform =
     'translate(' + x + 'px, ' + y + 'px) scale(' + scale + ')';
-
-  // raise to top
-  target.parentElement.removeChild(target);
-  document.querySelector("#card-container").appendChild(target);
 
   // update the posiion attributes
   target.setAttribute('data-x', x);
