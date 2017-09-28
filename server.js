@@ -90,6 +90,7 @@ server.listen(process.env.PORT || port);
 console.log('listening on 8080');
 
 function sendIndex(res) {
+  let decks = ["the_Unholy_Priest_update_2", "NZoths_Invasion_1.1"];
   const html = `
     <html>
       <head>
@@ -97,7 +98,7 @@ function sendIndex(res) {
       </head>
       <body>
         <ul>
-          <li><a href="deck/the_Unholy_Priest_update_2">the_Unholy_Priest_update_2</a></li>
+          ${(decks.map(d => `<li><a href="deck/${d}">${d}</a></li>`).join(' '))}
         </ul>
       </body>
     </html>`;
