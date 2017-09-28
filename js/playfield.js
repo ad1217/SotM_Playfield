@@ -6,8 +6,8 @@ window.addEventListener('load', () => {
   xhr.addEventListener("load", () => {
     deckJSON = JSON.parse(xhr.responseText);
     piles.deck = deckJSON.ObjectStates[0].DeckIDs.map(c => c - 100);
-    cardCount = piles['deck'].length;
-    shuffle(piles['deck']);
+    cardCount = piles.deck.length;
+    shuffle(piles.deck);
     deckWidth = deckJSON.ObjectStates[0].CustomDeck["1"].NumWidth;
     deckHeight = deckJSON.ObjectStates[0].CustomDeck["1"].NumHeight;
     console.log(deckName);
@@ -157,15 +157,15 @@ interact('.card-pile')
     searchBox.setAttribute('type', 'search');
     searchBox.setAttribute('placeholder', 'Filter');
     searchBox.addEventListener('input', event => {
-      for (var ii = 0; ii < cardList.children.length; ii++) {
+      Array.from(cardList.children).forEach(card => {
         let input = event.target.value;
-        let cardNum = parseInt(cardList.children[ii].getAttribute('data-num'));
+        let cardNum = parseInt(card.getAttribute('data-num'));
         let cardData = deckJSON.ObjectStates[0].ContainedObjects.find(c => c.CardID === (cardNum + 100));
-        cardList.children[ii].style.display =
+        card.style.display =
           (cardData.Nickname.toLowerCase().includes(input.toLowerCase()) ||
            cardData.Description.toLowerCase().includes(input.toLowerCase())) ?
           "": "none";
-      }
+      });
     });
     container.appendChild(searchBox);
 
@@ -245,11 +245,12 @@ function shuffle(array) {
 }
 
 function dragMoveListener (event) {
-  let target = event.target,
-      // keep the dragged position in the data-x/data-y attributes
-      x = (parseFloat(target.getAttribute('data-x')) || 0) + event.dx,
-      y = (parseFloat(target.getAttribute('data-y')) || 0) + event.dy;
-      scale = (parseFloat(target.getAttribute('data-scale')) || 1);
+  let target = event.target;
+
+  // keep the dragged position in the data-x/data-y attribute
+  let x = (parseFloat(target.getAttribute('data-x')) || 0) + event.dx;
+  let y = (parseFloat(target.getAttribute('data-y')) || 0) + event.dy;
+  let scale = (parseFloat(target.getAttribute('data-scale')) || 1);
 
   // translate and scale the element
   target.style.webkitTransform =

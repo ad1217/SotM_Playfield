@@ -20,7 +20,7 @@ const server = http.createServer((req, res) => {
     sendFile(res, 'style.css', 'text/css');
     break;
   case 'js':
-    switch (pathParts[2] || "") {
+    switch (pathParts[2]) {
     case 'playfield.js':
       sendFile(res, 'js/playfield.js', 'application/javascript');
       break;
@@ -90,7 +90,7 @@ server.listen(process.env.PORT || port);
 console.log('listening on 8080');
 
 function sendIndex(res) {
-    const html = `
+  const html = `
     <html>
       <head>
         <link rel="stylesheet" type="text/css" href="/style.css">
