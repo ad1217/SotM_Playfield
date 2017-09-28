@@ -128,11 +128,19 @@ interact('.card-pile')
   .dropzone({
     accept: '.card:not(.in-pile)',
     ondrop: event => {
-      // TODO: fix duped zeros
+      // TODO: fix possible duped zeros
       let pileName = event.target.getAttribute('data-pile');
       let cardNum = event.relatedTarget.getAttribute('data-num');
-      console.log(`Adding ${cardNum} to ${pileName}`);
-      piles[pileName].push(cardNum);
+      if (event.dragEvent.shiftKey) {
+        console.log(`Adding ${cardNum} bottom of to ${pileName}`);
+        piles[pileName].unshift(cardNum);
+      }
+      else {
+        console.log(`Adding ${cardNum} to ${pileName}`);
+        piles[pileName].push(cardNum);
+      }
+
+      // remove from DOM
       event.relatedTarget.parentElement.removeChild(event.relatedTarget);
 
       // update deck text
