@@ -13,7 +13,8 @@ window.addEventListener("load", () => {
         document.body.appendChild(newSvg);
         deckJSON.deck.forEach((card, index) => {
           let cardSVG = respSVG.cloneNode(true);
-          cardSVG.setAttributeNS("http://www.w3.org/2000/svg", "x", index*181 + "pt");
+          let width = cardSVG.getAttribute("svg:width");
+          cardSVG.setAttribute("svg:x", index * width + "pt");
           newSvg.appendChild(cardSVG);
           for (let prop in card) {
             if (prop !== "count") {
