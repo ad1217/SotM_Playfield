@@ -1,6 +1,8 @@
 let deckName, deckJSON, cardCount, deckWidth, deckHeight,
     piles = {'deck': [], discard: []};
 
+interact.dynamicDrop(true);
+
 window.addEventListener('load', () => {
   let xhr = new XMLHttpRequest();
   xhr.addEventListener("load", () => {
@@ -73,12 +75,28 @@ interact('.card.in-list')
   })
   .dropzone({
     accept: '.card',
-    ondragenter: event => {
-      // TODO: drop after if cursor > 50% in card
+    ondropmove: event => {
       let target = event.target;
+      // TODO: there must be a better way to do this
+      let relCursorPos = (event.dragEvent.pageX -
+                          target.getBoundingClientRect().left) /
+          parseInt(window.getComputedStyle(target).width);
+
+      let oldOffsetLeft = event.relatedTarget.offsetLeft;
+      let oldOffsetTop = event.relatedTarget.offsetTop;
 
       // move the object in the DOM
-      target.parentElement.insertBefore(event.relatedTarget, target);
+      if (relCursorPos < 0.5 || relCursorPos === Infinity) {
+        target.parentElement.insertBefore(event.relatedTarget, target);
+      }
+      else {
+        target.parentElement.insertBefore(event.relatedTarget, target.nextSibling);
+      }
+
+      // update position
+      dragMoveListener({target: event.relatedTarget,
+                        dx: oldOffsetLeft - event.relatedTarget.offsetLeft,
+                        dy: oldOffsetTop - event.relatedTarget.offsetTop});
 
       // rebuild source pile
       piles[target.getAttribute('data-pile')] =
@@ -92,7 +110,6 @@ interact('.card.in-list')
 
     let listDiv = target.parentElement;
     // re-parent
-    target.parentElement.removeChild(target);
     document.querySelector("#card-container").appendChild(target);
 
     // rebuild source pile
@@ -109,7 +126,7 @@ interact('.card.in-list')
 
 interact('.card-pile')
   .dropzone({
-    accept: '.card',
+    accept: '.card:not(.in-pile)',
     ondrop: event => {
       // TODO: fix duped zeros
       let pileName = event.target.getAttribute('data-pile');
