@@ -95,6 +95,7 @@ function sendIndex(res) {
     <html>
       <head>
         <link rel="stylesheet" type="text/css" href="/style.css">
+        <title>Index</title>
       </head>
       <body>
         <ul>
@@ -111,6 +112,7 @@ function sendDeckIndex(res, deckName) {
     <html>
       <head>
         <link rel="stylesheet" type="text/css" href="/style.css">
+        <title>${deckName}</title>
       </head>
       <body>
         <ul>
@@ -129,6 +131,7 @@ function sendEditor(res, deckName) {
       <head>
         <script src="/js/editor.js"></script>
         <link rel="stylesheet" type="text/css" href="/style.css">
+        <title>${deckName} - Editor</title>
       </head>
       <body>
         <input id="jsonUpload" type="file"><br>
@@ -146,6 +149,7 @@ function sendPlayfield(res, deckName) {
         <script src="/js/interact.js"></script>
         <script src="/js/playfield.js"></script>
         <link rel="stylesheet" type="text/css" href="/style.css">
+        <title>${deckName} - Playfield</title>
       </head>
       <body>
         <div id="card-container" data-deckName="${deckName}">
