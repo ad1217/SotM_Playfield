@@ -6,12 +6,12 @@ interact.dynamicDrop(true);
 window.addEventListener('load', () => {
   let xhr = new XMLHttpRequest();
   xhr.addEventListener("load", () => {
-    deckJSON = JSON.parse(xhr.responseText);
-    piles.deck = deckJSON.ObjectStates[0].DeckIDs.map(c => c - 100);
+    deckJSON = JSON.parse(xhr.responseText).ObjectStates[0];
+    piles.deck = deckJSON.DeckIDs.map(c => c - 100);
     cardCount = piles.deck.length;
     shuffle(piles.deck);
-    deckWidth = deckJSON.ObjectStates[0].CustomDeck["1"].NumWidth;
-    deckHeight = deckJSON.ObjectStates[0].CustomDeck["1"].NumHeight;
+    deckWidth = deckJSON.CustomDeck["1"].NumWidth;
+    deckHeight = deckJSON.CustomDeck["1"].NumHeight;
     console.log(deckName);
   });
   deckName = document.querySelector('#card-container').getAttribute("data-deckName");
@@ -185,7 +185,7 @@ interact('.card-pile')
       Array.from(cardList.children).forEach(card => {
         let input = event.target.value;
         let cardNum = parseInt(card.getAttribute('data-num'));
-        let cardData = deckJSON.ObjectStates[0].ContainedObjects.find(c => c.CardID === (cardNum + 100));
+        let cardData = deckJSON.ContainedObjects.find(c => c.CardID === (cardNum + 100));
         card.style.display =
           (cardData.Nickname.toLowerCase().includes(input.toLowerCase()) ||
            cardData.Description.toLowerCase().includes(input.toLowerCase())) ?
