@@ -224,8 +224,8 @@ function makeCard(cardNum) {
   card.style.backgroundPositionX =
     -(cardNum % deckWidth) * parseInt(style.getPropertyValue("width")) + "px";
   card.style.backgroundPositionY =
-    -Math.floor(cardNum/deckHeight) * parseInt(style.getPropertyValue("height")) + "px";
   card.style.backgroundImage = "url('deck.png')";
+    -Math.floor(cardNum/deckWidth) * parseInt(style.getPropertyValue("height")) + "px";
   card.style.backgroundSize = `${deckWidth * 100}% ${deckHeight * 100}%`;
   document.body.removeChild(card);
 
