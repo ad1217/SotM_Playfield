@@ -58,11 +58,11 @@ const server = http.createServer((req, res) => {
     break;
   case 'deck':
     if (pathParts.length === 3) {
-      let deckName = pathParts[2];
+      let deckName = decodeURI(pathParts[2]);
       sendDeckIndex(res, deckName);
     }
     else if (pathParts.length === 4) {
-      let deckName = pathParts[2];
+      let deckName = decodeURI(pathParts[2]);
       switch (pathParts[3]) {
       case 'play':
         sendPlayfield(res, deckName);
