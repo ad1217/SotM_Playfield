@@ -154,7 +154,7 @@ function sendPlayfield(res, deckName) {
       <body>
         <div id="card-container" data-deckName="${deckName}">
           <div class="card-pile deck" data-pile="deck">DECK</div>
-          <div class="card-pile discard" data-pile="discard"></div>
+          <div class="card-pile discard" data-pile="discard">DISCARD</div>
           <div id="hand"></div>
         </div>
       </body>
