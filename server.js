@@ -156,7 +156,33 @@ function handleUpload(res, req) {
   });
 
   req.on('end', () => {
-    let json = JSON.parse(body);
+    const json = JSON.parse(body);
+    const deckJSON = json.json;
+    const cardTemplate = fs.readFileSync('template/card.json');
+
+    let deckOut = JSON.parse(fs.readFileSync('template/deck.json'));
+
+    deckOut.ObjectStates[0].Nickname = deckJSON.name;
+    Object.assign(deckOut.ObjectStates[0].CustomDeck['1'],
+                  {NumWidth: Math.ceil(Math.sqrt(deckJSON.deck.length)),
+                   NumHeight: Math.ceil(Math.sqrt(deckJSON.deck.length)),
+                   FaceURL: "deck.png",
+                   BackURL: "http://cloud-3.steamusercontent.com/ugc/156906385556221451/CE2C3AFE1759790CB0B532FFD636D05A99EC91F4/"});
+
+    deckOut.ObjectStates[0].CustomDeck['1'].ContainedObjects =
+      deckJSON.deck.map((cardIn, index) => {
+        let cardOut = JSON.parse(cardTemplate);
+        Object.assign(cardOut, {Nickname: cardIn.name,
+                                Description: cardIn.keywords,
+                                CardID: 100 + index});
+        for (let ii=0; ii<(cardIn.count || 1); ii++) {
+          deckOut.ObjectStates[0].DeckIDs.push(100 + index);
+        }
+        return cardOut;
+      });
+
+    fs.writeFileSync(deckJSON.name + '.json', JSON.stringify(deckOut));
+    fs.writeFileSync(deckJSON.name + '.input.json', JSON.stringify(deckJSON));
 
     console.log("making page");
     phantom.create().then(
@@ -168,13 +194,14 @@ function handleUpload(res, req) {
               ph.exit(1);
             }
             else {
-              page.render("dest.png");
+              page.render(deckJSON.name + ".png");
               page.close().then(() => ph.exit());
             }
           });
           page.property('zoomFactor', 2); // pretty arbitrary
           page.property('content', json.body);
-      }));
+        }));
+    decks.push(deckJSON.name);
   });
 }
 
