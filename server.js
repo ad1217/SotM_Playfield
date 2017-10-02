@@ -9,6 +9,8 @@ const http  = require('http'),
       phantom = require('phantom'),
       port  = 8080;
 
+const decks = ["the_Unholy_Priest_update_2", "NZoths_Invasion_1.2", "Puffer_Fish_input_1.3"];
+
 const server = http.createServer((req, res) => {
   const uri = url.parse(req.url);
 
@@ -24,13 +26,9 @@ const server = http.createServer((req, res) => {
   case 'js':
     switch (pathParts[2]) {
     case 'playfield.js':
-      sendFile(res, 'js/playfield.js', 'application/javascript');
-      break;
     case 'editor.js':
-      sendFile(res, 'js/editor.js', 'application/javascript');
-      break;
     case 'interact.js':
-      sendFile(res, 'interact.js', 'application/javascript');
+      sendFile(res, 'js/' + pathParts[2], 'application/javascript');
       break;
     default:
       send404(res, uri);
@@ -59,31 +57,36 @@ const server = http.createServer((req, res) => {
     }
     break;
   case 'deck':
-    if (pathParts.length === 3) {
-      let deckName = decodeURI(pathParts[2]);
-      sendDeckIndex(res, deckName);
+    if (pathParts.length < 3 || pathParts[2] === '') {
+      sendIndex(res);
+      break;
     }
-    else if (pathParts.length === 4) {
-      let deckName = decodeURI(pathParts[2]);
-      switch (pathParts[3]) {
-      case 'play':
-        sendFile(res, 'html/playfield.html');
-        break;
-      case 'editor':
-        sendFile(res, 'html/editor.html');
-        break;
-      case 'deck.png':
-        sendFile(res, deckName + '.png', 'image/png');
-        break;
-      case 'deck.json':
-        sendFileJSON(res, deckName);
-        break;
-      case 'upload':
-        handleUpload(res, req, deckName);
-        break;
-      default:
-        send404(res, uri);
-      }
+    let deckName = decodeURI(pathParts[2]);
+    if (!decks.includes(deckName)) {
+      send404(res, uri);
+      break;
+    }
+    switch (pathParts[3] || '') {
+    case '':
+      sendDeckIndex(res, deckName);
+      break;
+    case 'play':
+      sendFile(res, 'html/playfield.html');
+      break;
+    case 'editor':
+      sendFile(res, 'html/editor.html');
+      break;
+    case 'deck.png':
+      sendFile(res, deckName + '.png', 'image/png');
+      break;
+    case 'deck.json':
+      sendFileJSON(res, deckName);
+      break;
+    case 'upload':
+      handleUpload(res, req, deckName);
+      break;
+    default:
+      send404(res, uri);
     }
     break;
   default:
@@ -95,7 +98,6 @@ server.listen(process.env.PORT || port);
 console.log('listening on 8080');
 
 function sendIndex(res) {
-  let decks = ["the_Unholy_Priest_update_2", "NZoths_Invasion_1.1"];
   const html = `
     <html>
       <head>
@@ -104,7 +106,7 @@ function sendIndex(res) {
       </head>
       <body>
         <ul>
-          ${(decks.map(d => `<li><a href="deck/${d}">${d}</a></li>`).join(' '))}
+          ${(decks.map(d => `<li><a href="/deck/${d}">${d}</a></li>`).join(' '))}
         </ul>
       </body>
     </html>`;
