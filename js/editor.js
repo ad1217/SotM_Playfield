@@ -1,3 +1,5 @@
+document.title = "Editor|" + window.location.pathname.split('/')[2];
+
 window.addEventListener("load", () => {
   document.querySelector('#jsonUpload').addEventListener('change', event => {
     let files = event.target.files;

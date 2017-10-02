@@ -67,10 +67,10 @@ const server = http.createServer((req, res) => {
       let deckName = decodeURI(pathParts[2]);
       switch (pathParts[3]) {
       case 'play':
-        sendPlayfield(res, deckName);
+        sendFile(res, 'html/playfield.html');
         break;
       case 'editor':
-        sendEditor(res, deckName);
+        sendFile(res, 'html/editor.html');
         break;
       case 'deck.png':
         sendFile(res, deckName + '.png', 'image/png');
@@ -129,46 +129,6 @@ function sendDeckIndex(res, deckName) {
   res.writeHead(200, {'Content-type': 'text/html; charset=utf-8'});
   res.end(html, 'utf-8');
 }
-
-function sendEditor(res, deckName) {
-  const html = `
-    <html>
-      <head>
-        <script src="/js/editor.js"></script>
-        <link rel="stylesheet" type="text/css" href="/style.css">
-        <title>${deckName} - Editor</title>
-      </head>
-      <body>
-        <input id="jsonUpload" type="file"><br>
-        <div id="deck"></div>
-      </body>
-    </html>
-  `;
-  res.writeHead(200, {'Content-type': 'text/html; charset=utf-8'});
-  res.end(html, 'utf-8');
-}
-
-function sendPlayfield(res, deckName) {
-  const html = `
-    <html>
-      <head>
-        <script src="/js/interact.js"></script>
-        <script src="/js/playfield.js"></script>
-        <link rel="stylesheet" type="text/css" href="/style.css">
-        <title>${deckName} - Playfield</title>
-      </head>
-      <body>
-        <div id="card-container" data-deckName="${deckName}">
-          <div class="card-pile deck" data-pile="deck">DECK</div>
-          <div class="card-pile discard" data-pile="discard">DISCARD</div>
-          <div id="hand"></div>
-        </div>
-      </body>
-    </html>`;
-  res.writeHead(200, {'Content-type': 'text/html; charset=utf-8'});
-  res.end(html, 'utf-8');
-}
-
 
 function sendFileJSON(res, deckName) {
   fs.readFile(deckName + '.json', (error, content) => {

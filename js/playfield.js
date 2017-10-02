@@ -3,8 +3,10 @@
 //jshint latedef:nofunc
 /* globals interact:true */
 
-let deckName, deckNum, deckJSON, cardCount, deckWidth, deckHeight,
+let deckNum, deckJSON, cardCount, deckWidth, deckHeight,
     piles = {'deck': [], discard: []};
+
+document.title = "Playfield|" + window.location.pathname.split('/')[2];
 
 interact.dynamicDrop(true);
 
@@ -18,13 +20,11 @@ window.addEventListener('load', () => {
     shuffle(piles.deck);
     deckWidth = deckJSON.CustomDeck[deckNum].NumWidth;
     deckHeight = deckJSON.CustomDeck[deckNum].NumHeight;
-    console.log(deckName);
   });
-  deckName = document.querySelector('#card-container').getAttribute("data-deckName");
   xhr.open("GET", "deck.json");
   xhr.send();
 
-  window.addEventListener("contextmenu", event =>  event.preventDefault());
+  window.addEventListener("contextmenu", event => event.preventDefault());
 });
 
 let cardInteract = interact('.card', {ignoreFrom: '.in-list'})
