@@ -9,13 +9,18 @@ window.addEventListener("load", () => {
       let reader = new FileReader();
       reader.onload = e => {
         deckJSON = JSON.parse(e.target.result);
-        let newSvg = document.createElement('svg');
-        document.body.appendChild(newSvg);
+
+        let deck = document.querySelector('#deck');
+		deck.style.width = Math.ceil(Math.sqrt(deckJSON.deck.length)) *
+          parseInt(respSVG.getAttribute("width")) + "pt";
+		deck.style.height = Math.ceil(Math.sqrt(deckJSON.deck.length)) *
+		  parseInt(respSVG.getAttribute("height")) + "pt";
+
+        deck.innerHTML = "";
+
         deckJSON.deck.forEach((card, index) => {
           let cardSVG = respSVG.cloneNode(true);
-          let width = cardSVG.getAttribute("svg:width");
-          cardSVG.setAttribute("svg:x", index * width + "pt");
-          newSvg.appendChild(cardSVG);
+          deck.appendChild(cardSVG);
           for (let prop in card) {
             if (prop !== "count") {
               wrapSVGText(cardSVG.querySelector('#' + prop),
@@ -23,6 +28,12 @@ window.addEventListener("load", () => {
             }
           }
         });
+
+        let data = (new XMLSerializer()).serializeToString(deck);
+        let xhr = new XMLHttpRequest();
+        xhr.open('POST', "upload");
+        xhr.setRequestHeader("Content-Type", "application/json");
+        xhr.send(JSON.stringify({body: data, json: deckJSON}));
       };
       reader.readAsText(files[0]);
     });
@@ -75,4 +86,3 @@ function wrapSVGText(e, string) {
 	}
   }
 }
-

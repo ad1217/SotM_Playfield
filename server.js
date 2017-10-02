@@ -4,7 +4,9 @@
 
 const http  = require('http'),
       fs    = require('fs'),
+      path  = require('path'),
       url   = require('url'),
+      phantom = require('phantom'),
       port  = 8080;
 
 const server = http.createServer((req, res) => {
@@ -75,6 +77,8 @@ const server = http.createServer((req, res) => {
         break;
       case 'deck.json':
         sendFile(res, deckName + '.json', 'application/json');
+      case 'upload':
+        handleUpload(res, req, deckName);
         break;
       default:
         send404(res, uri);
@@ -135,6 +139,7 @@ function sendEditor(res, deckName) {
       </head>
       <body>
         <input id="jsonUpload" type="file"><br>
+        <div id="deck"></div>
       </body>
     </html>
   `;
@@ -163,6 +168,41 @@ function sendPlayfield(res, deckName) {
   res.end(html, 'utf-8');
 }
 
+
+function handleUpload(res, req) {
+  let body = '';
+
+  req.on('data', data => {
+    body += data;
+    // check for file > 100MB
+    if (body.length > 1e8) {
+      req.connection.destroy();
+      console.log('upload too big');
+    }
+  });
+
+  req.on('end', () => {
+    let json = JSON.parse(body);
+
+    console.log("making page");
+    phantom.create().then(
+      ph => ph.createPage().then(
+        page => {
+          page.on('onLoadFinished', status => {
+            if (status !== 'success') {
+              console.log('Failed to load page');
+              ph.exit(1);
+            }
+            else {
+              page.render("dest.png");
+              page.close().then(() => ph.exit());
+            }
+          });
+          page.property('zoomFactor', 2); // pretty arbitrary
+          page.property('content', json.body);
+      }));
+  });
+}
 
 function send404(res, uri) {
   res.writeHead(404, {'Content-type': "text/html; charset=utf-8"});
