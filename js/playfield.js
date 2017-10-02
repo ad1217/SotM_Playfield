@@ -1,3 +1,8 @@
+//jshint browser:true
+//jshint esversion:6
+//jshint latedef:nofunc
+/* globals interact:true */
+
 let deckName, deckNum, deckJSON, cardCount, deckWidth, deckHeight,
     piles = {'deck': [], discard: []};
 
