@@ -76,7 +76,8 @@ const server = http.createServer((req, res) => {
         sendFile(res, deckName + '.png', 'image/png');
         break;
       case 'deck.json':
-        sendFile(res, deckName + '.json', 'application/json');
+        sendFileJSON(res, deckName);
+        break;
       case 'upload':
         handleUpload(res, req, deckName);
         break;
@@ -168,6 +169,17 @@ function sendPlayfield(res, deckName) {
   res.end(html, 'utf-8');
 }
 
+
+function sendFileJSON(res, deckName) {
+  fs.readFile(deckName + '.json', (error, content) => {
+    console.log(JSON.parse(content));
+    res.writeHead(200, {'Content-type': 'application/json; charset=utf-8'});
+    res.end(JSON.stringify(JSON.parse(content).ObjectStates[0]), 'utf-8');
+    if (error) {
+      console.error(error);
+    }
+  });
+}
 
 function handleUpload(res, req) {
   let body = '';

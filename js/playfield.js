@@ -1,4 +1,4 @@
-let deckName, deckJSON, cardCount, deckWidth, deckHeight,
+let deckName, deckNum, deckJSON, cardCount, deckWidth, deckHeight,
     piles = {'deck': [], discard: []};
 
 interact.dynamicDrop(true);
@@ -6,16 +6,17 @@ interact.dynamicDrop(true);
 window.addEventListener('load', () => {
   let xhr = new XMLHttpRequest();
   xhr.addEventListener("load", () => {
-    deckJSON = JSON.parse(xhr.responseText).ObjectStates[0];
-    piles.deck = deckJSON.DeckIDs.map(c => c - 100);
+    deckJSON = JSON.parse(xhr.responseText);
+    deckNum = Object.keys(deckJSON.CustomDeck)[0];
+    piles.deck = deckJSON.DeckIDs.map(c => c - deckNum * 100);
     cardCount = piles.deck.length;
     shuffle(piles.deck);
-    deckWidth = deckJSON.CustomDeck["1"].NumWidth;
-    deckHeight = deckJSON.CustomDeck["1"].NumHeight;
+    deckWidth = deckJSON.CustomDeck[deckNum].NumWidth;
+    deckHeight = deckJSON.CustomDeck[deckNum].NumHeight;
     console.log(deckName);
   });
   deckName = document.querySelector('#card-container').getAttribute("data-deckName");
-  xhr.open("GET", "/deck/" + deckName + "/deck.json");
+  xhr.open("GET", "deck.json");
   xhr.send();
 
   window.addEventListener("contextmenu", event =>  event.preventDefault());
@@ -182,10 +183,10 @@ interact('.card-pile')
     searchBox.setAttribute('type', 'search');
     searchBox.setAttribute('placeholder', 'Filter');
     searchBox.addEventListener('input', event => {
+      let input = event.target.value;
       Array.from(cardList.children).forEach(card => {
-        let input = event.target.value;
         let cardNum = parseInt(card.getAttribute('data-num'));
-        let cardData = deckJSON.ContainedObjects.find(c => c.CardID === (cardNum + 100));
+        let cardData = deckJSON.ContainedObjects.find(c => c.CardID === (cardNum + deckNum * 100));
         card.style.display =
           (cardData.Nickname.toLowerCase().includes(input.toLowerCase()) ||
            cardData.Description.toLowerCase().includes(input.toLowerCase())) ?
@@ -224,8 +225,8 @@ function makeCard(cardNum) {
   card.style.backgroundPositionX =
     -(cardNum % deckWidth) * parseInt(style.getPropertyValue("width")) + "px";
   card.style.backgroundPositionY =
-  card.style.backgroundImage = "url('deck.png')";
     -Math.floor(cardNum/deckWidth) * parseInt(style.getPropertyValue("height")) + "px";
+  card.style.backgroundImage = `url(${deckJSON.CustomDeck[deckNum].FaceURL})`;
   card.style.backgroundSize = `${deckWidth * 100}% ${deckHeight * 100}%`;
   document.body.removeChild(card);
 
