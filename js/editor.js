@@ -1,46 +1,53 @@
-let deckJSON;
 window.addEventListener("load", () => {
+  document.querySelector('#jsonUpload').addEventListener('change', event => {
+    let files = event.target.files;
+    let reader = new FileReader();
+    reader.onload = handleUpload;
+    reader.readAsText(files[0]);
+  });
+});
+
+function getSVGTemplate(name, callback) {
   let xhr = new XMLHttpRequest();
   xhr.addEventListener("load", () => {
     let respSVG = xhr.responseXML.children[0];
+    callback(respSVG);
+  });
+  xhr.open("GET", "/template/" + name + ".svg");
+  xhr.send();
+}
 
-    document.querySelector('#jsonUpload').addEventListener('change', event => {
-      let files = event.target.files;
-      let reader = new FileReader();
-      reader.onload = e => {
-        deckJSON = JSON.parse(e.target.result);
+function handleUpload(event) {
+  let deckJSON = JSON.parse(event.target.result);
 
-        let deck = document.querySelector('#deck');
-		deck.style.width = Math.ceil(Math.sqrt(deckJSON.deck.length)) *
-          parseInt(respSVG.getAttribute("width")) + "pt";
-		deck.style.height = Math.ceil(Math.sqrt(deckJSON.deck.length)) *
-		  parseInt(respSVG.getAttribute("height")) + "pt";
+  let deck = document.querySelector('#deck');
 
-        deck.innerHTML = "";
+  getSVGTemplate("environment/card", templateSVG => {
+    deck.style.width = Math.ceil(Math.sqrt(deckJSON.deck.length)) *
+      parseInt(templateSVG.getAttribute("width")) + "pt";
+    deck.style.height = Math.ceil(Math.sqrt(deckJSON.deck.length)) *
+	  parseInt(templateSVG.getAttribute("height")) + "pt";
 
-        deckJSON.deck.forEach((card, index) => {
-          let cardSVG = respSVG.cloneNode(true);
-          deck.appendChild(cardSVG);
-          for (let prop in card) {
-            if (prop !== "count") {
-              wrapSVGText(cardSVG.querySelector('#' + prop),
-                          String(card[prop]));
-            }
-          }
-        });
+    deck.innerHTML = "";
 
-        let data = (new XMLSerializer()).serializeToString(deck);
-        let xhr = new XMLHttpRequest();
-        xhr.open('POST', "upload");
-        xhr.setRequestHeader("Content-Type", "application/json");
-        xhr.send(JSON.stringify({body: data, json: deckJSON}));
-      };
-      reader.readAsText(files[0]);
+    deckJSON.deck.forEach((card, index) => {
+      let cardSVG = templateSVG.cloneNode(true);
+      deck.appendChild(cardSVG);
+      for (let prop in card) {
+        if (prop !== "count") {
+          wrapSVGText(cardSVG.querySelector('#' + prop), String(card[prop]));
+        }
+      }
     });
   });
-  xhr.open("GET", "/template/environment/card.svg");
-  xhr.send();
-});
+
+  // POST the generated SVGs to the server
+  let data = (new XMLSerializer()).serializeToString(deck);
+  let xhr = new XMLHttpRequest();
+  xhr.open('POST', "upload");
+  xhr.setRequestHeader("Content-Type", "application/json");
+  xhr.send(JSON.stringify({body: data, json: deckJSON}));
+}
 
 function wrapSVGText(e, string) {
   // TODO: bold or italic text
