@@ -54,44 +54,50 @@ function handleUpload(event) {
 function wrapSVGText(e, string) {
   // TODO: bold or italic text
   e.innerHTML = ""; // clear element
-  let tspan = document.createElementNS("http://www.w3.org/2000/svg", "tspan");
-  e.appendChild(tspan);
-  let words = string.split(" ");
-  let line = [];
-  while(words.length > 0) {
-	let word = words.shift();
-    line.push(word);
-	tspan.innerHTML = line.join(" ");
-	// horizontal overflow
-	// TODO: actually use units (also applies to vertical)
-	if (word === "\n" ||
-        (parseFloat(e.getAttribute("width")) &&
-		 tspan.getComputedTextLength() > parseFloat(e.getAttribute("width")))) {
-	  // if we have height, we can line wrap
-	  if (parseFloat(e.getAttribute("height")) &&
-		  e.children.length * parseFloat(e.getAttribute('font-size')) <
-		  parseFloat(e.getAttribute('height'))) {
-		words.unshift(line.pop());
-		tspan.innerHTML = line.join(" ");
-		line = [];
+  let lines = string.split("\n");
+  if (e.getAttribute('default-font-size'))
+    e.setAttribute('font-size', e.getAttribute('default-font-size'));
+  e.setAttribute('default-font-size', e.getAttribute('font-size'));
+  while (lines.length > 0) {
+    let words = lines.shift().split(" ");
+    let tspan = document.createElementNS("http://www.w3.org/2000/svg", "tspan");
+	tspan.setAttribute('x', e.getAttribute('x'));
+    if (e.innerHTML !== "") tspan.setAttribute('dy', e.getAttribute('font-size'));
+    e.appendChild(tspan);
+    let line = [];
+    while(words.length > 0) {
+	  let word = words.shift();
+      if (word === "") word = " ";
+      line.push(word);
+	  tspan.innerHTML = line.join(" ");
+	  // horizontal overflow
+	  // TODO: actually use units (also applies to vertical)
+	  if (parseFloat(e.getAttribute("width")) &&
+		  tspan.getComputedTextLength() > parseFloat(e.getAttribute("width"))) {
+	    // if we have height, we can line wrap
+	    if (parseFloat(e.getAttribute("height")) &&
+		    e.children.length * parseFloat(e.getAttribute('font-size')) <
+		    parseFloat(e.getAttribute('height'))) {
+		  words.unshift(line.pop());
+		  tspan.innerHTML = line.join(" ");
+		  line = [];
 
-		tspan = document.createElementNS("http://www.w3.org/2000/svg", "tspan");
-		tspan.setAttribute('x', e.getAttribute('x'));
-		tspan.setAttribute('dy', e.getAttribute('font-size'));
-		e.appendChild(tspan);
+		  tspan = document.createElementNS("http://www.w3.org/2000/svg", "tspan");
+		  tspan.setAttribute('x', e.getAttribute('x'));
+		  tspan.setAttribute('dy', e.getAttribute('font-size'));
+		  e.appendChild(tspan);
+	    }
+	    // vertical overflow or horizontal overflow with no height variable
+	    // TODO: better with recursion instead?
+	    else {
+		  e.innerHTML = ""; // remove all tspans
+		  // TODO: maybe binary search font size later if I really care
+		  e.setAttribute('font-size', parseFloat(e.getAttribute('font-size')) * 0.9);
+		  words = [];
+          lines = string.split('\n');
+		  console.log("resetting, size= " + e.getAttribute('font-size'));
+	    }
 	  }
-	  // vertical overflow or horizontal overflow with no height variable
-	  // TODO: better with recursion instead?
-	  else {
-		line = [];
-		e.innerHTML = ""; // remove all tspans
-		tspan = document.createElementNS("http://www.w3.org/2000/svg", "tspan");
-		e.appendChild(tspan);
-		// TODO: maybe binary search font size later if I really care
-		e.setAttribute('font-size', parseFloat(e.getAttribute('font-size')) * 0.9);
-		words = string.split(" ");
-		console.log("resetting, size= " + e.getAttribute('font-size'));
-	  }
-	}
+    }
   }
 }
