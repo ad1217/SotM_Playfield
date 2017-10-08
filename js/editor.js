@@ -5,11 +5,26 @@ let deckName = window.location.pathname.split('/')[2];
 document.title = "Editor|" + deckName;
 
 window.addEventListener("load", () => {
+  // load input json
+  let xhr = new XMLHttpRequest();
+  xhr.addEventListener("load", () => {
+    // if deck already has input json, load it
+    if (xhr.status === 200) {
+      deckJSON = JSON.parse(xhr.responseText);
+      makeSVGs(deckJSON);
+    }
+  });
+  xhr.open("GET", "deck.input.json");
+  xhr.send();
+
   // deck JSON uploader
   document.querySelector('#jsonUpload').addEventListener('change', event => {
     let files = event.target.files;
     let reader = new FileReader();
-    reader.onload = handleUpload;
+    reader.onload = event => {
+      deckJSON = JSON.parse(event.target.result);
+      makeSVGs(deckJSON);
+    };
     reader.readAsText(files[0]);
   });
 
@@ -57,9 +72,7 @@ function getSVGTemplate(name, callback) {
   xhr.send();
 }
 
-function handleUpload(event) {
-  deckJSON = JSON.parse(event.target.result);
-
+function makeSVGs(deckJSON) {
   document.querySelector('#deckName').value = deckJSON.name || "";
   document.querySelector('#deckType').value = deckJSON.type || "";
 

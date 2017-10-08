@@ -82,6 +82,9 @@ const server = http.createServer((req, res) => {
     case 'deck.json':
       sendFileJSON(res, deckName);
       break;
+    case 'deck.input.json':
+      sendFile(res, deckName + ".input.json", 'application/json');
+      break;
     case 'upload':
       handleUpload(res, req, deckName);
       break;
