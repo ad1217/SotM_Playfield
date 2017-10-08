@@ -1,7 +1,8 @@
 let deckJSON;
 let selected = 0;
+let deckName = window.location.pathname.split('/')[2];
 
-document.title = "Editor|" + window.location.pathname.split('/')[2];
+document.title = "Editor|" + deckName;
 
 window.addEventListener("load", () => {
   // deck JSON uploader
@@ -10,6 +11,17 @@ window.addEventListener("load", () => {
     let reader = new FileReader();
     reader.onload = handleUpload;
     reader.readAsText(files[0]);
+  });
+
+  // download input JSON
+  document.querySelector('#jsonInputDownload').addEventListener('click', () => {
+    let dl = document.createElement('a');
+    dl.setAttribute('href', 'data:application/json;charset=utf-8,' +
+                    encodeURIComponent(JSON.stringify(deckJSON)));
+    dl.setAttribute('download', deckName + '.input.json');
+    document.body.appendChild(dl);
+    dl.click();
+    document.body.removeChild(dl);
   });
 
   // handle changes to deck editor
