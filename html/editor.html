@@ -6,6 +6,23 @@
   </head>
   <body>
     <input id="jsonUpload" type="file"><br>
+    <form id="deckForm">
+      <div> <label> Deck Name: <input type="text" id="deckName"></label> </div>
+      <div>
+        <label> Deck Type: <select id="deckType">
+          <option value="hero">hero</option>
+          <option value="villain">villain</option>
+          <option value="environment">environment</option>
+        </select> </label>
+      </div>
+    </form>
+
+    <form id="cardForm">
+      <div><label> Name: <input type="text" id="cardName"> </label></div>
+      <div><label> Keywords: <input type="text" id="cardKeywords"> </label></div>
+      <div><label> Count: <input type="number" id="cardCount"> </label></div>
+      <div><label> Text: <textarea id="cardText"></textarea> </label></div>
+    </form>
 
     <div id="deck"></div>
   </body>

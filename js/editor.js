@@ -1,11 +1,37 @@
+let deckJSON;
+let selected = 0;
+
 document.title = "Editor|" + window.location.pathname.split('/')[2];
 
 window.addEventListener("load", () => {
+  // deck JSON uploader
   document.querySelector('#jsonUpload').addEventListener('change', event => {
     let files = event.target.files;
     let reader = new FileReader();
     reader.onload = handleUpload;
     reader.readAsText(files[0]);
+  });
+
+  // handle changes to deck editor
+  document.querySelector('#deckForm').addEventListener('input', event => {
+    let prop = event.target.id.substring(4).toLowerCase();
+    deckJSON[prop] = event.target.value;
+  });
+
+  // handle changes to card editor
+  document.querySelector('#cardForm').addEventListener('input', event => {
+    let deck = document.querySelector('#deck');
+    let prop = event.target.id.substring(4).toLowerCase();
+    if (prop !== "count") {
+      wrapSVGText(deck.children[selected].querySelector('#' + prop),
+                  String(event.target.value));
+    }
+    if (event.target.value) {
+      deckJSON.deck[selected][prop] = event.target.value;
+    }
+    else {
+      delete deckJSON.deck[selected][prop];
+    }
   });
 });
 
@@ -20,7 +46,10 @@ function getSVGTemplate(name, callback) {
 }
 
 function handleUpload(event) {
-  let deckJSON = JSON.parse(event.target.result);
+  deckJSON = JSON.parse(event.target.result);
+
+  document.querySelector('#deckName').value = deckJSON.name || "";
+  document.querySelector('#deckType').value = deckJSON.type || "";
 
   let deck = document.querySelector('#deck');
 
@@ -32,8 +61,16 @@ function handleUpload(event) {
 
     deck.innerHTML = "";
 
+    // build card SVGs
     deckJSON.deck.forEach((card, index) => {
       let cardSVG = templateSVG.cloneNode(true);
+      cardSVG.addEventListener('click', event => {
+        selected = index;
+        document.querySelector('#cardName').value = card.name || "";
+        document.querySelector('#cardKeywords').value = card.keywords || "";
+        document.querySelector('#cardCount').value = card.count || 1;
+        document.querySelector('#cardText').value = card.text || "";
+      }, true);
       deck.appendChild(cardSVG);
       for (let prop in card) {
         if (prop !== "count") {
@@ -42,6 +79,10 @@ function handleUpload(event) {
       }
     });
   });
+}
+
+function upload() {
+  let deck = document.querySelector('#deck');
 
   // POST the generated SVGs to the server
   let data = (new XMLSerializer()).serializeToString(deck);
