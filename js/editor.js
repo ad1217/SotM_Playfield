@@ -124,8 +124,10 @@ function setForm(cardTemplate, card) {
     let label = div.appendChild(document.createElement('label'));
     label.textContent = prop[0];
 
-    let input = label.appendChild(document.createElement('input'));
+    let input = label.appendChild(
+      document.createElement(prop[1] === 'textarea' ? 'textarea' : 'input'));
     input.id = "card-" + prop[0];
+
     if (prop[1] === "image") {
       input.type = "file";
     }

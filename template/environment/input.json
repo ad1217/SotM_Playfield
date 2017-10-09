@@ -4,8 +4,8 @@
       "inputs": {
         "name": "text",
         "keywords": "text",
-        "text": "text",
-        "flavor": "text",
+        "text": "textarea",
+        "flavor": "textarea",
         "artist": "text",
         "hp": "number",
         "image": "image"
