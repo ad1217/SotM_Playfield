@@ -142,8 +142,16 @@ function makeCardSVG(deck, cardInputTemplate, templateSVG, card) {
     selected = {svg: cardSVG, json: card};
     setForm(cardInputTemplate, card);
   }, true);
-  Object.keys(cardInputTemplate.inputs).forEach(prop =>
-    wrapSVGText(cardSVG.querySelector('#' + prop), String(card[prop] || "")));
+  Object.keys(cardInputTemplate.inputs).forEach(
+    prop => wrapSVGText(cardSVG.querySelector('#' + prop), String(card[prop] || "")));
+  Object.entries(cardInputTemplate.hide).forEach(hidable => {
+    if (hidable[1] in card) {
+      cardSVG.querySelector('#' + hidable[0]).setAttribute('display', '');
+    }
+    else {
+      cardSVG.querySelector('#' + hidable[0]).setAttribute('display', 'none');
+    }
+  });
 }
 
 function upload() {
