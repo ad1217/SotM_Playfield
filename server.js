@@ -78,13 +78,13 @@ const server = http.createServer((req, res) => {
       sendFile(res, 'html/editor.html');
       break;
     case 'deck.png':
-      sendFile(res, deckName + '.png', 'image/png');
+      sendFile(res, `decks/${deckName}.png`, 'image/png');
       break;
     case 'deck.json':
       sendFileJSON(res, deckName);
       break;
     case 'deck.input.json':
-      sendFile(res, deckName + ".input.json", 'application/json');
+      sendFile(res, `decks/${deckName}.input.json`, 'application/json');
       break;
     case 'upload':
       handleUpload(res, req, deckName);
@@ -137,7 +137,7 @@ function sendDeckIndex(res, deckName) {
 }
 
 function sendFileJSON(res, deckName) {
-  fs.readFile(deckName + '.json', (error, content) => {
+  fs.readFile(`decks/${deckName}.json`, (error, content) => {
     console.log(JSON.parse(content));
     res.writeHead(200, {'Content-type': 'application/json; charset=utf-8'});
     res.end(JSON.stringify(JSON.parse(content).ObjectStates[0]), 'utf-8');
@@ -185,8 +185,8 @@ function handleUpload(res, req) {
         return cardOut;
       });
 
-    fs.writeFileSync(deckJSON.name + '.json', JSON.stringify(deckOut));
-    fs.writeFileSync(deckJSON.name + '.input.json', JSON.stringify(deckJSON));
+    fs.writeFileSync(`decks/${deckJSON.name}.json`, JSON.stringify(deckOut));
+    fs.writeFileSync(`decks/${deckJSON.name}.input.json`, JSON.stringify(deckJSON));
 
     console.log("making page");
     phantom.create().then(
@@ -198,7 +198,7 @@ function handleUpload(res, req) {
               ph.exit(1);
             }
             else {
-              page.render(deckJSON.name + ".png");
+              page.render(`decks/${deckJSON.name}.png`);
               page.close().then(() => ph.exit());
             }
           });
