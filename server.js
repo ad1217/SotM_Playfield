@@ -24,6 +24,7 @@ const server = http.createServer((req, res) => {
     switch (pathParts[2]) {
     case 'playfield.css':
     case 'editor.css':
+    case 'common.css':
       sendFile(res, 'css/' + pathParts[2], 'text/css');
       break;
     default:
@@ -70,10 +71,6 @@ const server = http.createServer((req, res) => {
       break;
     }
     let deckName = decodeURI(pathParts[2]);
-    if (!decks.includes(deckName)) {
-      send404(res, uri);
-      break;
-    }
     switch (pathParts[3] || '') {
     case '':
       sendDeckIndex(res, deckName);
@@ -112,9 +109,11 @@ function sendIndex(res) {
   const html = `
     <html>
       <head>
+        <link rel="stylesheet" type="text/css" href="/css/common.css">
         <title>Index</title>
       </head>
       <body>
+        <label>Create New Deck: <input type="text" onchange="window.location='/deck/' + event.target.value + '/editor'"></label>
         <ul>
           ${(decks.map(d => `<li><a href="/deck/${d}">${d}</a></li>`).join(' '))}
         </ul>
@@ -128,6 +127,7 @@ function sendDeckIndex(res, deckName) {
     const html = `
     <html>
       <head>
+        <link rel="stylesheet" type="text/css" href="/css/common.css">
         <title>${deckName}</title>
       </head>
       <body>
@@ -219,6 +219,7 @@ function send404(res, uri) {
   const html = `
     <head>
       <title>404 Not Found</title>
+      <link rel="stylesheet" href="/css/common.css">
     </head>
     <body>
       <h1>Error 404: Path ${uri.pathname} not found</h1>
