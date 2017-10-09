@@ -20,8 +20,15 @@ const server = http.createServer((req, res) => {
   case 'index.html':
     sendIndex(res);
     break;
-  case 'style.css':
-    sendFile(res, 'style.css', 'text/css');
+  case 'css':
+    switch (pathParts[2]) {
+    case 'playfield.css':
+    case 'editor.css':
+      sendFile(res, 'css/' + pathParts[2], 'text/css');
+      break;
+    default:
+      send404(res, uri);
+    }
     break;
   case 'js':
     switch (pathParts[2]) {
@@ -105,7 +112,6 @@ function sendIndex(res) {
   const html = `
     <html>
       <head>
-        <link rel="stylesheet" type="text/css" href="/style.css">
         <title>Index</title>
       </head>
       <body>
@@ -122,7 +128,6 @@ function sendDeckIndex(res, deckName) {
     const html = `
     <html>
       <head>
-        <link rel="stylesheet" type="text/css" href="/style.css">
         <title>${deckName}</title>
       </head>
       <body>
@@ -214,7 +219,6 @@ function send404(res, uri) {
   const html = `
     <head>
       <title>404 Not Found</title>
-      <link rel="stylesheet" href="/style.css">
     </head>
     <body>
       <h1>Error 404: Path ${uri.pathname} not found</h1>
