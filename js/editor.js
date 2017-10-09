@@ -22,6 +22,9 @@ window.addEventListener("load", () => {
     reader.readAsText(files[0]);
   });
 
+  // Upload on save button
+  document.querySelector('#saveButton').addEventListener('click', upload);
+
   // download input JSON
   document.querySelector('#jsonInputDownload').addEventListener('click', () => {
     let dl = document.createElement('a');
