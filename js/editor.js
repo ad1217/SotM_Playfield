@@ -1,21 +1,15 @@
-let deckJSON;
-let selected = 0;
+let deckJSON, template;
+let selected;
 let deckName = window.location.pathname.split('/')[2];
 
 document.title = "Editor|" + deckName;
 
 window.addEventListener("load", () => {
-  // load input json
-  let xhr = new XMLHttpRequest();
-  xhr.addEventListener("load", () => {
-    // if deck already has input json, load it
-    if (xhr.status === 200) {
-      deckJSON = JSON.parse(xhr.responseText);
-      makeSVGs(deckJSON);
-    }
+  // load deck input json
+  getJSON("deck.input.json", json => {
+    deckJSON = json;
+    makeSVGs(deckJSON);
   });
-  xhr.open("GET", "deck.input.json");
-  xhr.send();
 
   // deck JSON uploader
   document.querySelector('#jsonUpload').addEventListener('change', event => {
@@ -48,19 +42,38 @@ window.addEventListener("load", () => {
   // handle changes to card editor
   document.querySelector('#cardForm').addEventListener('input', event => {
     let deck = document.querySelector('#deck');
-    let prop = event.target.id.substring(4).toLowerCase();
-    if (prop !== "count") {
-      wrapSVGText(deck.children[selected].querySelector('#' + prop),
+    let prop = event.target.id.substring(5);
+    if (prop === "image") {
+      let files = event.target.files;
+      let reader = new FileReader();
+      reader.onload = e => {
+        selected.svg.querySelector('#' + prop).setAttribute("href", e.target.result);
+      };
+      reader.readAsDataURL(files[0]);
+    }
+    else if (prop !== "count") {
+      wrapSVGText(selected.svg.querySelector('#' + prop),
                   String(event.target.value));
     }
     if (event.target.value) {
-      deckJSON.deck[selected][prop] = event.target.value;
+      selected.json[prop] = event.target.value;
     }
     else {
-      delete deckJSON.deck[selected][prop];
+      delete selected.json[prop];
     }
   });
 });
+
+function getJSON(filename, callback) {
+  let xhr = new XMLHttpRequest();
+  xhr.addEventListener("load", () => {
+    if (xhr.status === 200) {
+      callback(JSON.parse(xhr.responseText));
+    }
+  });
+  xhr.open("GET", filename);
+  xhr.send();
+}
 
 function getSVGTemplate(name, callback) {
   let xhr = new XMLHttpRequest();
@@ -77,33 +90,60 @@ function makeSVGs(deckJSON) {
   document.querySelector('#deckType').value = deckJSON.type || "";
 
   let deck = document.querySelector('#deck');
+  deck.innerHTML = "";
 
-  getSVGTemplate("environment/card", templateSVG => {
-    deck.style.width = Math.ceil(Math.sqrt(deckJSON.deck.length)) *
-      parseInt(templateSVG.getAttribute("width")) + "pt";
-    deck.style.height = Math.ceil(Math.sqrt(deckJSON.deck.length)) *
-	  parseInt(templateSVG.getAttribute("height")) + "pt";
+  setDeckTemplate(deckJSON.type, () => {
+    Object.entries(template.cardTypes).forEach(cardType => {
+      getSVGTemplate(deckJSON.type + "/" + cardType[0], templateSVG => {
+        deck.style.width = Math.ceil(Math.sqrt(deckJSON.deck.length)) *
+          parseInt(templateSVG.getAttribute("width")) + "pt";
+        deck.style.height = Math.ceil(Math.sqrt(deckJSON.deck.length)) *
+	      parseInt(templateSVG.getAttribute("height")) + "pt";
 
-    deck.innerHTML = "";
-
-    // build card SVGs
-    deckJSON.deck.forEach((card, index) => {
-      let cardSVG = templateSVG.cloneNode(true);
-      cardSVG.addEventListener('click', event => {
-        selected = index;
-        document.querySelector('#cardName').value = card.name || "";
-        document.querySelector('#cardKeywords').value = card.keywords || "";
-        document.querySelector('#cardCount').value = card.count || 1;
-        document.querySelector('#cardText').value = card.text || "";
-      }, true);
-      deck.appendChild(cardSVG);
-      for (let prop in card) {
-        if (prop !== "count") {
-          wrapSVGText(cardSVG.querySelector('#' + prop), String(card[prop]));
-        }
-      }
+        // build card SVGs
+        deckJSON[cardType[0]].forEach(
+          card => makeCardSVG(deck, cardType[1], templateSVG, card));
+      });
     });
   });
+}
+
+function setDeckTemplate(type, callback) {
+  getJSON("/template/" + type + "/input.json", json => {
+    template = json;
+    callback();
+  });
+}
+
+function setForm(cardTemplate, card) {
+  let form = document.querySelector('#cardForm');
+  form.innerHTML = "";
+
+  Object.entries(cardTemplate.inputs).forEach(prop => {
+    let div = form.appendChild(document.createElement('div'));
+    let label = div.appendChild(document.createElement('label'));
+    label.textContent = prop[0];
+
+    let input = label.appendChild(document.createElement('input'));
+    input.id = "card-" + prop[0];
+    if (prop[1] === "image") {
+      input.type = "file";
+    }
+    else {
+      input.type = prop[1];
+      input.value = card[prop[0]] || "";
+    }
+  });
+}
+
+function makeCardSVG(deck, cardInputTemplate, templateSVG, card) {
+  let cardSVG = deck.appendChild(templateSVG.cloneNode(true));
+  cardSVG.addEventListener('click', () => {
+    selected = {svg: cardSVG, json: card};
+    setForm(cardInputTemplate, card);
+  }, true);
+  Object.keys(cardInputTemplate.inputs).forEach(prop =>
+    wrapSVGText(cardSVG.querySelector('#' + prop), String(card[prop] || "")));
 }
 
 function upload() {

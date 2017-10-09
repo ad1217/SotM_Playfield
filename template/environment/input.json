@@ -1,0 +1,19 @@
+{
+  "cardTypes": {
+    "deck": {
+      "inputs": {
+        "name": "text",
+        "keywords": "text",
+        "text": "text",
+        "flavor": "text",
+        "artist": "text",
+        "hp": "number",
+        "image": "image"
+      },
+      "hide": {
+        "hpMark": "hp",
+        "keywordBox": "keywords"
+      }
+    }
+  }
+}

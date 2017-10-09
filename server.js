@@ -41,9 +41,10 @@ const server = http.createServer((req, res) => {
     switch (item) {
     case "card.json":
     case "deck.json":
+    case "environment/input.json":
       sendFile(res, "template/" + item, 'application/json');
       break;
-    case "environment/card.svg":
+    case "environment/deck.svg":
     case "hero/card.svg":
     case "hero/charBack.svg":
     case "hero/charFront.svg":
