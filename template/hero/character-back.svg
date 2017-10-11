@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="181pt" height="253pt" version="1.2" viewBox="0 0 181 253" xmlns="http://www.w3.org/2000/svg">
+  <path d="m0.498 252.5h180v-252h-180z" stroke="#000"/>
+  <path d="m9.498 243.5h162v-234h-162z" fill="#fff" stroke="#000" stroke-miterlimit="10"/>
+  <path d="m9.5 243.5h162v-234h-162z" fill="none" stroke="#000" stroke-miterlimit="10" stroke-width="2"/>
+  <path d="m168.08 239.87h-154.91v-52.371h154.91z" fill="#cfd1d4" stroke="#000" stroke-linejoin="round" stroke-miterlimit="10"/>
+  <text id="incapacitatedPowers" x="15.184497" y="195.27484" fill="#000000" font-family="'RedStateBlueState BB'" font-size="8px">
+    <tspan x="15.184497" y="195.27484">{ Text Here</tspan>
+    <tspan x="15.184497" y="214.02484">{ Text Here</tspan>
+    <tspan x="15.184497" y="232.77484">{ Text Here</tspan>
+  </text>
+</svg>

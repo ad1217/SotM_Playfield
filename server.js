@@ -53,10 +53,10 @@ const server = http.createServer((req, res) => {
       sendFile(res, "template/" + item, 'application/json');
       break;
     case "environment/deck.svg":
-    case "hero/card.svg":
-    case "hero/charBack.svg":
-    case "hero/charFront.svg":
-    case "villain/card.svg":
+    case "hero/deck.svg":
+    case "hero/character-back.svg":
+    case "hero/character-front.svg":
+    case "villain/deck.svg":
     case "villain/character.svg":
     case "villain/instructions.svg":
       sendFile(res, "template/" + item, 'image/svg+xml');
