@@ -1,0 +1,20 @@
+{
+  "cardTypes": {
+    "deck": {
+      "inputs": {
+        "name": "text",
+        "hp": "number",
+        "image": "image",
+        "keywords": "text",
+        "text": "textarea",
+        "quote": "textarea",
+        "quoteCitation": "text",
+        "artist": "text"
+      },
+      "hide": {
+        "hpMark": "hp",
+        "keywordBox": "keywords"
+      }
+    }
+  }
+}
