@@ -47,6 +47,10 @@ window.addEventListener("load", () => {
   document.querySelector('#deckForm').addEventListener('input', event => {
     let prop = event.target.id.substring(4).toLowerCase();
     deckJSON[prop] = event.target.value;
+    if (prop === 'type') {
+      makeSVGs(deckJSON);
+    }
+  });
   });
 
   // handle changes to card editor
