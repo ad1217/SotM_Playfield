@@ -26,15 +26,18 @@ window.addEventListener("load", () => {
   document.querySelector('#saveButton').addEventListener('click', upload);
 
   // download input JSON
-  document.querySelector('#jsonInputDownload').addEventListener('click', () => {
-    let dl = document.createElement('a');
-    dl.setAttribute('href', 'data:application/json;charset=utf-8,' +
-                    encodeURIComponent(JSON.stringify(deckJSON)));
-    dl.setAttribute('download', deckName + '.input.json');
-    document.body.appendChild(dl);
-    dl.click();
-    document.body.removeChild(dl);
-  });
+  document.querySelector('#jsonInputDownload').addEventListener(
+    'click',
+    () => downloadFile('data:application/json;charset=utf-8,' +
+                       encodeURIComponent(JSON.stringify(deckJSON)),
+                       deckName + '.input.json'));
+
+  // download input JSON
+  document.querySelector('#outputDownload').addEventListener(
+    'click',
+    () => downloadFile('deck.json',
+                       deckName + '.json'));
+
 
   // handle changes to deck editor
   document.querySelector('#deckForm').addEventListener('input', event => {
@@ -66,6 +69,15 @@ window.addEventListener("load", () => {
     }
   });
 });
+
+function downloadFile(file, name) {
+  let dl = document.createElement('a');
+  dl.setAttribute('href', file);
+  dl.setAttribute('download', name);
+  document.body.appendChild(dl);
+  dl.click();
+  document.body.removeChild(dl);
+}
 
 function getJSON(filename, callback) {
   let xhr = new XMLHttpRequest();
