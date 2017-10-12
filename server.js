@@ -93,7 +93,7 @@ const server = http.createServer((req, res) => {
       sendFile(res, `decks/${deckName}.input.json`, 'application/json');
       break;
     case 'upload':
-      handleUpload(res, req, deckName);
+      handleUpload(res, req);
       break;
     default:
       send404(res, uri);
@@ -174,23 +174,41 @@ function handleUpload(res, req) {
     let deckOut = JSON.parse(fs.readFileSync('template/deck.json'));
 
     deckOut.ObjectStates[0].Nickname = deckJSON.name;
+
+    let template = JSON.parse(fs.readFileSync(`template/${deckJSON.type}/input.json`));
+
+    let cardCount = Object.entries(template.cardTypes)
+        .map(ct => deckJSON[ct[0]].length * (ct[1].back ? 2 : 1))
+        .reduce((sum, current) => sum + current, 0);
+
     Object.assign(deckOut.ObjectStates[0].CustomDeck['1'],
-                  {NumWidth: Math.ceil(Math.sqrt(deckJSON.deck.length)),
-                   NumHeight: Math.ceil(Math.sqrt(deckJSON.deck.length)),
-                   FaceURL: "deck.png",
+                  {NumWidth: Math.ceil(Math.sqrt(cardCount)),
+                   NumHeight: Math.ceil(Math.sqrt(cardCount)),
+                   FaceURL: `http://${req.headers.host}/deck/${deckJSON.name}/deck.png`,
                    BackURL: "http://cloud-3.steamusercontent.com/ugc/156906385556221451/CE2C3AFE1759790CB0B532FFD636D05A99EC91F4/"});
 
-    deckOut.ObjectStates[0].CustomDeck['1'].ContainedObjects =
-      deckJSON.deck.map((cardIn, index) => {
-        let cardOut = JSON.parse(cardTemplate);
-        Object.assign(cardOut, {Nickname: cardIn.name,
-                                Description: cardIn.keywords,
-                                CardID: 100 + index});
-        for (let ii=0; ii<(cardIn.count || 1); ii++) {
-          deckOut.ObjectStates[0].DeckIDs.push(100 + index);
-        }
-        return cardOut;
-      });
+    let index = 100;
+    deckOut.ObjectStates[0].ContainedObjects =
+      Object.entries(template.cardTypes).map(
+        cardType => deckJSON[cardType[0]].map(cardIn => {
+          let cardOut = JSON.parse(cardTemplate);
+          Object.assign(cardOut, {Nickname: cardIn.name,
+                                  Description: cardIn.keywords,
+                                  CardID: index});
+          if(cardType[1].back) {
+            let cardBack = JSON.parse(cardTemplate);
+            Object.assign(cardBack, {Nickname: cardIn.back.name,
+                                     Description: cardIn.back.keywords,
+                                     CardID: index});
+            cardOut.States = {"2": cardBack};
+            index++;
+          }
+          for (let ii=0; ii<(cardIn.count || 1); ii++) {
+            deckOut.ObjectStates[0].DeckIDs.push(index);
+          }
+          index++;
+          return cardOut;
+        }));
 
     fs.writeFileSync(`decks/${deckJSON.name}.json`, JSON.stringify(deckOut));
     fs.writeFileSync(`decks/${deckJSON.name}.input.json`, JSON.stringify(deckJSON));
