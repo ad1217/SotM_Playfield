@@ -1,3 +1,7 @@
+//jshint browser:true
+//jshint esversion:6
+//jshint latedef:nofunc
+
 let deckJSON, template;
 let selected;
 let deckName = window.location.pathname.split('/')[2];
