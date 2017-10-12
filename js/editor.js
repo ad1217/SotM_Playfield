@@ -82,6 +82,9 @@ window.addEventListener("load", () => {
       reader.readAsDataURL(files[0]);
     }
   });
+
+  window.addEventListener('beforeunload',
+                          e => e.returnValue = "Unsaved changes blah blah");
 });
 
 function downloadFile(file, name) {
