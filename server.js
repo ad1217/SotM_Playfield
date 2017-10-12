@@ -210,7 +210,7 @@ function handleUpload(res, req) {
             }
           });
           page.property('zoomFactor', 2); // pretty arbitrary
-          page.property('content', json.body);
+          page.property('content', '<body style="margin:0;">' + json.body + '</body>');
         }));
     decks.push(deckJSON.name);
   });
