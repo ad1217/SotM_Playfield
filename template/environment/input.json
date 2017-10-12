@@ -1,6 +1,7 @@
 {
   "cardTypes": {
     "deck": {
+      "meta": ["count"],
       "inputs": {
         "name": "text",
         "keywords": "text",

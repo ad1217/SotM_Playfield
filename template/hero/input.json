@@ -1,5 +1,17 @@
 {
   "cardTypes": {
+    "character": {
+      "back": {
+        "inputs": {
+          "incapacitated": "text"
+        }
+      },
+      "inputs": {
+        "hp": "number",
+        "power": "text",
+        "powerText": "textarea"
+      }
+    },
     "deck": {
       "inputs": {
         "name": "text",

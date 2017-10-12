@@ -10,10 +10,13 @@ document.title = "Editor|" + deckName;
 
 window.addEventListener("load", () => {
   // load deck input json
-  getJSON("deck.input.json", json => {
-    deckJSON = json;
-    makeSVGs(deckJSON);
-  });
+  fetch("deck.input.json")
+    .then(data => data.json())
+    .then(json => {
+      deckJSON = json;
+      makeSVGs(deckJSON);
+    })
+    .catch(error => console.error(error));
 
   // deck JSON uploader
   document.querySelector('#jsonUpload').addEventListener('change', event => {
@@ -96,55 +99,54 @@ function downloadFile(file, name) {
   document.body.removeChild(dl);
 }
 
-function getJSON(filename, callback) {
-  let xhr = new XMLHttpRequest();
-  xhr.addEventListener("load", () => {
-    if (xhr.status === 200) {
-      callback(JSON.parse(xhr.responseText));
-    }
-  });
-  xhr.open("GET", filename);
-  xhr.send();
-}
-
 function getSVGTemplate(name, callback) {
-  let xhr = new XMLHttpRequest();
-  xhr.addEventListener("load", () => {
-    let respSVG = xhr.responseXML.children[0];
-    callback(respSVG);
-  });
-  xhr.open("GET", "/template/" + name + ".svg");
-  xhr.send();
+  return fetch("/template/" + name + ".svg")
+    .then(response => response.text())
+    .then(str => (new window.DOMParser()).parseFromString(str, "text/xml").activeElement);
 }
 
-function makeSVGs(deckJSON) {
+async function makeSVGs(deckJSON) {
   document.querySelector('#deckName').value = deckJSON.name || "";
   document.querySelector('#deckType').value = deckJSON.type || "";
 
   let deck = document.querySelector('#deck');
   deck.innerHTML = "";
 
-  setDeckTemplate(deckJSON.type, () => {
-    Object.entries(template.cardTypes).forEach(cardType => {
-      getSVGTemplate(deckJSON.type + "/" + cardType[0], templateSVG => {
-        deck.style.width = Math.ceil(Math.sqrt(deckJSON.deck.length)) *
-          parseInt(templateSVG.getAttribute("width")) + "pt";
-        deck.style.height = Math.ceil(Math.sqrt(deckJSON.deck.length)) *
-	      parseInt(templateSVG.getAttribute("height")) + "pt";
+  let template = await fetch(`/template/${deckJSON.type}/input.json`)
+      .then(data => data.json());
 
-        // build card SVGs
-        deckJSON[cardType[0]].forEach(
-          card => makeCardSVG(deck, cardType[1], templateSVG, card));
-      });
+  let cardCount = Object.entries(template.cardTypes)
+      .map(ct => deckJSON[ct[0]].length * (ct[1].back ? 2 : 1))
+      .reduce((sum, current) => sum + current, 0);
+
+  // note: needs to be a for loop because it needs to be synchronous
+  // and also have await
+  // Although I suppose I could prefetch the SVGs and then do the rest...
+  for (let cardType of Object.entries(template.cardTypes)) {
+    let backSVG;
+    if (cardType[1].back) {
+      let backTemplate = cardType[1].back.template || (cardType[0] + "-back");
+      backSVG = await getSVGTemplate(deckJSON.type + "/" + backTemplate);
+    }
+    let templateSVG = await getSVGTemplate(deckJSON.type + "/" + cardType[0]);
+    console.log(templateSVG);
+
+    // build card SVGs
+    deckJSON[cardType[0]].forEach(card => {
+      makeCardSVG(deck, cardType[1], templateSVG, card);
+
+      // if there is a back, build it too
+      if (cardType[1].back) {
+        makeCardSVG(deck, cardType[1].back, backSVG, card, back=true);
+      }
     });
-  });
-}
 
-function setDeckTemplate(type, callback) {
-  getJSON("/template/" + type + "/input.json", json => {
-    template = json;
-    callback();
-  });
+    // set div width/height based on number of cards
+    deck.style.width = Math.ceil(Math.sqrt(cardCount)) *
+      parseInt(templateSVG.getAttribute("width")) + "pt";
+    deck.style.height = Math.ceil(Math.sqrt(cardCount)) *
+	  parseInt(templateSVG.getAttribute("height")) + "pt";
+  };
 }
 
 function setForm(cardTemplate, card) {
@@ -170,21 +172,20 @@ function setForm(cardTemplate, card) {
   });
 }
 
-function makeCardSVG(deck, cardInputTemplate, templateSVG, card) {
+function makeCardSVG(deck, cardInputTemplate, templateSVG, card, back=false) {
+  let propSource = (back && card.back) ? card.back : card;
   let cardSVG = deck.appendChild(templateSVG.cloneNode(true));
   cardSVG.addEventListener('click', () => {
     selected = {svg: cardSVG, json: card};
     setForm(cardInputTemplate, card);
   }, true);
-  Object.keys(cardInputTemplate.inputs).forEach(
-    prop => wrapSVGText(cardSVG.querySelector('#' + prop), String(card[prop] || "")));
-  Object.entries(cardInputTemplate.hide).forEach(hidable => {
-    if (hidable[1] in card) {
-      cardSVG.querySelector('#' + hidable[0]).setAttribute('display', '');
-    }
-    else {
-      cardSVG.querySelector('#' + hidable[0]).setAttribute('display', 'none');
-    }
+  Object.keys(cardInputTemplate.inputs).forEach(prop => {
+    let inputProp = propSource[prop] || card[prop] || "";
+    wrapSVGText(cardSVG.querySelector('#' + prop), String(inputProp));
+  });
+  Object.entries(cardInputTemplate.hide || []).forEach(hidable => {
+    cardSVG.querySelector('#' + hidable[0])
+      .setAttribute('display', hidable[1] in propSource ? '' : 'none');
   });
 }
 
@@ -193,10 +194,11 @@ function upload() {
 
   // POST the generated SVGs to the server
   let data = (new XMLSerializer()).serializeToString(deck);
-  let xhr = new XMLHttpRequest();
-  xhr.open('POST', "upload");
-  xhr.setRequestHeader("Content-Type", "application/json");
-  xhr.send(JSON.stringify({body: data, json: deckJSON}));
+  fetch('upload', {
+    method: 'post',
+    headers: {'Content-Type': 'application/json'},
+    body: JSON.stringify({body: data, json: deckJSON})
+  });
 }
 
 function wrapSVGText(e, string) {
