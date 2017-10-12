@@ -11,18 +11,17 @@ document.title = "Playfield|" + window.location.pathname.split('/')[2];
 interact.dynamicDrop(true);
 
 window.addEventListener('load', () => {
-  let xhr = new XMLHttpRequest();
-  xhr.addEventListener("load", () => {
-    deckJSON = JSON.parse(xhr.responseText);
-    deckNum = Object.keys(deckJSON.CustomDeck)[0];
-    piles.deck = deckJSON.DeckIDs.map(c => c - deckNum * 100);
-    cardCount = piles.deck.length;
-    shuffle(piles.deck);
-    deckWidth = deckJSON.CustomDeck[deckNum].NumWidth;
-    deckHeight = deckJSON.CustomDeck[deckNum].NumHeight;
-  });
-  xhr.open("GET", "deck.json");
-  xhr.send();
+  fetch("deck.json")
+    .then(data => data.json())
+    .then(json => {
+      deckJSON = json;
+      deckNum = Object.keys(deckJSON.CustomDeck)[0];
+      piles.deck = deckJSON.DeckIDs.map(c => c - deckNum * 100);
+      cardCount = piles.deck.length;
+      shuffle(piles.deck);
+      deckWidth = deckJSON.CustomDeck[deckNum].NumWidth;
+      deckHeight = deckJSON.CustomDeck[deckNum].NumHeight;
+    });
 
   window.addEventListener("contextmenu", event => event.preventDefault());
 });
