@@ -51,17 +51,8 @@ window.addEventListener("load", () => {
 
   // handle changes to card editor
   document.querySelector('#cardForm').addEventListener('input', event => {
-    let deck = document.querySelector('#deck');
     let prop = event.target.id.substring(5);
-    if (prop === "image") {
-      let files = event.target.files;
-      let reader = new FileReader();
-      reader.onload = e => {
-        selected.svg.querySelector('#' + prop).setAttribute("href", e.target.result);
-      };
-      reader.readAsDataURL(files[0]);
-    }
-    else if (prop !== "count") {
+    if (prop !== "count") {
       wrapSVGText(selected.svg.querySelector('#' + prop),
                   String(event.target.value));
     }
@@ -70,6 +61,21 @@ window.addEventListener("load", () => {
     }
     else {
       delete selected.json[prop];
+    }
+  });
+
+  // chrome doesn't seem to send input event on file select
+  document.querySelector('#cardForm').addEventListener('change', event => {
+    let prop = event.target.id.substring(5);
+    if (prop === "image") {
+      let files = event.target.files;
+      let reader = new FileReader();
+      reader.onload = e => {
+        selected.svg.querySelector('#' + prop)
+          .setAttributeNS("http://www.w3.org/1999/xlink", "href", e.target.result);
+        selected.json[prop] = e.target.result;
+      };
+      reader.readAsDataURL(files[0]);
     }
   });
 });
