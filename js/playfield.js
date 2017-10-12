@@ -58,6 +58,30 @@ let cardInteract = interact('.card', {ignoreFrom: '.in-list'})
     let scale = parseFloat(event.target.getAttribute('data-scale')) === 2 ? 1 : 2;
     event.target.setAttribute('data-scale', scale);
 	dragMoveListener({target: event.target, dx: 0, dy: 0});
+  })
+  .on('tap', event => {
+    let card = event.target;
+    let cardNum = parseInt(card.getAttribute('data-num'));
+    if (card.dataset.flipped === "true") {
+      card.dataset.flipped = false;
+      let style = window.getComputedStyle(card);
+      card.style.backgroundPositionX =
+        -(cardNum % deckWidth) * parseInt(style.getPropertyValue("width")) + "px";
+      card.style.backgroundPositionY =
+        -Math.floor(cardNum/deckWidth) * parseInt(style.getPropertyValue("height")) + "px";
+      return;
+    }
+
+    let cardData = deckJSON.ContainedObjects.find(c => c.CardID === (cardNum + deckNum * 100));
+    let backNum = cardData.States && cardData.States["2"].CardID;
+    if (backNum) {
+      card.dataset.flipped = true;
+      let style = window.getComputedStyle(card);
+      card.style.backgroundPositionX =
+        -(backNum % deckWidth) * parseInt(style.getPropertyValue("width")) + "px";
+      card.style.backgroundPositionY =
+        -Math.floor(backNum/deckWidth) * parseInt(style.getPropertyValue("height")) + "px";
+    }
   });
 
 interact('.card.in-list')
