@@ -170,16 +170,13 @@ function handleUpload(res, req) {
     const json = JSON.parse(body);
     const deckJSON = json.json;
     const cardTemplate = fs.readFileSync('template/card.json');
+    const template = JSON.parse(fs.readFileSync(`template/${deckJSON.type}/input.json`));
+    const cardCount = Object.entries(template.cardTypes)
+          .map(ct => deckJSON[ct[0]].length * (ct[1].back ? 2 : 1))
+          .reduce((sum, current) => sum + current, 0);
 
     let deckOut = JSON.parse(fs.readFileSync('template/deck.json'));
-
     deckOut.ObjectStates[0].Nickname = deckJSON.name;
-
-    let template = JSON.parse(fs.readFileSync(`template/${deckJSON.type}/input.json`));
-
-    let cardCount = Object.entries(template.cardTypes)
-        .map(ct => deckJSON[ct[0]].length * (ct[1].back ? 2 : 1))
-        .reduce((sum, current) => sum + current, 0);
 
     Object.assign(deckOut.ObjectStates[0].CustomDeck['1'],
                   {NumWidth: Math.ceil(Math.sqrt(cardCount)),
@@ -195,6 +192,12 @@ function handleUpload(res, req) {
           Object.assign(cardOut, {Nickname: cardIn.name,
                                   Description: cardIn.keywords,
                                   CardID: index});
+
+          for (let ii=0; ii<(cardIn.count || 1); ii++) {
+            deckOut.ObjectStates[0].DeckIDs.push(index);
+          }
+          index++;
+
           if(cardType[1].back) {
             let cardBack = JSON.parse(cardTemplate);
             Object.assign(cardBack, {Nickname: cardIn.back.name,
@@ -203,12 +206,9 @@ function handleUpload(res, req) {
             cardOut.States = {"2": cardBack};
             index++;
           }
-          for (let ii=0; ii<(cardIn.count || 1); ii++) {
-            deckOut.ObjectStates[0].DeckIDs.push(index);
-          }
-          index++;
           return cardOut;
-        }));
+        }))
+      .reduce((sum, cur) => sum.concat(cur), []);
 
     fs.writeFileSync(`decks/${deckJSON.name}.json`, JSON.stringify(deckOut));
     fs.writeFileSync(`decks/${deckJSON.name}.input.json`, JSON.stringify(deckJSON));
