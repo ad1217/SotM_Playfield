@@ -1,4 +1,5 @@
 # Deck Generator/Playfield
+Currently hosted at http://adamgoldsmith.name:8080
 
 This project has two major parts: a deck generator, and a virtual
 playfield. The purpose is to allow for creating and playing custom
