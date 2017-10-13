@@ -285,7 +285,7 @@
   <path d="m0.503 252.5h180v-252h-180z" stroke="#000" stroke-miterlimit="10"/>
   <path d="m9.503 243.5h162v-234h-162z" fill="#fff" stroke="#000" stroke-miterlimit="10"/>
   <path d="m171.5 27.502h-162v121.59h162z" fill="#fff" stroke="#000" stroke-miterlimit="10" stroke-width="2"/>
-  <image id="image" x="171.5" y="27.502"/>
+  <image id="image" x="10" y="29" width="162px" height="121px" preserveAspectRatio="xMidYMid"/>
   <path d="m171.5 217.03h-162v-67.938h162z" fill="#e6e1ba" stroke="#000" stroke-miterlimit="10" stroke-width="2"/>
   <use transform="translate(9.449 148.51)" width="100%" height="100%" mask="url(#mask32)" xlink:href="#surface1165"/>
   <path d="m171.5 217.03h-162v-67.938h162z" fill="none" stroke="#000" stroke-miterlimit="10" stroke-width="2"/>
