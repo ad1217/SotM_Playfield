@@ -1,0 +1,8 @@
+#cardEditor {
+  position: fixed;
+  top: 0;
+  right: 0;
+  background-color: gray;
+  padding: 10px;
+  border-radius: 3px;
+}
