@@ -29,6 +29,8 @@ Templates are based on those from BoardGameGeek user Koga, found here:
 https://boardgamegeek.com/thread/813176/card-templates/, but have been
 converted to SVG and rather heavily modified/cleaned up.
 
+There are some example input jsons in the `testInputs` folder of this repo.
+
 ## Playfield
 
 Can load decks created by the generator. In theory, can play any deck

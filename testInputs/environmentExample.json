@@ -1,0 +1,6 @@
+{
+  "type": "environment",
+  "deck": [
+    {"count": 1, "keywords": "Ongoing", "name": "Example Card 1", "text": "Card text 1", "hp": 12, "artist": "Art By Adam", "flavor": "Test flavor"},
+    {"count": 1, "keywords": "Oneshot", "name": "Example Card 2", "text": "Card text 2"}]
+}

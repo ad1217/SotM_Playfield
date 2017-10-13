@@ -1,0 +1,27 @@
+{
+	"name": "Deck Builder",
+	"type": "hero",
+	"character": [{"hp": 42,
+				   "power": "Refill",
+				   "powerText": "Power: Discard your hand and draw 3 cards",
+				   "incapacitated": "{incapacitated effect 1\n{incapacitated effect 2"}],
+	"deck": [
+		{"count": 6, "name": "[Starter] Money", "keywords": "Oneshot", "text": "Gain 1 money.\nYou may play a card."},
+		{"count": 2, "name": "[Starter] Damage", "keywords": "Oneshot", "text": "Deal 1 target 1 damage.\nYou may play a card."},
+
+		{"count": 2, "name": "[2] Environment destruction", "keywords": "Oneshot", "text": "Destroy an environment card.\nYou may play a card."},
+		{"count": 2, "name": "[2] High Damage", "keywords": "Oneshot", "text": "Deal 1 target 3 damage.\nYou may play a card."},
+		{"count": 2, "name": "[3] Group Damage", "keywords": "Oneshot", "text": "Deal 3 targets 1 damage.\nYou may play a card."},
+		{"count": 2, "name": "[4] Mass Damage", "keywords": "Oneshot", "text": "Deal all villain targets 1 damage.\nYou may play a card."},
+		{"count": 3, "name": "[2] Heal", "keywords": "Oneshot", "text": "Heal 1 target for 2 HP.\nYou may play a card."},
+		{"count": 2, "name": "[6] Mass Heal", "keywords": "Oneshot", "text": "Heal 3 hero targets for 1 HP.\nYou may play a card.\n\nYou may remove this card from your deck to increase this by 2 HP"},
+		{"count": 1, "name": "[2] Card Destruction", "keywords": "Oneshot", "text": "Remove 1 card in your hand or discard pile from your deck.\nYou may play a card."},
+		{"count": 4, "name": "[1] Cheap Money", "keywords": "Oneshot", "text": "Gain 1 money.\nYou may draw a card.\nYou may play a card."},
+		{"count": 4, "name": "[4] More Money", "keywords": "Oneshot", "text": "Gain 3 money.\nYou may play a card."},
+		{"count": 2, "name": "[4] Tank", "keywords": "Oneshot", "text": "Until the start of the next turn, all damage is redirected towards the Deck Builder.\nYou may play a card."},
+		{"count": 2, "name": "[4] ", "keywords": "Oneshot", "text": "Until the start of the next turn, all damage is redirected towards the Deck Builder.\nYou may play a card."},
+
+		{"count": 2, "name": "[6] Damage Increase", "keywords": "Equipment", "text": "Increase all damage dealt by the Deck Builder by 1."},
+
+		{"count": 5, "name": "[2] Junk", "keywords": "Oneshot", "text": "Gain 2 money.\nYou may play a card.\nYou may return this card to the junk deck to deal 1 target 2 damage."}]
+}

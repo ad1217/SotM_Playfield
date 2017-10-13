@@ -1,0 +1,37 @@
+{
+  "name": "The Puffer Fish",
+  "type": "villain",
+  "character": [
+    {"name": "The Puffer Fish",
+     "hp": "30/40/50",
+     "title": "Over Stuffed",
+     "back": {
+       "hp": "60/70/80",
+       "title": " Dance to the Beat"
+     }}],
+  "instructions": [
+    {"name": "The Puffer Fish",
+     "title": "Over Stuffed",
+     "setup": "Place 2 equipment cards from each hero deck beneath this card.",
+     "gameplay": "At the end of the villian turn, reveal a random card beneath this card. Deal tho owner of that card H*2 projectile damage, then put that card into play in their area. If no cards are revealed this way The puffer fish deals all hero targets H+1 sonic damage.\n\n If The Puffer Fish has 0 or less hp immediately flip this card.",
+     "advanced": "At the end of the villian turn play the top card of the environment deck.",
+     "back": {
+       "title": " Dance to the Beat",
+       "gameplay": "When flipped to this side the Puffer Fish regains all his hp, place all cards beneath this card into the respective players hands, and destroy all but 1 of each hero's equipment cards in play. \n\nVillian Ongoing cards are indestructible. \n\nStart of the villian turn: Reveal cards from each hero deck until one ongoing is revealed and put it into play. Shuffle the other revealed cards back into the deck. \n\nIf any hero ever has more than 2 ongoing cards in play, destroy all but the newest 2 Ongoing cards.",
+       "advanced": "At the end of the villian turn the puffer fish deals each hero target 2 sonic damage."}}],
+  "deck": [
+    {"count": 3, "keywords": "Instrument", "name": "Horn", "text": "At the end of the villian turn this card deals the hero with the highest HP H sonic damage.", "hp": 6, "artist": "Art By Adam", "quote": "Vuuuu Vuuuu", "quoteCitation": "- Horn"},
+	{"count": 3, "keywords": "Instrument", "name": "Harp", "text": "At the end of the villian turn this card deals the hero with the second highest HP H-1 sonic damage and they discard a card.", "hp": 5, "artist": "Art By Adam", "quote": "Tlllinggg", "quoteCitation": "- The Harp"},
+	{"count": 2, "keywords": "Instrument", "name": "Flute", "text": "At the end of the villian turn this card deals all hero targets 2 sonic damage and each player discards a card.", "hp": 4, "artist": "Art By Adam", "quote": "Fffuuu Ffwaaaa", "quoteCitation": "- The Flute"},
+	{"count": 1, "keywords": "Instrument", "name": "Drums", "text": "Reduce damage this card takes by 1 \n\nAt the Start of the villian turn this card destroys all hero targets with 6 or fewer HP and deals the hero with the second lowest HP 3 sonic damage.", "hp": 5, "artist": "Art By Adam", "quote": "Dumm Domm Dumm", "quoteCitation": "- The Drums"},
+	{"count": 2, "keywords": "Instrument", "name": "Piano", "text": "At the end of the villian turn play the top card of the environment deck.", "hp": 8, "artist": "Art By Adam", "quote": "Pingg Pongg Panngggg", "quoteCitation": "- The Piano"},
+    {"count": 2, "keywords": "One-shot", "name": "Endless Music", "text": "Remove H-1 hero equipment in play from the game. If no cards are removed this way deal the hero with the highest HP H+2 projectile damage."},
+	{"count": 3, "keywords": "One-shot", "name": "Instrument Case", "text": "Place 2 random instruments from the trash into play. \n\nIf no instruments are played this way reveal cards from the top of the villian deck until H-2 instruments are revealed and put them into play. Shuffle the villian deck."},
+	{"count": 3, "keywords": "One-shot", "name": "Deep Breath", "text": "The Puffer Fish regains H*2 hp. \n\nThen if the Puffer Fish is at full hp play the top card of the villian deck."},
+	{"count": 1, "keywords": "Ongoing", "name": "Synchronized Dancing", "text": "Play the top card of the villian deck \n\n.At the end of the villian turn play the top card of the envorment deck."},
+	{"count": 1, "keywords": "Ongoing", "name": "Encore", "text": "At the end of the villian turn play the top card of the villian deck."},
+	{"count": 2, "keywords": "Ongoing", "name": "Not Your Style?", "text": "Play the top card of the villian deck \n\n.At the end of the villian turn the hero with the lowest HP deals themselves 2 psychic damage."},
+	{"count": 1, "keywords": "Ongoing", "name": "Fine Polish", "text": "Play the top card of the villian deck. \n\nReduce damage instruments take by 1."},
+	{"count": 1, "keywords": "Ongoing", "name": "Cheering Audience", "text": "Play the top card of the villian deck. \n\nVillian targets are immune to damage dealt by environment cards."}
+  ]
+}

@@ -1,0 +1,27 @@
+{
+  "name": "Villain Example",
+  "type": "villain",
+  "character": [
+    {"name": "Test",
+     "hp": 32,
+     "title": "Test Front",
+     "back": {
+       "hp": 25,
+       "title": "Test Back"
+     }}],
+  "instructions": [
+    {"name": "Test",
+     "title": "Test Front",
+     "setup": "setup text",
+     "gameplay": "front text",
+     "advanced": "advanced front",
+     "back": {
+       "title": "Test Back",
+       "gameplay": "back text",
+       "advanced": "advanced back"
+     }}],
+  "deck": [
+    {"count": 1, "keywords": "Ongoing", "name": "Test 1", "text": "Example Text 1", "hp": 12, "artist": "Art By Adam", "quote": "Test Quote", "quoteCitation": "- Adam"},
+    {"count": 2, "keywords": "One-shot", "name": "Test 2", "text": "Example Text 2"}
+  ]
+}
