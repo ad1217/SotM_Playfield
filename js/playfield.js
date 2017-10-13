@@ -255,7 +255,7 @@ function makeCard(cardNum) {
   card.style.backgroundPositionY =
     -Math.floor(cardNum/deckWidth) * parseInt(style.getPropertyValue("height")) + "px";
   let faceURI = encodeURI(deckJSON.CustomDeck[deckNum].FaceURL);
-  card.style.backgroundImage = `url(${faceURI})`;
+  card.style.backgroundImage = `url("${faceURI}")`;
   card.style.backgroundSize = `${deckWidth * 100}% ${deckHeight * 100}%`;
   document.body.removeChild(card);
 
