@@ -42,7 +42,7 @@ window.addEventListener("load", () => {
   // download input JSON
   document.querySelector('#outputDownload').addEventListener(
     'click',
-    () => downloadFile('deck.json',
+    () => downloadFile('deck.tts.json',
                        deckName + '.json'));
 
 
