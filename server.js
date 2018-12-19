@@ -25,7 +25,7 @@ const server = http.createServer((req, res) => {
     case 'playfield.css':
     case 'editor.css':
     case 'common.css':
-      sendFile(res, 'css/' + pathParts[2], 'text/css');
+      sendFile(res, path.join('css', pathParts[2]), 'text/css');
       break;
     default:
       send404(res, uri);
@@ -36,7 +36,7 @@ const server = http.createServer((req, res) => {
     case 'playfield.js':
     case 'editor.js':
     case 'interact.js':
-      sendFile(res, 'js/' + pathParts[2], 'application/javascript');
+      sendFile(res, path.join('js', pathParts[2]), 'application/javascript');
       break;
     default:
       send404(res, uri);
@@ -52,7 +52,7 @@ const server = http.createServer((req, res) => {
     case "environment/input.json":
     case "hero/input.json":
     case "villain/input.json":
-      sendFile(res, "template/" + item, 'application/json');
+      sendFile(res, path.join("template", item), 'application/json');
       break;
     case "environment/deck.svg":
     case "hero/deck.svg":
@@ -61,7 +61,7 @@ const server = http.createServer((req, res) => {
     case "villain/deck.svg":
     case "villain/character.svg":
     case "villain/instructions.svg":
-      sendFile(res, "template/" + item, 'image/svg+xml');
+      sendFile(res, path.join("template", item), 'image/svg+xml');
       break;
     default:
       send404(res, uri);
