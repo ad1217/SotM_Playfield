@@ -10,6 +10,6 @@
   "author": "Adam Goldsmith",
   "license": " CC-BY-SA-4.0",
   "dependencies": {
-    "phantom": "^4.0.5"
+    "phantom": "^4.0.12"
   }
 }
