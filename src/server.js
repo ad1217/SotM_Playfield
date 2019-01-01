@@ -35,8 +35,8 @@ function getDecksList(req, res) {
 }
 
 function getInputJSON(req, res) {
-  db.findOne({_id: req.params.deckID})
-    .then(doc => res.json(doc.input))
+  db.findOne({_id: req.params.deckID}, {image: 0})
+    .then(doc => res.json(doc))
     .catch(err => res.status(404).end());
 }
 
@@ -47,6 +47,7 @@ function getDeckImage(req, res) {
 }
 
 function getTTSJSON(req, res) {
+  // TODO: fix
   db.findOne({_id: req.params.deckID})
     .then(doc => {
       let deckIn = doc.deck;
@@ -115,6 +116,6 @@ function handleUpload(req, res) {
         }
       });
       page.property('zoomFactor', 2); // pretty arbitrary
-      page.property('content', '<body style="margin:0;">' + json.body + '</body>');
+      page.property('content', '<body style="margin:0;">' + json.dom + '</body>');
     }));
 }

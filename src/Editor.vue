@@ -47,7 +47,7 @@
       </div>
     </div>
 
-    <Deck ref="deck" :deckInfo="deckInfo" v-model="selected"> </Deck>
+    <Deck ref="deck" :cards="deckInfo.cards" v-model="selected"> </Deck>
   </div>
 </template>
 
@@ -62,7 +62,8 @@
    data() {
      return {
        selected: null,
-       deckInfo: {meta: {name: "", type: ""}},
+       deckInfo: {meta: {name: "", type: ""},
+                  cards: {}},
      };
    },
 
@@ -75,9 +76,9 @@
    created() {
      if (this.deckID !== 'new') {
        fetch('/decks/' + this.deckID + '.json')
-             .then(r => r.json())
-             .then(j => this.deckInfo = j.input)
-             .catch((err) => console.log('did not get old JSON, starting new deck'));
+         .then(r => r.json())
+         .then(j => this.deckInfo = j)
+         .catch((err) => console.log('did not get old JSON, starting new deck'));
      }
 
      /* window.addEventListener(
@@ -126,11 +127,10 @@
          method: 'post',
          headers: {'Content-Type': 'application/json'},
          body: JSON.stringify({
-           id: this.deckID === 'new' ? undefined : this.deckID,
            deck: this.deckInfo,
-           body: (new XMLSerializer()).serializeToString(this.$refs.deck.$el),
-         })
-       })
+           _id: this.deckID === 'new' ? undefined : this.deckID,
+           dom: (new XMLSerializer()).serializeToString(this.$refs.deck.$el),
+         })})
          .then(r => r.json())
          .then(j => this.$router.replace('/edit/' + j.id))
          .catch(err => console.log('Failed to upload' + err));
