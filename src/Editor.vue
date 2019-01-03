@@ -52,6 +52,7 @@
 </template>
 
 <script>
+ import yaml from 'js-yaml';
  import Deck from './Deck.vue';
 
  export default {
@@ -90,9 +91,7 @@
      jsonUpload(event) {
        let files = event.target.files;
        let reader = new FileReader();
-       reader.onload = event => {
-         this.deckInfo = JSON.parse(event.target.result);
-       };
+       reader.onload = e => this.deckInfo = yaml.safeLoad(e.target.result);
        reader.readAsText(files[0]);
      },
 
