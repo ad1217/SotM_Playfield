@@ -1,14 +1,11 @@
 <template>
   <body>
-    <label>Create New Deck:
-      <input type="text"
-             @change="window.location='/deck/' + event.target.value + '/editor'">
-    </label>
+    <router-link to="/edit/new">Create New Deck</router-link>
     <ul>
       <li v-for="deck in decks">
-        {{ deck }}:
-        <router-link :to="'/play/' + deck"> Play </router-link>
-        <router-link :to="'/edit/' + deck"> Edit </router-link>
+        {{ deck.deck.meta.name }}:
+        <router-link :to="'/play/' + deck._id"> Play </router-link>
+        <router-link :to="'/edit/' + deck._id"> Edit </router-link>
       </li>
     </ul>
   </body>
@@ -26,7 +23,8 @@
    created() {
      fetch('/decks.json')
        .then(r => r.json())
-       .then(d => this.decks = d);
+       .then(d => this.decks = d)
+       .catch(err => console.log("Couldn't get deck list"));
    },
  }
 </script>

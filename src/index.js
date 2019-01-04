@@ -4,13 +4,16 @@ import VueRouter from 'vue-router';
 import App from './App.vue';
 import DeckIndex from './DeckIndex.vue';
 import Editor from './Editor.vue';
+import Err404 from './404.vue';
 
 Vue.use(VueRouter);
 
 const router = new VueRouter({
+  mode: 'history',
   routes: [
     {path: '/', component: DeckIndex},
-    {path: '/edit/:deckName', component: Editor, props: true},
+    {path: '/edit/:deckID', component: Editor, props: true},
+    {path: '*', component: Err404},
   ],
 });
 
