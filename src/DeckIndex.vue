@@ -1,5 +1,6 @@
 <template>
   <body>
+    <headful title="Deck Index"></headful>
     <router-link to="/edit/new">Create New Deck</router-link>
     <ul>
       <li v-for="deck in decks">

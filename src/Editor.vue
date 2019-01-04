@@ -1,5 +1,6 @@
 <template>
   <div>
+    <headful :title="'Editor|' + deckInfo.meta.name"> </headful>
     <div id="controls">
       <div>
         <button type="button" @click="upload"> Save Deck </button>
@@ -66,12 +67,6 @@
        deckInfo: {meta: {name: "", type: ""},
                   cards: {}},
      };
-   },
-
-   watch: {
-     deckInfo() {
-       document.title = "Editor|" + this.deckInfo.meta.name;
-     },
    },
 
    created() {
