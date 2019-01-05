@@ -19,8 +19,15 @@
 
    data() {
      return {
-       template: templates['deck'],
+       props: propTypes[this.type],
      }
+   },
+
+   computed: {
+     template() {
+       return templates[this.type]
+         .replace('<?xml version="1.0" encoding="UTF-8"?>\n', '');
+     },
    },
  }
 </script>
