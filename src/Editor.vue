@@ -73,7 +73,7 @@
      if (this.deckID !== 'new') {
        fetch('/decks/' + this.deckID + '.json')
          .then(r => r.json())
-         .then(j => this.deckInfo = j)
+         .then(j => this.deckInfo = j.deck)
          .catch((err) => console.log('did not get old JSON, starting new deck'));
      }
 
