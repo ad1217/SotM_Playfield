@@ -42,10 +42,10 @@
       <button class="close-editor" @click="selected = null">X</button>
       <div v-for="(type, prop) in selected.props">
         <label> {{ prop }}
-          <input v-if="type === Number" v-model="selected.card[prop]"/>
-          <input v-if="type === 'file'" type="file" accept="image/*"
+          <input v-if="type === 'image'" type="file" accept="image/*"
                  @change="fileUploaded(prop, $event)" />
-          <textarea v-else rows="1" v-model="selected.card[prop]"> </textarea>
+          <textarea v-else-if="type === 'textarea'" v-model="selected.card[prop]"> </textarea>
+          <input v-else :type="type" v-model="selected.card[prop]"/>
         </label>
       </div>
     </div>

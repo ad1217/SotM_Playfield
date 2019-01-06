@@ -15,17 +15,34 @@
    props: ['cards'],
    components: {Hero},
 
+   data() {
+     return {
+       selected: null,
+     }
+   },
+
+   watch: {
+     selected() {
+       this.$emit('input', this.selected);
+     }
+   },
+
    computed: {
      allCards() {
        return Object
          .keys(this.cards)
          .flatMap(cardType => this.cards[cardType].flatMap((card, index) => {
-           let cardWrapper = {
+           let cardWrapper = [{
              type: cardType,
-             card: this.cards[cardType][index],
-             props: Hero.props,
-           };
-           return Array(card.count || 1).fill(cardWrapper);
+             card: card,
+           }];
+           if (card.back) { // TODO: a little hacky
+             cardWrapper.push({
+               type: cardType + '-back',
+               card: card.back,
+             });
+           }
+           return Array(card.count || 1).fill(cardWrapper).flat();
          }));
      },
 

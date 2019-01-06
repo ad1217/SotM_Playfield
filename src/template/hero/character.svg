@@ -9,7 +9,7 @@
   </defs>
   <path d="m0.501 252.5h180v-252h-180z" stroke="#000"/>
   <path d="m9.501 243.5h162v-234h-162z" fill="#fff" stroke="#000" stroke-miterlimit="10"/>
-  <image id="art" x="10.453" y="10.34" width="160.08" height="232.32" preserveAspectRatio="xMidYMid"/>
+  <image v-bind:xlink:href="card.art" x="10.453" y="10.34" width="160.08" height="232.32" preserveAspectRatio="xMidYMid"/>
   <path d="m9.504 243.5h162v-234h-162z" fill="none" stroke="#000" stroke-miterlimit="10" stroke-width="2"/>
   <path d="m162 240.04h-143.5v-28.039h143.5z" fill="#cfd1d4" stroke="#000" stroke-linejoin="round" stroke-miterlimit="10"/>
   <use transform="matrix(.044443 0 0 .044443 140.66 198.67)" width="100%" height="100%" mask="url(#mask0)" xlink:href="#image607"/>
@@ -26,8 +26,10 @@
   <path d="m26.301 21.242h-0.81641l-0.39844-2.9102v2.9102h-0.81641v-6.4844h0.88281l0.33203 2.2812v-2.2812h0.81641z"/>
   <path d="m28.453 21.242h-1.6094v-6.4844h1.6094v0.65625h-0.78906v1.6992h0.78906v0.65234h-0.78906v2.8008h0.78906z"/>
   <path d="m30.672 21.242h-1.6094v-6.4844h0.81641v5.8086h0.79297z"/>
-  <text id="power" x="90.2556" y="220.35289" font-family="'RedStateBlueState BB'" font-size="10px" font-style="italic" text-align="center" text-anchor="middle">Power name</text>
-  <text id="powerText" x="21.452999" y="227.5" width="137.06" height="14.694" font-family="'RedStateBlueState BB'" font-size="8px">Power: Text Here</text>
-  <text id="hp" x="12.953" y="93.105858" fill="#ffffff" font-family="'Armor Piercing'" font-size="29px" stroke="#000000">00</text>
-  <text id="artist" x="168.46541" y="247.8423" fill="#ffffff" font-family="'RedStateBlueState BB'" font-size="5.3px" text-align="end" text-anchor="end">Art By</text>
+  <text x="12.953" y="93.105858" fill="#ffffff" font-family="'Armor Piercing'" font-size="29px" stroke="#000000"> {{card.hp }} </text>
+  <text x="90.2556" y="220.35289" font-family="'RedStateBlueState BB'" font-size="10px" font-style="italic" text-align="center" text-anchor="middle"> {{ card.power }} </text>
+  <foreignObject x="21.452999" y="222" width="137.06" height="14.694" font-family="'RedStateBlueState BB'" font-size="8px">
+    <div xmlns="http://www.w3.org/1999/xhtml" v-html="card.powerText"> Power Text </div>
+  </foreignObject>
+  <text x="168.46541" y="247.8423" fill="#ffffff" font-family="'RedStateBlueState BB'" font-size="5.3px" text-align="end" text-anchor="end">Art By {{ card.artist }} </text>
 </svg>
