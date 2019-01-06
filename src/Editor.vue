@@ -4,6 +4,7 @@
     <div id="controls">
       <div>
         <button type="button" @click="upload"> Save Deck </button>
+        <Loader :loading="uploading"></Loader>
         Download:
         <button type="button" @click="jsonInputDownload">
           Input JSON
@@ -57,14 +58,16 @@
 <script>
  import yaml from 'js-yaml';
  import Deck from './Deck.vue';
+ import Loader from './Loader.vue';
 
  export default {
    name: 'Editor',
-   components: {Deck},
+   components: {Deck, Loader},
 
    props: ['deckID'],
    data() {
      return {
+       uploading: false,
        selected: null,
        deckInfo: {meta: {name: "", type: ""},
                   cards: {}},
@@ -119,6 +122,7 @@
 
      upload() {
        // POST the inputed json to the server
+       this.uploading = true;
        fetch('/upload', {
          method: 'post',
          headers: {'Content-Type': 'application/json'},
@@ -129,7 +133,10 @@
            css: document.styleSheets[0].href,
          })})
          .then(r => r.json())
-         .then(j => this.$router.replace('/edit/' + j.id))
+         .then(j => {
+           this.$router.replace('/edit/' + j.id);
+           this.uploading = false;
+         })
          .catch(err => console.log('Failed to upload' + err));
      },
    },
