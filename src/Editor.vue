@@ -4,13 +4,19 @@
     <div id="controls">
       <div>
         <button type="button" @click="upload"> Save Deck </button>
+        Download:
         <button type="button" @click="jsonInputDownload">
-          Download Input JSON
+          Input JSON
         </button>
 
         <button type="button"
-                @click="downloadFile('/decks/' + deckID + '.tts.json', deckInfo.meta.name + '.tts.json')">
-          Download Tabletop Output JSON
+                @click="downloadFile(`/decks/${deckID}.tts.json`, deckInfo.meta.name + '.tts.json')">
+          Tabletop Output JSON
+        </button>
+
+        <button type="button"
+                @click="downloadFile(`/decks/${deckID}.png`, deckInfo.meta.name + '.png')">
+          Deck PNG
         </button>
       </div>
 
@@ -20,20 +26,16 @@
         </label>
       </div>
 
-      <form>
-        <div>
-          <label> Deck Name: <input type="text" v-model="deckInfo.meta.name"> </label>
-        </div>
-        <div>
-          <label> Deck Type:
-            <select v-model="deckInfo.meta.type">
-              <option value="hero">hero</option>
-              <option value="villain">villain</option>
-              <option value="environment">environment</option>
-            </select>
-          </label>
-        </div>
-      </form>
+      <div>
+        <label> Deck Name: <input type="text" v-model="deckInfo.meta.name"> </label>
+        <label> Deck Type:
+          <select v-model="deckInfo.meta.type">
+            <option value="hero">hero</option>
+            <option value="villain">villain</option>
+            <option value="environment">environment</option>
+          </select>
+        </label>
+      </div>
     </div>
 
     <div id="cardEditor" v-if="selected">
