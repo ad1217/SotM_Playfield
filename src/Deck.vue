@@ -1,10 +1,8 @@
 <template>
-  <!-- style is inline for phantomjs -->
-  <div style="white-space: nowrap;">
+  <div class="deck">
     <div v-for="cardRow in chunkedCards">
-      <span v-for="card in cardRow" @click="$emit('input', card)">
-        <Hero v-bind="card.card" style="white-space: initial;"> </Hero>
-      </span>
+      <Hero v-for="card in cardRow" v-model="selected"
+            :type="card.type" :card="card.card"> </Hero>
     </div>
   </div>
 </template>
@@ -43,3 +41,18 @@
    },
  }
 </script>
+
+<style>
+ .deck {
+   white-space: nowrap;
+ }
+
+ .deck svg {
+   white-space: initial;
+ }
+
+ .deck svg p {
+   margin-top: 0;
+   margin-bottom: .5em;
+ }
+</style>

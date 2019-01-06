@@ -94,28 +94,31 @@ function getTTSJSON(req, res) {
     });
 }
 
-function handleUpload(req, res) {
+async function handleUpload(req, res) {
   const json = req.body;
 
   console.log("Making deck image");
-  phantom.create().then(ph => ph.createPage().then(
-    page => {
-      page.on('onLoadFinished', status => {
-        if (status === 'success') {
-          page.renderBase64(`PNG`).then(image => {
-            db.update({_id: json.id},
-                      {deck: json.deck, image: image},
-                      {upsert: true, returnUpdatedDocs: true})
-              .then(doc => res.status(201).json({id: doc._id}));
-            page.close().then(() => ph.exit());
-          });
-        }
-        else {
-          console.log('Failed to load page');
-          ph.exit(1);
-        }
-      });
-      page.property('zoomFactor', 2); // pretty arbitrary
-      page.property('content', '<body style="margin:0;">' + json.dom + '</body>');
-    }));
+  const ph = await phantom.create();
+  const page = await ph.createPage();
+
+  page.on('onLoadFinished', status => {
+    if (status === 'success') {
+      page.renderBase64(`PNG`)
+        .then(image => db.update(
+          {_id: json.id},
+          {deck: json.deck, image: image},
+          {upsert: true, returnUpdatedDocs: true}))
+        .then(doc => res.status(201).json({id: doc._id}))
+        .then(() => page.close().then(() => ph.exit()));
+    }
+    else {
+      console.log('Failed to load page');
+      ph.exit(1);
+    }
+  });
+
+  page.property('zoomFactor', 2); // pretty arbitrary
+  page.property('content',
+                '<head><link rel="stylesheet" href="' + json.css + '"></head>' +
+                '<body style="margin:0;">' + json.dom + '</body>');
 }

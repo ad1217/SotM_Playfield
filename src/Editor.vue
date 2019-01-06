@@ -124,6 +124,7 @@
            deck: this.deckInfo,
            _id: this.deckID === 'new' ? undefined : this.deckID,
            dom: (new XMLSerializer()).serializeToString(this.$refs.deck.$el),
+           css: document.styleSheets[0].href,
          })})
          .then(r => r.json())
          .then(j => this.$router.replace('/edit/' + j.id))
