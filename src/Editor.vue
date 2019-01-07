@@ -6,19 +6,18 @@
         <button type="button" @click="upload"> Save Deck </button>
         <Loader :loading="uploading"></Loader>
         Download:
-        <button type="button" @click="jsonInputDownload">
+        <a class="download" :href="inputJSON"
+           :download="deckInfo.meta.name + '.input.json'">
           Input JSON
-        </button>
-
-        <button type="button"
-                @click="downloadFile(`/decks/${deckID}.tts.json`, deckInfo.meta.name + '.tts.json')">
-          Tabletop Output JSON
-        </button>
-
-        <button type="button"
-                @click="downloadFile(`/decks/${deckID}.png`, deckInfo.meta.name + '.png')">
+        </a>
+        <a class="download" :href="`/decks/${deckID}.tts.json`"
+           :download="deckInfo.meta.name + '.tts.json'">
+          Tabletop Sim Output JSON
+        </a>
+        <a class="download" :href="`/decks/${deckID}.png`"
+           :download="deckInfo.meta.name + '.png'">
           Deck PNG
-        </button>
+        </a>
       </div>
 
       <div>
@@ -86,6 +85,13 @@
       *   'beforeunload', e => e.returnValue = "Unsaved changes blah blah"); */
    },
 
+   computed: {
+     inputJSON() {
+       return 'data:application/json;charset=utf-8,' +
+              encodeURIComponent(JSON.stringify(this.deckInfo))
+     },
+   },
+
    methods: {
      // deck JSON uploader
      jsonUpload(event) {
@@ -95,29 +101,12 @@
        reader.readAsText(files[0]);
      },
 
-     // download input JSON
-     jsonInputDownload() {
-       console.log(JSON.stringify(this.deckInfo));
-       this.downloadFile('data:application/json;charset=utf-8,' +
-                         encodeURIComponent(JSON.stringify(this.deckInfo)),
-                         this.deckID + '.input.json')
-     },
-
      fileUploaded(event, prop) {
        let reader = new FileReader();
        reader.onload = e => {
          this.selected.card[prop] = e.target.result;
        };
        reader.readAsDataURL(event.target.files[0]);
-     },
-
-     downloadFile(file, name) {
-       let dl = document.createElement('a');
-       dl.setAttribute('href', file);
-       dl.setAttribute('download', name);
-       document.body.appendChild(dl);
-       dl.click();
-       document.body.removeChild(dl);
      },
 
      upload() {
@@ -155,5 +144,18 @@
 
  .close-editor {
    float: right;
+ }
+
+ a.download {
+   display: inline-block;
+   margin-bottom: .2em;
+   background-color: #1976D2;
+   color: white;
+   text-decoration: none;
+   padding: .2em .4em;
+ }
+
+ a.download:hover {
+   background-color: #1565C0;
  }
 </style>
