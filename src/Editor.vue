@@ -22,8 +22,9 @@
 
       <div>
         <label> Upload JSON: WARNING: WILL CLEAR DECK
-          <input @change="jsonUpload" type="file">
+          <input ref="jsonUpload" type="file">
         </label>
+        <button type="button" @click="jsonUpload"> Load </button>
       </div>
 
       <div>
@@ -96,7 +97,7 @@
    methods: {
      // deck JSON uploader
      jsonUpload(event) {
-       let files = event.target.files;
+       let files = this.$refs.jsonUpload.files;
        let reader = new FileReader();
        reader.onload = e => this.deckInfo = yaml.safeLoad(e.target.result);
        reader.readAsText(files[0]);
