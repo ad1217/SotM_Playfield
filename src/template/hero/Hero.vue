@@ -7,6 +7,7 @@
 
 <script>
  import fs from 'fs';
+ import HTMLEmbed from './HTMLEmbed.vue';
  import VRuntimeTemplate from "v-runtime-template";
 
  let propTypes = {
@@ -40,7 +41,7 @@
  export default {
    name: 'HeroCharacter',
    props: ['type', 'card'],
-   components: {VRuntimeTemplate},
+   components: {VRuntimeTemplate, HTMLEmbed},
 
    data() {
      return {
@@ -56,3 +57,10 @@
    },
  }
 </script>
+
+<style>
+ .htmlEmbed p {
+   margin-top: 0;
+   margin-bottom: .5em;
+ }
+</style>

@@ -4,7 +4,5 @@
   <path d="m9.498 243.5h162v-234h-162z" fill="#fff" stroke="#000" stroke-miterlimit="10"/>
   <path d="m9.5 243.5h162v-234h-162z" fill="none" stroke="#000" stroke-miterlimit="10" stroke-width="2"/>
   <path d="m168.08 239.87h-154.91v-52.371h154.91z" fill="#cfd1d4" stroke="#000" stroke-linejoin="round" stroke-miterlimit="10"/>
-  <foreignObject x="16" y="194" width="150" height="20" fill="#000000" font-family="'RedStateBlueState BB'" font-size="8px">
-    <div xmlns="http://www.w3.org/1999/xhtml" v-html="card.incapacitated"> </div>
-  </foreignObject>
+  <HTMLEmbed x="16" y="194" width="150" height="20" fill="#000000" font-family="'RedStateBlueState BB'" font-size="8px" :html="card.incapacitated"> </HTMLEmbed>
 </svg>

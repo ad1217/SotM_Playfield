@@ -322,9 +322,7 @@
       <text x="154.03" y="30.44" fill="#000000" font-family="'CrashLanding BB'" font-size="35px" text-align="center" text-anchor="middle"> {{ card.hp }} </text>
     </g>
     <image v-bind:xlink:href="card.art" x="21" y="34" width="162px" height="121px" preserveAspectRatio="xMidYMid"/>
-    <foreignObject x="14.5" y="160" width="152" height="48.5" font-family="'RedStateBlueState BB'" font-size="8.7px">
-      <div xmlns="http://www.w3.org/1999/xhtml" v-html="card.text"> Text Here </div>
-    </foreignObject>
+    <HTMLEmbed x="14.5" y="160" width="152" height="48.5" font-family="'RedStateBlueState BB'" font-size="8.7px" v-bind:html="card.text"> </HTMLEmbed>
     <text x="72.514046" y="222" font-size="6.8px" font-style="italic" text-align="center" text-anchor="middle"> {{ card.quote }} </text>
     <text x="101.80201" y="230" font-size="5.8px" text-align="end" text-anchor="end">- {{ card.quoteCitation }} </text>
     <text x="168.4621" y="247.85452" fill="#ffffff" font-family="'RedStateBlueState BB'" font-size="5.3px" text-align="end" text-anchor="end"> Art By {{ card.artist }} </text>

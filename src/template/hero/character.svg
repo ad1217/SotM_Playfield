@@ -28,8 +28,6 @@
   <path d="m30.672 21.242h-1.6094v-6.4844h0.81641v5.8086h0.79297z"/>
   <text x="12.953" y="93.105858" fill="#ffffff" font-family="'Armor Piercing'" font-size="29px" stroke="#000000"> {{card.hp }} </text>
   <text x="90.2556" y="220.35289" font-family="'RedStateBlueState BB'" font-size="10px" font-style="italic" text-align="center" text-anchor="middle"> {{ card.power }} </text>
-  <foreignObject x="21.452999" y="222" width="137.06" height="14.694" font-family="'RedStateBlueState BB'" font-size="8px">
-    <div xmlns="http://www.w3.org/1999/xhtml" v-html="card.powerText"> Power Text </div>
-  </foreignObject>
+  <HTMLEmbed x="21.452999" y="222" width="137.06" height="14.694" font-family="'RedStateBlueState BB'" font-size="8px" :html="card.powerText"> </HTMLEmbed>
   <text x="168.46541" y="247.8423" fill="#ffffff" font-family="'RedStateBlueState BB'" font-size="5.3px" text-align="end" text-anchor="end">Art By {{ card.artist }} </text>
 </svg>

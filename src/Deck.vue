@@ -67,9 +67,4 @@
  .deck svg {
    white-space: initial;
  }
-
- .deck svg p {
-   margin-top: 0;
-   margin-bottom: .5em;
- }
 </style>

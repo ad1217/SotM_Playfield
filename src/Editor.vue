@@ -114,9 +114,25 @@
      upload() {
        this.uploading = true;
 
+       // TODO: remove this nasty hack
+       function bindStyles(doc) {
+         console.log(doc);
+         // get existing styles from CSS...
+         let style = Array.from(document.styleSheets[0].rules)
+                          .map(rule => rule.cssText)
+                          .join('\n');
+         // ...and jam them into a <style> in each foreignObject
+         doc.querySelectorAll('foreignObject')
+            .forEach(o => {
+              let styleElement = o.appendChild(document.createElement('style'));
+              styleElement.innerHTML = style;
+            });
+       }
+
        let node = this.$refs.deck.$el;
-       html2canvas(node, {scale: 2, width: node.scrollWidth,
-                          backgroundColor: 'black'})
+       html2canvas(node, {scale: 1, width: node.scrollWidth,
+                          backgroundColor: 'black',
+                          onclone: bindStyles})
          .then(canvas => canvas.toDataURL("image/png"))
          .then(image =>
            // POST the inputed json to the server
@@ -127,7 +143,6 @@
                deck: this.deckInfo,
                _id: this.deckID === 'new' ? undefined : this.deckID,
                image: image,
-               css: document.styleSheets[0].href,
              })}))
          .then(r => r.json())
          .then(j => {
