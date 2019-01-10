@@ -56,6 +56,7 @@
 
 <script>
  import yaml from 'js-yaml';
+ import html2canvas from 'html2canvas';
  import Deck from './Deck.vue';
  import Loader from './Loader.vue';
 
@@ -110,17 +111,23 @@
      },
 
      upload() {
-       // POST the inputed json to the server
        this.uploading = true;
-       fetch('/upload', {
-         method: 'post',
-         headers: {'Content-Type': 'application/json'},
-         body: JSON.stringify({
-           deck: this.deckInfo,
-           _id: this.deckID === 'new' ? undefined : this.deckID,
-           dom: (new XMLSerializer()).serializeToString(this.$refs.deck.$el),
-           css: document.styleSheets[0].href,
-         })})
+
+       let node = this.$refs.deck.$el;
+       html2canvas(node, {scale: 2, width: node.scrollWidth,
+                          backgroundColor: 'black'})
+         .then(canvas => canvas.toDataURL("image/png"))
+         .then(image =>
+           // POST the inputed json to the server
+           fetch('/upload', {
+             method: 'post',
+             headers: {'Content-Type': 'application/json'},
+             body: JSON.stringify({
+               deck: this.deckInfo,
+               _id: this.deckID === 'new' ? undefined : this.deckID,
+               image: image,
+               css: document.styleSheets[0].href,
+             })}))
          .then(r => r.json())
          .then(j => {
            this.$router.replace('/edit/' + j.id);
