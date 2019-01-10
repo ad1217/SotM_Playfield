@@ -130,7 +130,7 @@
        }
 
        let node = this.$refs.deck.$el;
-       html2canvas(node, {scale: 1, width: node.scrollWidth,
+       html2canvas(node, {scale: 2,
                           backgroundColor: 'black',
                           onclone: bindStyles})
          .then(canvas => canvas.toDataURL("image/png"))

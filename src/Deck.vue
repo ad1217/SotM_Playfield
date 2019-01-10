@@ -62,6 +62,7 @@
 <style>
  .deck {
    white-space: nowrap;
+   width: fit-content;
  }
 
  .deck svg {
