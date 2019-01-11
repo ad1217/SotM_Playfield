@@ -6,11 +6,11 @@
         <button type="button" @click="upload"> Save Deck </button>
         <Loader :loading="uploading"></Loader>
         Download:
-        <a class="download" :href="inputJSON"
+        <a class="download" :href="downloadJSON(deckInfo)"
            :download="deckInfo.meta.name + '.input.json'">
           Input JSON
         </a>
-        <a class="download" :href="`/decks/${deckID}.tts.json`"
+        <a class="download" :href="downloadJSON(makeTTSJSON())"
            :download="deckInfo.meta.name + '.tts.json'">
           Tabletop Sim Output JSON
         </a>
@@ -60,6 +60,7 @@
  import html2canvas from 'html2canvas';
  import Deck from './Deck.vue';
  import Loader from './Loader.vue';
+ import tts_templates from './template/tts/*.json';
 
  export default {
    name: 'Editor',
@@ -87,13 +88,6 @@
       *   'beforeunload', e => e.returnValue = "Unsaved changes blah blah"); */
    },
 
-   computed: {
-     inputJSON() {
-       return 'data:application/json;charset=utf-8,' +
-              encodeURIComponent(JSON.stringify(this.deckInfo))
-     },
-   },
-
    methods: {
      // deck JSON uploader
      jsonUpload(event) {
@@ -109,6 +103,52 @@
          this.selected.card[prop] = e.target.result;
        };
        reader.readAsDataURL(event.target.files[0]);
+     },
+
+     downloadJSON(json) {
+       return 'data:application/json;charset=utf-8,' +
+              encodeURIComponent(JSON.stringify(json))
+     },
+
+     makeTTSJSON() {
+       // make a copy
+       let deckOut = JSON.parse(JSON.stringify(tts_templates['deck']));
+       deckOut.ObjectStates[0].Nickname = this.deckInfo.meta.name;
+
+       let index = 100;
+       deckOut.ObjectStates[0].ContainedObjects = Object
+         .keys(this.deckInfo.cards)
+         .flatMap(cardType => this.deckInfo.cards[cardType].flatMap(card => {
+           let cardOut = {...JSON.parse(JSON.stringify(tts_templates['card'])),
+                          Nickname: card.name,
+                          Description: card.keywords,
+                          CardID: index};
+
+           deckOut.ObjectStates[0].DeckIDs.push(
+             ...Array(card.count || 1).fill(index));
+           index++;
+
+           if(card.back) {
+             cardOut.States = {
+               "2": {...JSON.parse(JSON.stringify(tts_templates['card'])),
+                     Nickname: card.back.name,
+                     Description: card.back.keywords,
+                     CardID: index}};
+             index++;
+           }
+           return Array(card.count || 1).fill(cardOut);
+         }))
+
+       let cardCount = index - 100;
+       let columns = Math.ceil(Math.sqrt(cardCount));
+       Object.assign(
+         deckOut.ObjectStates[0].CustomDeck['1'],
+         {NumWidth: columns,
+          NumHeight: Math.ceil(cardCount / columns),
+          FaceURL: `${location.origin}/decks/${this.deckID}.png`,
+          BackURL: "http://cloud-3.steamusercontent.com/ugc/156906385556221451/CE2C3AFE1759790CB0B532FFD636D05A99EC91F4/"});
+
+       return deckOut;
      },
 
      upload() {

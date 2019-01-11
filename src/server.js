@@ -16,7 +16,6 @@ const app = express();
 app.use(express.json({limit: '50mb'}));
 
 app.use('/template', express.static('template'));
-app.get('/decks/:deckID.tts.json', getTTSJSON);
 app.get('/decks/:deckID.json', getInputJSON);
 app.get('/decks/:deckID.png', getDeckImage);
 app.get('/decks.json', getDecksList);
@@ -43,54 +42,6 @@ function getDeckImage(req, res) {
   db.findOne({_id: req.params.deckID})
     .then(doc => res.send(new Buffer.from(doc.image, 'base64')))
     .catch(err => res.status(404).end());
-}
-
-function getTTSJSON(req, res) {
-  // TODO: fix
-  db.findOne({_id: req.params.deckID})
-    .then(doc => {
-      let deckIn = doc.deck;
-      const cardTemplate = fs.readFileSync(__dirname + '/template/card.json');
-      const template = JSON.parse(fs.readFileSync(__dirname + `/template/${deckIn.type}/input.json`));
-      const cardCount = Object.entries(template.cardTypes)
-            .map(ct => deckIn[ct[0]].length * (ct[1].back ? 2 : 1))
-            .reduce((sum, current) => sum + current, 0);
-
-      let deckOut = JSON.parse(fs.readFileSync(__dirname + '/template/deck.json'));
-      deckOut.ObjectStates[0].Nickname = deckIn.meta.name;
-
-      Object.assign(deckOut.ObjectStates[0].CustomDeck['1'],
-                    {NumWidth: Math.ceil(Math.sqrt(cardCount)),
-                     NumHeight: Math.ceil(cardCount/Math.ceil(Math.sqrt(cardCount))),
-                     FaceURL: `http://${req.headers.host}/decks/${doc.meta.name}.png`,
-                     BackURL: "http://cloud-3.steamusercontent.com/ugc/156906385556221451/CE2C3AFE1759790CB0B532FFD636D05A99EC91F4/"});
-
-      let index = 100;
-      deckOut.ObjectStates[0].ContainedObjects = Object
-        .keys(deckIn)
-        .filter(cardType => cardType !== 'meta')
-        .map(cardType => deckIn[cardType].map((card, index) => {
-          let cardOut = {...JSON.parse(cardTemplate),
-                         Nickname: card.name,
-                         Description: card.keywords,
-                         CardID: index};
-
-          deckOut.ObjectStates[0].DeckIDs.push(...Array(card.count || 1).fill(index));
-          index++;
-
-          if(card.back) {
-            cardOut.States = {"2": {...JSON.parse(cardTemplate),
-                                    Nickname: card.back.name,
-                                    Description: card.back.keywords,
-                                    CardID: index}};
-            index++;
-          }
-          return cardOut;
-        }))
-        .reduce((sum, cur) => sum.concat(cur), []); // flatten
-
-      res.json(deckOut);
-    });
 }
 
 function handleUpload(req, res) {

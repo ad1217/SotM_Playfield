@@ -42,7 +42,7 @@
                card: card.back,
              });
            }
-           return Array(card.count || 1).fill(cardWrapper).flat();
+           return cardWrapper;
          }));
      },
 
