@@ -45,7 +45,8 @@
 
    data() {
      return {
-       props: propTypes[this.type],
+       props: {count: 'number',
+               ...propTypes[this.type]},
      }
    },
 
