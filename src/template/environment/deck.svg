@@ -320,10 +320,10 @@
   <path d="m143.36 238.45h-127.38v-26.102h127.38z" fill="#94dc63" stroke="#000" stroke-miterlimit="10" stroke-width=".75"/>
   <use transform="translate(15.453 211.51)" width="100%" height="100%" mask="url(#mask26)" xlink:href="#surface769"/>
   <path d="m143.36 238.45h-127.38v-26.102h127.38z" fill="none" stroke="#000" stroke-miterlimit="10" stroke-width="1.25"/>
-  <text id="name" x="14.177066" y="24.167519" width="100" fill="url(#linearGradient583)" font-family="'CrashLanding BB'" font-size="23px" stroke="#000000" stroke-width=".7">Header</text>
-  <image id="image" x="9.453" y="27.512" width="162" height="121" preserveAspectRatio="xMidYMid"/>
+  <text x="14.177066" y="24.167519" width="100" fill="url(#linearGradient583)" font-family="'CrashLanding BB'" font-size="23px" stroke="#000000" stroke-width=".7"> {{ card.name }} </text>
+  <image v-bind:xlink:href="card.art" x="9.453" y="27.512" width="162" height="121" preserveAspectRatio="xMidYMid"/>
   <path d="m171.5 27.502h-162v121.59h162z" fill="none" stroke="#000" stroke-miterlimit="10" stroke-width="2"/>
-  <g id="keywordBox" transform="translate(-11.547,-6.4883)" font-family="'RedStateBlueState BB'">
+  <g v-if="card.keywords" transform="translate(-11.547,-6.4883)" font-family="'RedStateBlueState BB'">
     <g clip-path="url(#clip90)">
       <path d="m138.51 151.36h-108.41v12.805h108.41zm-0.75 12.055h-106.91v-11.305h106.91z"/>
     </g>
@@ -331,18 +331,16 @@
       <path d="m137.76 163.41h-106.91v-11.305h106.91z" fill="#4fb84a"/>
       <use transform="translate(30,152)" width="100%" height="100%" mask="url(#mask35)" xlink:href="#surface823"/>
     </g>
-    <text id="keywords" x="84" y="160" font-size="11.696px" font-weight="bold" text-anchor="middle">
-      <tspan>Keywords</tspan>
-    </text>
+    <text x="84" y="160" font-size="11.696px" font-weight="bold" text-anchor="middle"> {{ card.keywords }} </text>
   </g>
-  <text id="text" x="15.453" y="163.5117" width="152" height="50" fill="#000000" font-family="'RedStateBlueState BB'" font-size="10px" xml:space="preserve"><tspan>Text Here</tspan></text>
-  <text id="flavor" x="18.452999" y="219.5117" width="123" height="19" fill="#000000" font-family="'RedStateBlueState BB'" font-size="6px" font-style="italic">
-    <tspan>Text Here</tspan>
-  </text>
-  <text id="artist" x="168.59091" y="247.55464" fill="#ffffff" font-family="'RedStateBlueState BB'" font-size="5.3px" text-align="end" text-anchor="end">
-    <tspan>art by</tspan>
-  </text>
-  <g id="hpMark" transform="translate(-11.547,-6.4883)">
+  <foreignObject x="15.453" y="163.5117" width="152" height="50" fill="#000000" font-family="'RedStateBlueState BB'" font-size="10px" xml:space="preserve">
+    <div xmlns="http://www.w3.org/1999/xhtml" v-html="card.text"> Text Here </div>
+  </foreignObject>
+  <foreignObject x="18.452999" y="219.5117" width="123" height="19" fill="#000000" font-family="'RedStateBlueState BB'" font-size="6px" font-style="italic">
+    <div xmlns="http://www.w3.org/1999/xhtml" v-html="card.flavor"> Flavor Text Here </div>
+  </foreignObject>
+  <text x="168.59091" y="247.55464" fill="#ffffff" font-family="'RedStateBlueState BB'" font-size="5.3px" text-align="end" text-anchor="end"> Art By {{ card.artist }} </text>
+  <g v-if="card.hp" transform="translate(-11.547,-6.4883)">
     <g clip-path="url(#clip155)">
       <g clip-path="url(#clip156)">
         <path d="m183.05 15.988h-46.879v39.898h46.879z" fill="url(#linearGradient585)"/>
@@ -358,6 +356,6 @@
     <g clip-path="url(#clip162)">
       <path transform="translate(183.05,15.988)" d="m0.0014562-3.205e-5h-34.301" fill="none" stroke="#000" stroke-miterlimit="10" stroke-width="2"/>
     </g>
-    <text id="hp" x="165.95107" y="37.060463" fill="#000000" font-family="'CrashLanding BB'" font-size="35px" text-align="center" text-anchor="middle" xml:space="preserve">3</text>
+    <text x="165.95107" y="37.060463" fill="#000000" font-family="'CrashLanding BB'" font-size="35px" text-align="center" text-anchor="middle" xml:space="preserve"> {{ card.hp }} </text>
   </g>
 </svg>

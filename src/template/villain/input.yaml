@@ -1,0 +1,27 @@
+character:
+  name: text
+  hp: number
+  title: text
+character-back:
+  name: text
+  hp: number
+  title: text
+instructions:
+  name: text
+  title: text
+  setup: textarea
+  gameplay: textarea
+  advanced: textarea
+instructions-back:
+  name: text
+  title: text
+  gameplay: textarea
+deck:
+  name: text
+  hp: number
+  art: image
+  keywords: text
+  text: textarea
+  quote: textarea
+  quoteCitation: text
+  artist: text

@@ -22,6 +22,7 @@ app.get('/decks.json', getDecksList);
 app.post('/upload', handleUpload);
 
 let bundler = new Bundler(path.join(__dirname, 'index.html'));
+bundler.addAssetType('.svg', require.resolve('./RawStringAsset'));
 app.use(bundler.middleware());
 
 app.listen(port, () => console.log(`App listening on port ${port}!`));

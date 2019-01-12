@@ -14,9 +14,9 @@
   <path d="m111.53 226.71h-81.75v-8.5h81.75z" fill="#ebe130" stroke="#000" stroke-linejoin="round" stroke-miterlimit="10"/>
   <path d="m154 208.87c-6.6953 0-12.145 5.4492-12.145 12.145s5.4492 12.148 12.145 12.148c6.6953 0 12.145-5.4531 12.145-12.148s-5.4492-12.145-12.145-12.145m0 0.24219c6.5703 0 11.898 5.3281 11.898 11.902s-5.3281 11.902-11.898 11.902c-6.5742 0-11.902-5.3281-11.902-11.902s5.3281-11.902 11.902-11.902"/>
   <use transform="matrix(.044443 0 0 .044443 140.66 207.66)" width="100%" height="100%" mask="url(#mask0)" xlink:href="#image404"/>
-  <text id="title" x="89.850975" y="235.60347" fill="#000000" font-family="'RedStateBlueState BB'" font-size="11px" font-style="italic" text-align="center" text-anchor="middle">Villain Title</text>
-  <text x="58.169796" y="225.06613" fill="#000000" font-family="'RedStateBlueState BB'" font-size="10px" font-style="italic">villain</text>
-  <text id="name" transform="scale(.98507 1.0152)" x="14.22963" y="42.862007" fill="#000000" font-family="'Armor Piercing'" font-size="28.676px" stroke-width=".98507">Villain Name</text>
-  <text id="hp" x="155.13855" y="43.5117" fill="#ffffff" font-family="'Armor Piercing'" font-size="30px" stroke="#000000" stroke-width=".75" text-align="center" text-anchor="middle">000</text>
-  <text id="artist" x="168.59201" y="247.54639" fill="#ffffff" font-family="'RedStateBlueState BB'" font-size="5.3px" text-align="end" text-anchor="end">Art By</text>
+  <text x="89.850975" y="235.60347" fill="#000000" font-family="'RedStateBlueState BB'" font-size="11px" font-style="italic" text-align="center" text-anchor="middle"> {{ card.title }} </text>
+  <text x="58.169796" y="225.06613" fill="#000000" font-family="'RedStateBlueState BB'" font-size="10px" font-style="italic"> villain </text>
+  <text transform="scale(.98507 1.0152)" x="14.22963" y="42.862007" fill="#000000" font-family="'Armor Piercing'" font-size="28.676px" stroke-width=".98507"> {{ card.name }} </text>
+  <text x="155.13855" y="43.5117" fill="#ffffff" font-family="'Armor Piercing'" font-size="30px" stroke="#000000" stroke-width=".75" text-align="center" text-anchor="middle"> {{ card.hp }} </text>
+  <text x="168.59201" y="247.54639" fill="#ffffff" font-family="'RedStateBlueState BB'" font-size="5.3px" text-align="end" text-anchor="end"> {{ card.artist }} </text>
 </svg>

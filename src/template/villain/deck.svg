@@ -285,7 +285,7 @@
   <path d="m0.503 252.5h180v-252h-180z" stroke="#000" stroke-miterlimit="10"/>
   <path d="m9.503 243.5h162v-234h-162z" fill="#fff" stroke="#000" stroke-miterlimit="10"/>
   <path d="m171.5 27.502h-162v121.59h162z" fill="#fff" stroke="#000" stroke-miterlimit="10" stroke-width="2"/>
-  <image id="image" x="10" y="29" width="162px" height="121px" preserveAspectRatio="xMidYMid"/>
+  <image v-bind:xlink:href="card.art" x="10" y="29" width="162px" height="121px" preserveAspectRatio="xMidYMid"/>
   <path d="m171.5 217.03h-162v-67.938h162z" fill="#e6e1ba" stroke="#000" stroke-miterlimit="10" stroke-width="2"/>
   <use transform="translate(9.449 148.51)" width="100%" height="100%" mask="url(#mask32)" xlink:href="#surface1165"/>
   <path d="m171.5 217.03h-162v-67.938h162z" fill="none" stroke="#000" stroke-miterlimit="10" stroke-width="2"/>
@@ -323,22 +323,22 @@
   <path d="m171.5 27.502h-162v121.59h162z" fill="none" stroke="#000" stroke-miterlimit="10" stroke-width="2"/>
   <path d="m171.5 9.4997v14.668" fill="none" stroke="#000" stroke-miterlimit="10" stroke-width="2"/>
   <path d="m171.5 9.4997h-34.301" fill="none" stroke="#000" stroke-miterlimit="10" stroke-width="2"/>
-  <text id="name" x="14.173298" y="24.167526" font-family="'CrashLanding BB'" font-size="23px">Header</text>
-  <g id="keywordBox">
+  <text x="14.173298" y="24.167526" font-family="'CrashLanding BB'" font-size="23px"> {{ card.name }} </text>
+  <g v-if="card.keywords">
     <path d="m126.21 156.92h-106.91v-11.305h106.91z" fill="#e11c1c"/>
     <use transform="translate(18.449 145.51)" width="100%" height="100%" mask="url(#mask44)" xlink:href="#surface1237"/>
     <path d="m126.96 144.87h-108.41v12.805h108.41zm-0.75 12.055h-106.91v-11.305h106.91z"/>
-    <text id="keywords" x="21.05547" y="154.41197" font-family="'RedStateBlueState BB'" font-size="11.5px" font-weight="bold">Keywords</text>
+    <text x="21.05547" y="154.41197" font-family="'RedStateBlueState BB'" font-size="11.5px" font-weight="bold"> {{ card.keywords }} </text>
   </g>
-  <text id="text" x="14.5" y="165.175" width="152" height="48.5" font-family="'RedStateBlueState BB'" font-size="8.7px">Text Here</text>
-  <text id="quote" x="72.514046" y="221.9552" font-family="'RedStateBlueState BB'" font-size="6.8px" font-style="italic" text-align="center" text-anchor="middle">"Type Quote Here!"</text>
-  <text id="quoteCitation" x="101.80201" y="229.85782" font-family="'RedStateBlueState BB'" font-size="5.8px" text-align="end" text-anchor="end">- Name, Comic #</text>
-  <text id="artist" x="168.4621" y="247.85452" fill="#ffffff" font-family="'RedStateBlueState BB'" font-size="5.3px" text-align="end" text-anchor="end">Art By</text>
-  <g id="hpMark" transform="translate(-375.55 -6.4883)" style="">
+  <HTMLEmbed x="14.5" y="165.175" width="152" height="48.5" font-family="'RedStateBlueState BB'" font-size="8.7px" :html="card.text"> </HTMLEmbed>
+  <text x="72.514046" y="221.9552" font-family="'RedStateBlueState BB'" font-size="6.8px" font-style="italic" text-align="center" text-anchor="middle"> {{ card.quote }} </text>
+  <text x="101.80201" y="229.85782" font-family="'RedStateBlueState BB'" font-size="5.8px" text-align="end" text-anchor="end"> {{ card.quoteCitation }} </text>
+  <text x="168.4621" y="247.85452" fill="#ffffff" font-family="'RedStateBlueState BB'" font-size="5.3px" text-align="end" text-anchor="end"> Art By {{ card.artist }} </text>
+  <g v-if="card.hp" transform="translate(-375.55 -6.4883)" style="">
     <path d="m547.05 15.988h-46.879v39.898h46.879z" clip-path="url(#clip174-7)" fill="url(#linear6)"/>
     <path d="m547.05 15.988h-29.047l-17.832 3.8359 16.25 5.9336-14.375 8.5625 13.312-0.25-9.5 13.379 15.312-8.2539-8.25 15.941 13.875-13.004 5.0625 13.754 7.125-19.379 6.9375 4.3125-3.0898-9.9141 4.2188-0.25z" fill="none" stroke="#000" stroke-miterlimit="10" stroke-width=".8"/>
     <path d="m547.05 15.988v14.668" fill="none" stroke="#000" stroke-miterlimit="10" stroke-width="2"/>
     <path d="m547.05 15.988h-34.301" fill="none" stroke="#000" stroke-miterlimit="10" stroke-width="2"/>
-    <text id="hp" x="529.58063" y="36.929356" fill="#000000" font-family="'CrashLanding BB'" font-size="35px" text-align="center" text-anchor="middle" xml:space="preserve">3</text>
+    <text x="529.58063" y="36.929356" fill="#000000" font-family="'CrashLanding BB'" font-size="35px" text-align="center" text-anchor="middle" xml:space="preserve"> {{ card.hp }} </text>
   </g>
 </svg>

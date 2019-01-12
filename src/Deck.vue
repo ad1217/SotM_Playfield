@@ -1,19 +1,20 @@
 <template>
   <div class="deck">
     <div v-for="cardRow in chunkedCards">
-      <Hero v-for="card in cardRow" v-model="selected"
-            :type="card.type" :card="card.card"> </Hero>
+      <Card v-for="card in cardRow" v-model="selected"
+            :deckType="deckInfo.meta.type"
+            :type="card.type" :card="card.card"> </Card>
     </div>
   </div>
 </template>
 
 <script>
- import Hero from './template/hero/Hero.vue'
+ import Card from './Card.vue'
 
  export default {
    name: 'Deck',
-   props: ['cards'],
-   components: {Hero},
+   props: ['deckInfo'],
+   components: {Card},
 
    data() {
      return {
@@ -30,8 +31,8 @@
    computed: {
      allCards() {
        return Object
-         .keys(this.cards)
-         .flatMap(cardType => this.cards[cardType].flatMap((card, index) => {
+         .keys(this.deckInfo.cards)
+         .flatMap(cardType => this.deckInfo.cards[cardType].flatMap((card, index) => {
            let cardWrapper = [{
              type: cardType,
              card: card,

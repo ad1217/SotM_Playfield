@@ -51,7 +51,7 @@
       </div>
     </div>
 
-    <Deck ref="deck" :cards="deckInfo.cards" v-model="selected"> </Deck>
+    <Deck ref="deck" :deckInfo="deckInfo" v-model="selected"> </Deck>
   </div>
 </template>
 
