@@ -333,12 +333,8 @@
     </g>
     <text x="84" y="160" font-size="11.696px" font-weight="bold" text-anchor="middle"> {{ card.keywords }} </text>
   </g>
-  <foreignObject x="15.453" y="163.5117" width="152" height="50" fill="#000000" font-family="'RedStateBlueState BB'" font-size="10px" xml:space="preserve">
-    <div xmlns="http://www.w3.org/1999/xhtml" v-html="card.text"> Text Here </div>
-  </foreignObject>
-  <foreignObject x="18.452999" y="219.5117" width="123" height="19" fill="#000000" font-family="'RedStateBlueState BB'" font-size="6px" font-style="italic">
-    <div xmlns="http://www.w3.org/1999/xhtml" v-html="card.flavor"> Flavor Text Here </div>
-  </foreignObject>
+  <HTMLEmbed x="15.453" y="163.5117" width="152" height="50" fill="#000000" font-family="'RedStateBlueState BB'" font-size="10px" :html="card.text"> Text Here </HTMLEmbed>
+  <HTMLEmbed x="18.452999" y="219.5117" width="123" height="19" fill="#000000" font-family="'RedStateBlueState BB'" font-size="6px" font-style="italic" :html="card.flavor"> Flavor Text Here </HTMLEmbed>
   <text x="168.59091" y="247.55464" fill="#ffffff" font-family="'RedStateBlueState BB'" font-size="5.3px" text-align="end" text-anchor="end"> Art By {{ card.artist }} </text>
   <g v-if="card.hp" transform="translate(-11.547,-6.4883)">
     <g clip-path="url(#clip155)">
