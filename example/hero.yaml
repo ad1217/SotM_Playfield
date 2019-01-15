@@ -1,0 +1,24 @@
+meta:
+  name: Hero Example
+  type: hero
+cards:
+  character:
+  - name: Hero Example
+    hp: 42
+    power: Power Name
+    powerText: 'Power: Power description'
+    incapacitated: |-
+      <p>{incapacitated effect 1</p>
+      <p>{incapacitated effect 2</p>
+  deck:
+  - name: Card 1
+    hp: 12
+    keywords: Ongoing
+    text: Card text 1
+    quote: Test Quote
+    quoteCitation: "- Adam"
+    artist: Art By Adam
+  - count: 2
+    name: Card 2
+    keywords: Oneshot
+    text: Card text 2

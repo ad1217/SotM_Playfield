@@ -1,0 +1,34 @@
+meta:
+  name: Villain Example
+  type: villain
+cards:
+  character:
+  - name: Villain Example
+    hp: 32
+    title: Test Front
+    back:
+      hp: 25
+      title: Test Back
+  instructions:
+  - name: Test
+    title: Test Front
+    setup: setup text
+    gameplay: front text
+    advanced: advanced front
+    back:
+      title: Test Back
+      gameplay: back text
+      advanced: advanced back
+  deck:
+  - keywords: Ongoing
+    name: Test 1
+    text: Example Text 1
+    hp: 12
+    artist: Art By Adam
+    quote: Test Quote
+    quoteCitation: "- Adam"
+  - count: 2
+    keywords: One-shot
+    name: Test 2
+    text: Example Text 2
+  
