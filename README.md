@@ -1,5 +1,6 @@
-# Deck Generator/Playfield
-Currently hosted at http://adamgoldsmith.name:8080
+# Sentinels of the Multiverse Deck Generator/Playfield
+
+Currently hosted at https://playfield.adamgoldsmith.name
 
 This project has two major parts: a deck generator, and a virtual
 playfield. The purpose is to allow for creating and playing custom
@@ -29,9 +30,9 @@ Templates are based on those from BoardGameGeek user Koga, found here:
 https://boardgamegeek.com/thread/813176/card-templates/, but have been
 converted to SVG and rather heavily modified/cleaned up.
 
-There are some example input jsons in the `testInputs` folder of this repo.
+There are some example input files in the `example` folder of this repo.
 
-## Playfield
+## Playfield (currently down for maintenance)
 
 Can load decks created by the generator. In theory, can play any deck
 from Tabletop Simulator, with minor effort (it needs to be pointed at
@@ -52,11 +53,6 @@ Best on a touch screen, but works okay with a mouse.
       * hold shift while dragging into a deck to put a card on the bottom
   * long press on a deck to open a listing, where you can search,
     rearrange, and tap to add to playfield
-
-## Libraries
-
-  * The backend uses PhantomJS for rendering decks
-  * The playfield uses interact.js
 
 ## To do:
 
