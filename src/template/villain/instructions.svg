@@ -8,19 +8,19 @@
   <path d="m159.8 54.67h-137.34v-9.5h137.34z" fill="#cfd1d4" stroke="#000" stroke-linejoin="round" stroke-miterlimit="10"/>
   <path d="m99.873 223.92h-81.75v-8.5h81.75z" fill="#ebe130" stroke="#000" stroke-linejoin="round" stroke-miterlimit="10"/>
   <path d="m99.873 128.92h-81.75v-8.5h81.75z" fill="#ebe130" stroke="#000" stroke-linejoin="round" stroke-miterlimit="10"/>
-  <text id="name" transform="scale(.97038 1.0305)" x="14.445003" y="44.008652" fill="#ffffff" font-family="'Armor Piercing'" font-size="29.11px" stroke="#000000" stroke-width=".72998px" xml:space="preserve">Villain Name</text>
+  <text transform="scale(.97038 1.0305)" x="14.445003" y="44.008652" fill="#ffffff" font-family="'Armor Piercing'" font-size="29.11px" stroke="#000000" stroke-width=".72998px">{{ card.name }}</text>
   <g font-family="'RedStateBlueState BB'">
-    <text id="title" x="65.489799" y="52.567066" font-size="11px" font-style="italic">Villain Title</text>
-    <g id="setupBox">
+    <text id="title" x="90" y="52.5" font-size="11px" font-style="italic" text-align="center" text-anchor="middle">{{ card.title }}</text>
+    <g v-if="card.setup">
       <path d="m167.79 117.46h-154.58v-50.539h154.58z" fill="#cfd1d4" stroke="#000" stroke-linejoin="round" stroke-miterlimit="10"/>
       <path d="m99.873 68.92h-81.75v-8.5h81.75z" fill="#ebe130" stroke="#000" stroke-linejoin="round" stroke-miterlimit="10"/>
-      <text id="setup" x="16.214796" y="74.85202" width="152" height="50" font-size="9px">Text Here</text>
       <text x="47.487053" y="67.280876" font-size="10px" font-style="italic">SetUp</text>
+      <HTMLEmbed x="16.214796" y="74.85202" width="152" height="50" font-size="9px" :html="card.setup">Text Here</HTMLEmbed>
     </g>
     <text x="37.503998" y="127.27358" font-size="10px" font-style="italic">Game Play</text>
-    <text id="gameplay" x="16.214796" y="134.85202" width="150" height="80" font-size="9px">Text Here</text>
+    <HTMLEmbed x="16.214796" y="134.85202" width="150" height="80" font-size="9px" :html="card.gameplay">Text Here</HTMLEmbed>
     <text x="39.672401" y="222.4875" font-size="10px" font-style="italic">Advanced</text>
-    <text id="advanced" x="16.214796" y="229.85202" width="152" height="10" font-size="9px">Text Here</text>
-    <text id="artist" x="168.59041" y="247.55547" fill="#ffffff" font-size="5.3px" text-align="end" text-anchor="end">Art By</text>
+    <HTMLEmbed x="16.214796" y="229.85202" width="152" height="10" font-size="9px" :html="card.advanced">Text Here</HTMLEmbed>
+    <text x="168.59041" y="247.55547" fill="#ffffff" font-size="5.3px" text-align="end" text-anchor="end">Art By {{ card.artist}}</text>
   </g>
 </svg>
