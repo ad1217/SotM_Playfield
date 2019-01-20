@@ -21,8 +21,11 @@
      },
 
      template() {
-       return templates[this.deckType][this.type]
-         .replace('<?xml version="1.0" encoding="UTF-8"?>\n', '');
+       let deckTemplates = templates[this.deckType];
+       let cardType = (this.type in deckTemplates) ? this.type :
+		      this.type.replace(/-back$/, '');
+       return deckTemplates[cardType]
+	 .replace('<?xml version="1.0" encoding="UTF-8"?>\n', '');
      },
    },
  }
