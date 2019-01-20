@@ -158,9 +158,9 @@
        function bindStyles(doc) {
          console.log(doc);
          // get existing styles from CSS...
-         let style = Array.from(document.styleSheets[0].rules)
-                          .map(rule => rule.cssText)
-                          .join('\n');
+         let style = Array.from(document.styleSheets[0].cssRules)
+           .map(rule => rule.cssText)
+           .join('\n');
          // ...and jam them into a <style> in each foreignObject
          doc.querySelectorAll('foreignObject')
             .forEach(o => {
