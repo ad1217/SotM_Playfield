@@ -1,33 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <svg width="181pt" height="253pt" version="1.2" viewBox="0 0 181 253" xmlns="http://www.w3.org/2000/svg">
   <path d="m0.501 252.5h180v-252h-180z" stroke="#000"/>
-  <path d="m9.501 243.5h162v-234h-162z" fill="#fff" stroke="#000"/>
-  <path d="m9.504 243.5h162v-234h-162z" fill="none" stroke="#000" stroke-width="2"/>
+  <path d="m9.504 243.5h162v-234h-162z" fill="#fff" stroke="#000" stroke-width="2"/>
 
-  <g>
-    <path d="m159.8 54.67h-137.34v-9.5h137.34z" fill="#cfd1d4" stroke="#000"/>
-    <text x="14.445003" y="44.008652" fill="#ffffff" font-family="'Armor Piercing'" font-size="29.11px" stroke="#000000" stroke-width=".72998px">{{ card.name }}</text>
-  </g>
+  <text x="14.445003" y="44.008652" fill="#ffffff" font-family="'Armor Piercing'" font-size="29.11px" stroke="#000000" stroke-width=".72998px">{{ card.name }}</text>
 
   <g font-family="'RedStateBlueState BB'">
-    <text id="title" x="90" y="52.5" font-size="11px" font-style="italic" text-align="center" text-anchor="middle">{{ card.title }}</text>
-    <g v-if="card.setup">
-      <path d="m167.79 117.46h-154.58v-50.539h154.58z" fill="#cfd1d4" stroke="#000"/>
-      <path d="m99.873 68.92h-81.75v-8.5h81.75z" fill="#ebe130" stroke="#000"/>
-      <text x="47.487053" y="67.280876" font-size="10px" font-style="italic">SetUp</text>
-      <HTMLEmbed x="16.214796" y="74.85202" width="152" height="50" font-size="9px" :html="card.setup">Text Here</HTMLEmbed>
-    </g>
-    <g v-if="card.gameplay">
-      <path d="m99.873 128.92h-81.75v-8.5h81.75z" fill="#ebe130" stroke="#000"/>
-      <path d="m167.79 212.46h-154.58v-85.539h154.58z" fill="#cfd1d4" stroke="#000"/>
-      <text x="37.5" y="127" font-size="10px" font-style="italic">Game Play</text>
-      <HTMLEmbed x="16.214796" y="134.85202" width="150" height="80" font-size="9px" :html="card.gameplay">Text Here</HTMLEmbed>
-    </g>
     <g>
-      <path d="m99.873 223.92h-81.75v-8.5h81.75z" fill="#ebe130" stroke="#000"/>
-      <path d="m167.79 239.46h-154.58v-17.539h154.58z" fill="#cfd1d4" stroke="#000"/>
-      <text x="39.672401" y="222.4875" font-size="10px" font-style="italic">Advanced</text>
-      <HTMLEmbed x="16.214796" y="229.85202" width="152" height="10" font-size="9px" :html="card.advanced">Text Here</HTMLEmbed>
+      <path d="m159.8 54.67h-137.34v-9.5h137.34z" fill="#cfd1d4" stroke="#000"/>
+      <text id="title" x="90" y="52.5" font-size="11px" font-style="italic" text-align="center" text-anchor="middle">{{ card.title }}</text>
+    </g>
+    <g v-growShrink="{check: 3, adjust: 0, padding: 6, margin: 16, offset: 182, bottom: true}">
+      <g v-for="key in ['setup', 'gameplay', 'advanced']" v-if="card[key]" >
+        <rect x="13.21" y="67" width="154.58" height="20" fill="#cfd1d4" stroke="#000"/>
+        <rect x="18" y="60.5" width="81.75" height="8.5" fill="#ebe130" stroke="#000"/>
+        <text x="59" y="67.25" font-size="10px" font-style="italic" text-align="center" text-anchor="middle"> {{ key }} </text>
+        <HTMLEmbed x="16" y="72" width="148" height="200" font-size="9px" :html="card[key]">Text Here</HTMLEmbed>
+      </g>
     </g>
     <text x="168.59041" y="247.55547" fill="#ffffff" font-size="5.3px" text-align="end" text-anchor="end">Art By {{ card.artist}}</text>
   </g>

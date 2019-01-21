@@ -1,14 +1,40 @@
 <template>
   <span @click="$emit('input', {card: card, props: props})">
-  <v-runtime-template :template="template"> </v-runtime-template>
+    <v-runtime-template :template="template"> </v-runtime-template>
   </span>
 </template>
 
 <script>
- import HTMLEmbed from './HTMLEmbed.vue';
+ import Vue from 'vue';
  import VRuntimeTemplate from "v-runtime-template";
+
+ import HTMLEmbed from './HTMLEmbed.vue';
+
  import propTypes from './template/*/input.yaml';
  import templates from './template/*/*.svg';
+
+ function growShrink() {
+   this.update = function (thisElement, binding) {
+     const params = binding.value;
+
+     let heightAcc = 0;
+     let children = Array.from(thisElement.children);
+     for (let el of params.bottom ? children.reverse() : children) {
+       el.children[params.adjust].setAttribute(
+	 'height', el.children[params.check].firstChild.clientHeight + params.padding);
+
+       let translate = heightAcc + params.offset || 0;
+       heightAcc += el.children[params.check].firstChild.clientHeight + params.margin;
+       if (params.bottom) {
+	 translate = -heightAcc + params.offset || 0;
+       }
+       el.setAttribute('transform', `translate(0, ${translate})`);
+     };
+   }
+   this.inserted = this.update;
+ }
+
+ Vue.directive('growShrink', new growShrink());
 
  export default {
    name: 'Card',
