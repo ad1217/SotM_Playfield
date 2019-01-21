@@ -45,7 +45,9 @@
         <label> {{ prop }}
           <input v-if="type === 'image'" type="file" accept="image/*"
                  @change="fileUploaded(prop, $event)" />
-          <textarea v-else-if="type === 'textarea'" v-model="selected.card[prop]"> </textarea>
+	  <codemirror v-else-if="type === 'textarea'"
+		      v-model="selected.card[prop]"
+		      :options="cmOptions" > </codemirror>
           <input v-else :type="type" v-model="selected.card[prop]"/>
         </label>
       </div>
@@ -56,15 +58,24 @@
 </template>
 
 <script>
- import yaml from 'js-yaml';
+ import { codemirror } from 'vue-codemirror';
+ import 'codemirror/mode/htmlmixed/htmlmixed.js';
+ import 'codemirror/addon/lint/html-lint.js';
+ import 'codemirror/addon/selection/active-line.js';
+ import 'codemirror/addon/edit/closetag.js';
+ import 'codemirror/lib/codemirror.css';
+ import 'codemirror/theme/base16-dark.css';
  import html2canvas from 'html2canvas';
+ import yaml from 'js-yaml';
+
  import Deck from './Deck.vue';
  import Loader from './Loader.vue';
+
  import tts_templates from './template/tts/*.json';
 
  export default {
    name: 'Editor',
-   components: {Deck, Loader},
+   components: {codemirror, Deck, Loader},
 
    props: ['deckID'],
    data() {
@@ -73,6 +84,17 @@
        selected: null,
        deckInfo: {meta: {name: "", type: ""},
                   cards: {}},
+       cmOptions: {
+	 mode: 'text/html',
+	 line: true,
+         styleActiveLine: true,
+         autoCloseTags: true,
+	 lineWrapping: true,
+	 lineNumbers: true,
+	 theme: 'base16-dark',
+	 lint: true,
+	 gutters: ['CodeMirror-lint-markers']
+       }
      };
    },
 
@@ -203,6 +225,7 @@
    background-color: gray;
    padding: 10px;
    border-radius: 3px;
+   max-width: 40%;
  }
 
  .close-editor {
@@ -220,5 +243,9 @@
 
  a.download:hover {
    background-color: #1565C0;
+ }
+
+ .CodeMirror {
+   height: auto;
  }
 </style>
