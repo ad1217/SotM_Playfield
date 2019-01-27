@@ -39,6 +39,17 @@
       </div>
     </div>
 
+    <div v-if="deckInfo.meta.type">
+      <label> New Card Type:
+	<select v-model="newCardType">
+	  <option v-for="cardType in Object.keys(templates[deckInfo.meta.type])"
+		  :value="cardType">
+	    {{ cardType }}
+	  </option>
+        </select>
+      </label>
+      <button type="button" @click="addCard"> Add New Card </button>
+
     <CardEditor v-if="selected"
 		:inCard.sync="selected.card"
 		:props="templates[deckInfo.meta.type][selected.type]"
@@ -70,6 +81,7 @@
        uploading: false,
        selected: null,
        templates: templates,
+       newCardType: "",
        deckInfo: {meta: {name: "", type: ""},
                   cards: {}},
      };
@@ -94,6 +106,11 @@
        let reader = new FileReader();
        reader.onload = e => this.deckInfo = yaml.safeLoad(e.target.result);
        reader.readAsText(files[0]);
+     },
+
+     addCard(event) {
+       (this.deckInfo.cards[this.newCardType] =
+	 this.deckInfo.cards[this.newCardType] || []).push({});
      },
 
      downloadJSON(json) {
