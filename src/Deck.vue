@@ -1,9 +1,11 @@
 <template>
   <div class="deck">
     <div v-for="cardRow in chunkedCards">
-      <Card v-for="card in cardRow" v-model="selected"
+      <Card v-for="card in cardRow"
             :deckType="deckInfo.meta.type"
-            :type="card.type" :card="card.card"> </Card>
+            :type="card.type" :card="card.card"
+	    @click.native="$emit('select', card)"
+      > </Card>
     </div>
   </div>
 </template>
@@ -15,18 +17,6 @@
    name: 'Deck',
    props: ['deckInfo'],
    components: {Card},
-
-   data() {
-     return {
-       selected: null,
-     }
-   },
-
-   watch: {
-     selected() {
-       this.$emit('input', this.selected);
-     }
-   },
 
    computed: {
      allCards() {

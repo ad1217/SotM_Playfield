@@ -1,5 +1,5 @@
 <template>
-  <span @click="$emit('input', {card: card, props: props})">
+  <span>
     <v-runtime-template :template="template"> </v-runtime-template>
   </span>
 </template>
@@ -10,7 +10,6 @@
 
  import HTMLEmbed from './HTMLEmbed.vue';
 
- import propTypes from './template/*/input.yaml';
  import templates from './template/*/*.svg';
 
  function growShrink() {
@@ -42,10 +41,6 @@
    components: {VRuntimeTemplate, HTMLEmbed},
 
    computed: {
-     props() {
-       return {count: 'number', ...propTypes[this.deckType][this.type]};
-     },
-
      template() {
        let deckTemplates = templates[this.deckType];
        let cardType = (this.type in deckTemplates) ? this.type :

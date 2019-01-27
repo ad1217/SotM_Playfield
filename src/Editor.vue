@@ -31,70 +31,47 @@
         <label> Deck Name: <input type="text" v-model="deckInfo.meta.name"> </label>
         <label> Deck Type:
           <select v-model="deckInfo.meta.type">
-            <option value="hero">hero</option>
-            <option value="villain">villain</option>
-            <option value="environment">environment</option>
+	    <option v-for="deckType in Object.keys(templates)" :value="deckType">
+	      {{ deckType }}
+	    </option>
           </select>
         </label>
       </div>
     </div>
 
-    <div id="cardEditor" v-if="selected">
-      <button class="close-editor" @click="selected = null">X</button>
-      <div v-for="(type, prop) in selected.props">
-        <label> {{ prop }}
-          <input v-if="type === 'image'" type="file" accept="image/*"
-                 @change="fileUploaded(prop, $event)" />
-	  <codemirror v-else-if="type === 'textarea'"
-		      v-model="selected.card[prop]"
-		      :options="cmOptions" > </codemirror>
-          <input v-else :type="type" v-model="selected.card[prop]"/>
-        </label>
-      </div>
-    </div>
+    <CardEditor v-if="selected"
+		:inCard.sync="selected.card"
+		:props="templates[deckInfo.meta.type][selected.type]"
+		@close="selected = null">
+    </CardEditor>
 
-    <Deck ref="deck" :deckInfo="deckInfo" v-model="selected"> </Deck>
+    <Deck ref="deck" :deckInfo="deckInfo" @select="selected = $event"> </Deck>
   </div>
 </template>
 
 <script>
- import { codemirror } from 'vue-codemirror';
- import 'codemirror/mode/htmlmixed/htmlmixed.js';
- import 'codemirror/addon/lint/html-lint.js';
- import 'codemirror/addon/selection/active-line.js';
- import 'codemirror/addon/edit/closetag.js';
- import 'codemirror/lib/codemirror.css';
- import 'codemirror/theme/base16-dark.css';
  import html2canvas from 'html2canvas';
  import yaml from 'js-yaml';
 
  import Deck from './Deck.vue';
+ import CardEditor from './CardEditor.vue';
  import Loader from './Loader.vue';
 
+ import templates from './template/*/input.yaml';
  import tts_templates from './template/tts/*.json';
 
  export default {
    name: 'Editor',
-   components: {codemirror, Deck, Loader},
+   components: {Deck, CardEditor, Loader},
 
    props: ['deckID'],
    data() {
      return {
        uploading: false,
        selected: null,
+       templates: templates,
        deckInfo: {meta: {name: "", type: ""},
                   cards: {}},
-       cmOptions: {
-	 mode: 'text/html',
-	 line: true,
-         styleActiveLine: true,
-         autoCloseTags: true,
-	 lineWrapping: true,
-	 lineNumbers: true,
-	 theme: 'base16-dark',
-	 lint: true,
-	 gutters: ['CodeMirror-lint-markers']
-       }
      };
    },
 
@@ -117,14 +94,6 @@
        let reader = new FileReader();
        reader.onload = e => this.deckInfo = yaml.safeLoad(e.target.result);
        reader.readAsText(files[0]);
-     },
-
-     fileUploaded(event, prop) {
-       let reader = new FileReader();
-       reader.onload = e => {
-         this.selected.card[prop] = e.target.result;
-       };
-       reader.readAsDataURL(event.target.files[0]);
      },
 
      downloadJSON(json) {
@@ -218,7 +187,7 @@
 </script>
 
 <style>
- #cardEditor {
+ .cardEditor {
    position: fixed;
    top: 0;
    right: 0;
@@ -243,9 +212,5 @@
 
  a.download:hover {
    background-color: #1565C0;
- }
-
- .CodeMirror {
-   height: auto;
  }
 </style>

@@ -1,15 +1,17 @@
-character: &character
-  name: text
-  hp: number
-  title: text
-character-back: *character
-instructions: &instructions
-  name: text
-  title: text
-  setup: textarea
-  gameplay: textarea
-  advanced: textarea
-instructions-back: *instructions
+character:
+  <<: &character
+    name: text
+    hp: number
+    title: text
+  back: *character
+instructions:
+  <<: &instructions
+    name: text
+    title: text
+    setup: textarea
+    gameplay: textarea
+    advanced: textarea
+  back: *instructions
 deck:
   name: text
   hp: number
