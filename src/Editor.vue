@@ -51,7 +51,7 @@
       <button type="button" @click="addCard"> Add New Card </button>
     </div>
 
-    <textarea v-model="deckInfo.css"> </textarea>
+    <CSSEditor v-model="deckInfo.css"> </CSSEditor>
 
     <CardEditor v-if="selected"
 		class="cardEditor"
@@ -70,6 +70,7 @@
 
  import Deck from './Deck.vue';
  import CardEditor from './CardEditor.vue';
+ import CSSEditor from './CSSEditor.vue';
  import Loader from './Loader.vue';
 
  import templates from './template/*/input.yaml';
@@ -77,7 +78,7 @@
 
  export default {
    name: 'Editor',
-   components: {Deck, CardEditor, Loader},
+   components: {Deck, CardEditor, CSSEditor, Loader},
 
    props: ['deckID'],
    data() {
