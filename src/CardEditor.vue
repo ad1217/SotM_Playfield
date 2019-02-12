@@ -1,5 +1,5 @@
 <template>
-  <div :class="{cardEditor: !nested}">
+  <div>
     <button v-if="!nested" class="close-editor" @click="$emit('close')">X</button>
     <div v-for="(type, prop) in props">
       <label> {{ prop }}
@@ -62,7 +62,7 @@
 </script>
 
 <style>
- .CodeMirror {
+ .cardEditor .CodeMirror {
    height: auto;
  }
 </style>
