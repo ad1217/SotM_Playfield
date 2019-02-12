@@ -49,6 +49,12 @@
      }
    },
 
+   created() {
+     Object.keys(this.props)
+       .filter(prop => typeof this.props[prop] === 'object')
+       .forEach(prop => this.$set(this.card, prop, {}));
+   },
+
    methods: {
      imageUpload(event, prop) {
        let reader = new FileReader();

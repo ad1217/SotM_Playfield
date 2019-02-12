@@ -125,8 +125,13 @@
      },
 
      addCard(event) {
+       let newCard = {};
        (this.deckInfo.cards[this.newCardType] =
-	 this.deckInfo.cards[this.newCardType] || []).push({});
+	 this.deckInfo.cards[this.newCardType] || []).push(newCard);
+       this.selected = {
+	 card: newCard,
+	 type: this.newCardType,
+       }
      },
 
      downloadJSON(json) {
