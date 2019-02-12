@@ -49,6 +49,9 @@
         </select>
       </label>
       <button type="button" @click="addCard"> Add New Card </button>
+    </div>
+
+    <textarea v-model="deckInfo.css"> </textarea>
 
     <CardEditor v-if="selected"
 		:inCard.sync="selected.card"
@@ -82,7 +85,7 @@
        selected: null,
        templates: templates,
        newCardType: "",
-       deckInfo: {meta: {name: "", type: ""},
+       deckInfo: {meta: {name: "", type: "", css: ''},
                   cards: {}},
      };
    },
@@ -97,6 +100,17 @@
 
      /* window.addEventListener(
       *   'beforeunload', e => e.returnValue = "Unsaved changes blah blah"); */
+   },
+
+   watch: {
+     'deckInfo.css'(newVal) {
+       let el = document.querySelector('#injectedStyle');
+       if (!el) {
+	 el = document.body.appendChild(document.createElement('style'));
+	 el.id = 'injectedStyle';
+       }
+       el.innerHTML = newVal;
+     },
    },
 
    methods: {
@@ -166,7 +180,8 @@
        function bindStyles(doc) {
          console.log(doc);
          // get existing styles from CSS...
-         let style = Array.from(document.styleSheets[0].cssRules)
+         let style = Array.from(document.styleSheets)
+           .flatMap(sheet => Array.from(sheet.cssRules))
            .map(rule => rule.cssText)
            .join('\n');
          // ...and jam them into a <style> in each foreignObject
