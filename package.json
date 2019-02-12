@@ -20,16 +20,16 @@
     "nedb-promises": "^3.0.2",
     "parcel-bundler": "^1.11.0",
     "v-runtime-template": "^1.5.2",
-    "vue": "^2.5.22",
+    "vue": "^2.6.5",
     "vue-codemirror": "^4.0.6",
     "vue-headful": "^2.0.1",
-    "vue-hot-reload-api": "^2.3.1",
+    "vue-hot-reload-api": "^2.3.2",
     "vue-router": "^3.0.2"
   },
   "devDependencies": {
     "@vue/component-compiler-utils": "^2.5.0",
     "parcel": "^1.11.0",
-    "vue-template-compiler": "^2.5.22"
+    "vue-template-compiler": "^2.6.5"
   },
   "alias": {
     "vue": "./node_modules/vue/dist/vue.common.js"
