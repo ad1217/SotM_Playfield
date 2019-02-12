@@ -54,7 +54,7 @@
     <textarea v-model="deckInfo.css"> </textarea>
 
     <CardEditor v-if="selected"
-		:inCard.sync="selected.card"
+		:card="selected.card"
 		:props="templates[deckInfo.meta.type][selected.type]"
 		@close="selected = null">
     </CardEditor>

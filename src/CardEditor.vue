@@ -11,7 +11,7 @@
 		    v-model="card[prop]"
 		    :options="cmOptions" > </codemirror>
 	<CardEditor v-else-if="typeof type === 'object'"
-		    :inCard.sync="card[prop]" :props="props[prop]" :nested="true">
+		    :card="card[prop]" :props="props[prop]" :nested="true">
 	</CardEditor>
 	<input v-else :type="type" v-model="card[prop]"/>
       </label>
@@ -32,10 +32,9 @@
    name: 'CardEditor',
    components: {codemirror},
 
-   props: ['inCard', 'props', 'nested'],
+   props: ['card', 'props', 'nested'],
    data() {
      return {
-       card: this.inCard,
        cmOptions: {
 	 mode: 'text/html',
 	 line: true,
@@ -47,22 +46,6 @@
 	 lint: true,
 	 gutters: ['CodeMirror-lint-markers']
        },
-     }
-   },
-
-   created() {
-     if (this.card === undefined) {
-       this.card = {};
-     }
-   },
-
-   watch: {
-     card(newVal) {
-       this.$emit('update:inCard', newVal);
-     },
-
-     inCard(newVal) {
-       this.card = newVal;
      }
    },
 
