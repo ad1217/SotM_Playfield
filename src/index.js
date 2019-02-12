@@ -13,9 +13,9 @@ Vue.component('headful', VueHeadful);
 const router = new VueRouter({
   mode: 'history',
   routes: [
-    {path: '/', component: DeckIndex},
-    {path: '/edit/:deckID', component: Editor, props: true},
-    {path: '*', component: Err404},
+    { path: '/', component: DeckIndex },
+    { path: '/edit/:deckID', component: Editor, props: true },
+    { path: '*', component: Err404 },
   ],
 });
 

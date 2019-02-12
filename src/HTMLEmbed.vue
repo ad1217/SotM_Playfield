@@ -1,12 +1,12 @@
 <template>
   <foreignObject>
-    <div class="htmlEmbed" v-html="html"> </div>
+    <div class="htmlEmbed" v-html="html"></div>
   </foreignObject>
 </template>
 
 <script>
- export default {
-   name: 'HTMLEmbed',
-   props: ['html'],
- }
+export default {
+  name: 'HTMLEmbed',
+  props: ['html'],
+};
 </script>

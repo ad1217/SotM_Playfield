@@ -1,0 +1,4 @@
+# .prettierrc or .prettierrc.yaml
+trailingComma: "es5"
+singleQuote: true
+jsxBracketSameLine: true
