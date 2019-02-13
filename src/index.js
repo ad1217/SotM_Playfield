@@ -20,7 +20,7 @@ const router = new VueRouter({
 });
 
 new Vue({
-  el: '#charSheet',
+  el: '#playfield',
   render: h => h(App),
   router,
 });
