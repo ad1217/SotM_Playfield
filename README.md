@@ -52,6 +52,14 @@ Best on a touch screen, but works okay with a mouse.
 - long press on a deck to open a listing, where you can search,
   rearrange, and tap to add to playfield
 
+
+## Installation
+
+Install [Node.js](https://nodejs.org/en/). Download the repository,
+`cd` to it, run `npm ci`, then `npm start`. If you want to
+change the port, or run in production mode, set the `PORT` or
+`NODE_ENV` environment variables, respectively.
+
 ## To do:
 
 There are a lot of things still to be done here, including:
