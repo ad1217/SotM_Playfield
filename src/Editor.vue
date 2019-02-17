@@ -126,6 +126,7 @@ export default {
 
   watch: {
     'deckInfo.css'(newVal) {
+      if (!newVal) newVal = '';
       let el = document.querySelector('#injectedStyle');
       if (!el) {
         el = document.body.appendChild(document.createElement('style'));
