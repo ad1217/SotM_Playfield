@@ -15,6 +15,13 @@
         </a>
         <a
           class="download"
+          :href="downloadYAML(deckInfo)"
+          :download="deckInfo.meta.name + '.input.yaml'"
+        >
+          Input YAML
+        </a>
+        <a
+          class="download"
           :href="downloadJSON(makeTTSJSON())"
           :download="deckInfo.meta.name + '.tts.json'"
         >
@@ -159,6 +166,13 @@ export default {
       return (
         'data:application/json;charset=utf-8,' +
         encodeURIComponent(JSON.stringify(json))
+      );
+    },
+
+    downloadYAML(json) {
+      return (
+        'data:application/x-yaml;charset=utf-8,' +
+        encodeURIComponent(yaml.safeDump(json))
       );
     },
 
