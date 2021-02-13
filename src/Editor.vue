@@ -172,7 +172,7 @@ export default {
     downloadYAML(json) {
       return (
         'data:application/x-yaml;charset=utf-8,' +
-        encodeURIComponent(yaml.safeDump(json))
+        encodeURIComponent(yaml.dump(json))
       );
     },
 
