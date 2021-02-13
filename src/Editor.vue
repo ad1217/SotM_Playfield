@@ -122,9 +122,9 @@ export default {
   created() {
     if (this.deckID !== 'new') {
       fetch('/decks/' + this.deckID + '.json')
-        .then(r => r.json())
-        .then(j => (this.deckInfo = j.deck))
-        .catch(err => console.log('did not get old JSON, starting new deck'));
+        .then((r) => r.json())
+        .then((j) => (this.deckInfo = j.deck))
+        .catch((err) => console.log('did not get old JSON, starting new deck'));
     }
 
     /* window.addEventListener(
@@ -148,7 +148,7 @@ export default {
     jsonUpload(event) {
       let files = this.$refs.jsonUpload.files;
       let reader = new FileReader();
-      reader.onload = e => (this.deckInfo = yaml.safeLoad(e.target.result));
+      reader.onload = (e) => (this.deckInfo = yaml.safeLoad(e.target.result));
       reader.readAsText(files[0]);
     },
 
@@ -184,8 +184,8 @@ export default {
       let index = 100;
       deckOut.ObjectStates[0].ContainedObjects = Object.keys(
         this.deckInfo.cards
-      ).flatMap(cardType =>
-        this.deckInfo.cards[cardType].flatMap(card => {
+      ).flatMap((cardType) =>
+        this.deckInfo.cards[cardType].flatMap((card) => {
           let cardOut = {
             ...JSON.parse(JSON.stringify(tts_templates['card'])),
             Nickname: card.name,
@@ -200,7 +200,7 @@ export default {
 
           if (card.back) {
             cardOut.States = {
-              '2': {
+              2: {
                 ...JSON.parse(JSON.stringify(tts_templates['card'])),
                 Nickname: card.back.name,
                 Description: card.back.keywords,
@@ -234,11 +234,11 @@ export default {
         console.log(doc);
         // get existing styles from CSS...
         let style = Array.from(document.styleSheets)
-          .flatMap(sheet => Array.from(sheet.cssRules))
-          .map(rule => rule.cssText)
+          .flatMap((sheet) => Array.from(sheet.cssRules))
+          .map((rule) => rule.cssText)
           .join('\n');
         // ...and jam them into a <style> in each foreignObject
-        doc.querySelectorAll('foreignObject').forEach(o => {
+        doc.querySelectorAll('foreignObject').forEach((o) => {
           let styleElement = o.appendChild(document.createElement('style'));
           styleElement.innerHTML = style;
         });
@@ -250,8 +250,8 @@ export default {
         backgroundColor: 'black',
         onclone: bindStyles,
       })
-        .then(canvas => canvas.toDataURL('image/png'))
-        .then(image =>
+        .then((canvas) => canvas.toDataURL('image/png'))
+        .then((image) =>
           // POST the inputed json to the server
           fetch('/upload', {
             method: 'post',
@@ -263,12 +263,12 @@ export default {
             }),
           })
         )
-        .then(r => r.json())
-        .then(j => {
+        .then((r) => r.json())
+        .then((j) => {
           this.$router.replace('/edit/' + j.id);
           this.uploading = false;
         })
-        .catch(err => console.log('Failed to upload' + err));
+        .catch((err) => console.log('Failed to upload' + err));
     },
   },
 };

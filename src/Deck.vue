@@ -23,7 +23,7 @@ export default {
 
   computed: {
     allCards() {
-      return Object.keys(this.deckInfo.cards).flatMap(cardType =>
+      return Object.keys(this.deckInfo.cards).flatMap((cardType) =>
         this.deckInfo.cards[cardType].flatMap((card, index) => {
           let cardWrapper = [
             {
@@ -50,7 +50,7 @@ export default {
       return Array(rows)
         .fill()
         .map((_, index) => index * columns)
-        .map(begin => this.allCards.slice(begin, begin + columns));
+        .map((begin) => this.allCards.slice(begin, begin + columns));
     },
   },
 };

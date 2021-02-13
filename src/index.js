@@ -21,6 +21,6 @@ const router = new VueRouter({
 
 new Vue({
   el: '#playfield',
-  render: h => h(App),
+  render: (h) => h(App),
   router,
 });

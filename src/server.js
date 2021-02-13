@@ -28,20 +28,20 @@ app.listen(port, () => console.log(`App listening on port ${port}!`));
 
 function getDecksList(req, res) {
   db.find({}, { 'deck.meta': 1 })
-    .then(docs => res.json(docs))
-    .catch(err => res.status(404).end());
+    .then((docs) => res.json(docs))
+    .catch((err) => res.status(404).end());
 }
 
 function getInputJSON(req, res) {
   db.findOne({ _id: req.params.deckID }, { image: 0 })
-    .then(doc => res.json(doc))
-    .catch(err => res.status(404).end());
+    .then((doc) => res.json(doc))
+    .catch((err) => res.status(404).end());
 }
 
 function getDeckImage(req, res) {
   db.findOne({ _id: req.params.deckID })
-    .then(doc => res.send(new Buffer.from(doc.image, 'base64')))
-    .catch(err => res.status(404).end());
+    .then((doc) => res.send(new Buffer.from(doc.image, 'base64')))
+    .catch((err) => res.status(404).end());
 }
 
 function handleUpload(req, res) {
@@ -54,5 +54,5 @@ function handleUpload(req, res) {
       image: json.image.substr('data:image/png;base64,'.length),
     },
     { upsert: true, returnUpdatedDocs: true }
-  ).then(doc => res.status(201).json({ id: doc._id }));
+  ).then((doc) => res.status(201).json({ id: doc._id }));
 }

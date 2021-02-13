@@ -61,14 +61,14 @@ export default {
 
   created() {
     Object.keys(this.props)
-      .filter(prop => typeof this.props[prop] === 'object')
-      .forEach(prop => this.$set(this.card, prop, {}));
+      .filter((prop) => typeof this.props[prop] === 'object')
+      .forEach((prop) => this.$set(this.card, prop, {}));
   },
 
   methods: {
     imageUpload(event, prop) {
       let reader = new FileReader();
-      reader.onload = e => {
+      reader.onload = (e) => {
         this.card[prop] = e.target.result;
       };
       reader.readAsDataURL(event.target.form[0].files[0]);

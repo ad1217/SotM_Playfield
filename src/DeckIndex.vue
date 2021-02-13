@@ -23,9 +23,9 @@ export default {
 
   created() {
     fetch('/decks.json')
-      .then(r => r.json())
-      .then(d => (this.decks = d))
-      .catch(err => console.log("Couldn't get deck list"));
+      .then((r) => r.json())
+      .then((d) => (this.decks = d))
+      .catch((err) => console.log("Couldn't get deck list"));
   },
 };
 </script>

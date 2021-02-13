@@ -13,7 +13,7 @@ import HTMLEmbed from './HTMLEmbed.vue';
 import templates from './template/*/*.svg';
 
 function growShrink() {
-  this.update = function(thisElement, binding) {
+  this.update = function (thisElement, binding) {
     const params = binding.value;
 
     let heightAcc = 0;
