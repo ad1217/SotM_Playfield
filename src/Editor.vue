@@ -148,7 +148,7 @@ export default {
     jsonUpload(event) {
       let files = this.$refs.jsonUpload.files;
       let reader = new FileReader();
-      reader.onload = (e) => (this.deckInfo = yaml.safeLoad(e.target.result));
+      reader.onload = (e) => (this.deckInfo = yaml.load(e.target.result));
       reader.readAsText(files[0]);
     },
 
