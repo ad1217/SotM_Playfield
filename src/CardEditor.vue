@@ -62,7 +62,11 @@ export default {
   created() {
     Object.keys(this.props)
       .filter((prop) => typeof this.props[prop] === 'object')
-      .forEach((prop) => this.$set(this.card, prop, {}));
+      .forEach((prop) => {
+        if (!(prop in this.card)) {
+          this.$set(this.card, prop, {});
+        }
+      });
   },
 
   methods: {
