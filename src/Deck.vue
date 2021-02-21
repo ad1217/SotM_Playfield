@@ -59,7 +59,7 @@ export default {
 <style>
 .deck {
   white-space: nowrap;
-  width: fit-content;
+  width: min-content;
 }
 
 .deck svg {
