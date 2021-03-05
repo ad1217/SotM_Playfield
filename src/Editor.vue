@@ -59,6 +59,14 @@
             </option>
           </select>
         </label>
+        <label>
+          Back URL:
+          <input type="text" v-model="deckInfo.meta.backURL" />
+        </label>
+        <label>
+          Image URL:
+          <input type="text" v-model="image_url" :placeholder="faceURL" />
+        </label>
       </div>
     </div>
 
@@ -115,7 +123,17 @@ export default {
       selected: null,
       templates: templates,
       newCardType: '',
-      deckInfo: { meta: { name: '', type: '', css: '' }, cards: {} },
+      deckInfo: {
+        meta: {
+          name: '',
+          type: '',
+          css: '',
+          backURL:
+            'http://cloud-3.steamusercontent.com/ugc/156906385556221451/CE2C3AFE1759790CB0B532FFD636D05A99EC91F4/',
+        },
+        cards: {},
+      },
+      image_url: '',
     };
   },
 
@@ -140,6 +158,14 @@ export default {
         el.id = 'injectedStyle';
       }
       el.innerHTML = newVal;
+    },
+  },
+
+  computed: {
+    faceURL() {
+      return this.image_url != ''
+        ? this.image_url
+        : `${location.origin}/decks/${this.deckID}.png`;
     },
   },
 
@@ -218,9 +244,8 @@ export default {
       Object.assign(deckOut.ObjectStates[0].CustomDeck['1'], {
         NumWidth: columns,
         NumHeight: Math.ceil(cardCount / columns),
-        FaceURL: `${location.origin}/decks/${this.deckID}.png`,
-        BackURL:
-          'http://cloud-3.steamusercontent.com/ugc/156906385556221451/CE2C3AFE1759790CB0B532FFD636D05A99EC91F4/',
+        FaceURL: this.faceURL,
+        BackURL: this.deckInfo.meta.backURL,
       });
 
       return deckOut;
