@@ -254,10 +254,26 @@ export default {
     upload() {
       this.uploading = true;
 
+      // TODO: remove this nasty hack
+      function bindStyles(doc) {
+        console.log(doc);
+        // get existing styles from CSS...
+        let style = Array.from(document.styleSheets)
+          .flatMap((sheet) => Array.from(sheet.cssRules))
+          .map((rule) => rule.cssText)
+          .join('\n');
+        // ...and jam them into a <style> in each foreignObject
+        doc.querySelectorAll('foreignObject').forEach((o) => {
+          let styleElement = o.appendChild(document.createElement('style'));
+          styleElement.innerHTML = style;
+        });
+      }
+
       let node = this.$refs.deck.$el;
       html2canvas(node, {
         scale: 2,
         backgroundColor: 'black',
+        onclone: bindStyles,
       })
         .then((canvas) => canvas.toDataURL('image/png'))
         .then((image) =>
