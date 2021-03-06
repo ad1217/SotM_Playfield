@@ -310,18 +310,18 @@
   <path d="m133.05 234.55c-7.6094 4.4883-21.801 7.2969-31.816 8.4258h-56.82c-17.391-2.0781-28.762-5.7461-34.582-10.348l4e-3 -9.8086c7.7344-6.6289 31.883-12.094 62.988-12.094 36.301 0 65.734 7.6094 65.734 17 0 0.36719-0.13672 1.0977-0.13672 1.0977 10.293 1.4922 9.9648 10.367 9.9648 10.367-7.5196-7.125-15.336-4.6406-15.336-4.6406z" fill="none" stroke="#000" stroke-miterlimit="10" stroke-width="1.25"/>
   <path d="m171.5 27.502h-162v121.59h162z" fill="none" stroke="#000" stroke-miterlimit="10" stroke-width="2"/>
   <g font-family="'RedStateBlueState BB'">
-    <text x="14.173298" y="24.167526" font-family="'CrashLanding BB'" font-size="23px"> {{ card.name }} </text>
+    <image v-bind:xlink:href="card.art" x="21" y="34" width="162px" height="121px" preserveAspectRatio="xMidYMid"/>
+    <HTMLEmbed x="14.173298" y="9.5" width="155" height="15" font-family="'CrashLanding BB'" font-size="23px" v-bind:html="card.name"> </HTMLEmbed>
     <g v-if="card.keywords">
       <path d="m126.21 156.92h-106.91v-11.305h106.91z" fill="#f8c711"/>
       <use transform="translate(18.45,145.7) matrix(.68531 0 0 .70654 .85059 .10938)" width="100%" height="100%" mask="url(#f)" xlink:href="#l"/>
       <path d="m126.96 144.87h-108.41v12.805h108.41zm-0.75 12.055h-106.91v-11.305h106.91z"/>
-      <text x="21.05547" y="154.41197" font-size="11.5px" font-weight="bold"> {{ card.keywords }} </text>
+      <HTMLEmbed x="23" y="147" width="120" height="9" font-size="11.5px" font-weight="bold" v-bind:html="card.keywords"> </HTMLEmbed>
     </g>
     <g v-if="card.hp">
       <path d="m171.5 9.5h-29.047l-17.832 3.8359 16.25 5.9336-14.375 8.5625 13.312-0.25-9.5 13.379 15.312-8.2539-8.25 15.941 13.875-13.004 5.0625 13.754 7.125-19.379 6.9375 4.3125-3.0898-9.9141 4.2188-0.25z" fill="url(#k)" stroke="#000" stroke-width=".8"/>
       <text x="154.03" y="30.44" fill="#000000" font-family="'CrashLanding BB'" font-size="35px" text-align="center" text-anchor="middle"> {{ card.hp }} </text>
     </g>
-    <image v-bind:xlink:href="card.art" x="21" y="34" width="162px" height="121px" preserveAspectRatio="xMidYMid"/>
     <HTMLEmbed x="14.5" y="160" width="152" height="48.5" font-family="'RedStateBlueState BB'" font-size="8.7px" v-bind:html="card.text"> </HTMLEmbed>
     <text x="72.514046" y="222" font-size="6.8px" font-style="italic" text-align="center" text-anchor="middle"> {{ card.quote }} </text>
     <text x="101.80201" y="230" font-size="5.8px" text-align="end" text-anchor="end">- {{ card.quoteCitation }} </text>
