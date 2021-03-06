@@ -214,8 +214,7 @@ export default {
         this.deckInfo.cards[cardType].flatMap((card) => {
           let cardOut = {
             ...JSON.parse(JSON.stringify(tts_templates['card'])),
-            Nickname: card.name,
-            Description: card.keywords,
+            Nickname: card.name + ': ' + card.keywords,
             CardID: index,
           };
 
